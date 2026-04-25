@@ -1,0 +1,1173 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="A modern Shadow Priest redesign concept built around cyclical Voidform gameplay, stable multi-target pressure, and Mythic+ target flexibility."
+    />
+    <title>Shadow Priest Redesign | Cyclical Voidcasting</title>
+    <link rel="stylesheet" href="../styles.css" />
+  </head>
+
+  <body class="shadow-page">
+    <header class="site-header">
+      <nav class="page-shell nav">
+        <a href="../index.html" class="brand">Priest Class Redesign</a>
+        <div class="nav-links">
+          <a href="../index.html">Priest Hub</a>
+          <a href="#at-a-glance">At a Glance</a>
+          <a href="#problems">Problems</a>
+          <a href="#goals">Goals</a>
+          <a href="#experience">Experience</a>
+          <a href="#systems">Systems</a>
+          <a href="#alternatives">Direction</a>
+          <a href="#hero-apex">Hero / Apex</a>
+          <a href="#philosophy">Philosophy</a>
+        </div>
+      </nav>
+    </header>
+
+    <main id="top">
+      <section class="hero page-shell">
+        <div>
+          <div class="eyebrow">Modern Spec Redesign</div>
+          <h1>Cyclical Voidcasting for Modern Shadow</h1>
+
+          <p class="hero-copy">
+            A Shadow Priest redesign focused on faster combat cadence, stable
+            multi-target pressure, Mythic+ target flexibility, and a renewed
+            big-moment cooldown that escalates Voidform into Ascended Voidform
+            without replacing the core rotation.
+          </p>
+
+          <div class="thesis">
+            Shadow should build pressure everywhere, then decide where that
+            pressure matters most.
+          </div>
+
+          <div class="button-row">
+            <a class="button" href="#systems">View Core Systems</a>
+            <a class="button secondary" href="detailed.html"
+              >Read Detailed Design</a
+            >
+            <a class="button secondary" href="../index.html"
+              >Back to Priest Hub</a
+            >
+          </div>
+        </div>
+
+        <aside class="hero-card" aria-label="Core gameplay loop">
+          <span class="tag">Core Loop</span>
+
+          <div class="cycle">
+            <div class="cycle-step">
+              <img class="mini-icon" src="../assets/mind_sear.jpg" alt="" />
+              <span><strong>1.</strong> Apply DoTs with Mind Sear</span>
+            </div>
+
+            <div class="cycle-step">
+              <img
+                class="mini-icon"
+                src="../assets/invoked_nightmare.jpg"
+                alt=""
+              />
+              <span><strong>2.</strong> Build Resonance</span>
+            </div>
+
+            <div class="cycle-step">
+              <img class="mini-icon" src="../assets/shadowform.jpg" alt="" />
+              <span><strong>3.</strong> Maintain Shadowform identity</span>
+            </div>
+
+            <div class="cycle-step">
+              <img class="mini-icon" src="../assets/voidform.jpg" alt="" />
+              <span><strong>4.</strong> Enter Voidform</span>
+            </div>
+
+            <div class="cycle-step">
+              <img
+                class="mini-icon"
+                src="../assets/void_ascension.jpg"
+                alt=""
+              />
+              <span><strong>5.</strong> Escalate with Dark Ascension</span>
+            </div>
+
+            <div class="cycle-step">
+              <img
+                class="mini-icon"
+                src="../assets/shadow_word_madness.jpg"
+                alt=""
+              />
+              <span><strong>6.</strong> Spend with Shadow Word: Madness</span>
+            </div>
+          </div>
+        </aside>
+      </section>
+
+      <section id="at-a-glance" class="page-shell section-block">
+        <div class="section-header">
+          <div class="eyebrow">At a Glance</div>
+          <h2>The redesign replaces passive duplication with deliberate pressure conversion.</h2>
+          <p class="muted">
+            This overview explains the design direction, player experience, and
+            high-level system changes. Exact cooldowns, priorities, talent
+            examples, timelines, and tooltips belong in the detailed page.
+          </p>
+        </div>
+
+        <div class="grid three">
+          <article class="card strong">
+            <h3>Core Change</h3>
+            <p class="muted">
+              Psychic Link-style passive duplication is replaced by Resonance,
+              a stored-pressure system that converts setup into controlled
+              payoff.
+            </p>
+          </article>
+
+          <article class="card strong">
+            <h3>New Damage Loop</h3>
+            <p class="muted">
+              Apply DoTs, build Resonance, enter Voidform, then convert pressure
+              through Mind Blast, Void Lash, and Shadow Word: Madness.
+            </p>
+          </article>
+
+          <article class="card strong">
+            <h3>Design Payoff</h3>
+            <p class="muted">
+              Shadow keeps its Void caster fantasy while gaining faster setup,
+              clearer priority targeting, and more tunable multi-target damage.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section id="problems" class="page-shell section-block">
+        <div class="section-header">
+          <div class="eyebrow">Problem Statement</div>
+          <h2>Shadow has strong fantasy, but uneven combat structure.</h2>
+          <p class="muted">
+            The redesign targets Mythic+ pain points while preserving Shadow’s
+            identity as a DoT-driven Void caster with Shadowform maintained as
+            the spec’s default visual identity.
+          </p>
+        </div>
+
+        <div class="grid three">
+          <article class="card">
+            <span class="tag">Cadence</span>
+            <h3>Long downtime between peaks</h3>
+            <p class="muted">
+              A rare power window does not naturally align with Mythic+ pull
+              pacing, creating overholding and flat gameplay between cooldowns.
+            </p>
+          </article>
+
+          <article class="card">
+            <span class="tag">Scaling</span>
+            <h3>Psychic Link volatility</h3>
+            <p class="muted">
+              Passive damage duplication is constantly pressured by
+              single-target, cleave, and AoE tuning. It also forces individual
+              spell tuning to account for how much copied damage exists in
+              different encounter profiles.
+            </p>
+          </article>
+
+          <article class="card">
+            <span class="tag">Targeting</span>
+            <h3>Awkward spread pressure</h3>
+            <p class="muted">
+              Shadow should maintain pressure on spread targets without relying
+              on passive copying, positional gimmicks, or excessive tab-target
+              setup.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section id="goals" class="page-shell section-block">
+        <div class="section-header">
+          <div class="eyebrow">Design Goals</div>
+          <h2>Modernize Shadow without breaking its core fantasy.</h2>
+        </div>
+
+        <div class="grid two">
+          <article class="card strong">
+            <h3>Primary Goals</h3>
+            <ul class="muted">
+              <li>
+                Preserve Shadowform as the default stance and visual identity.
+              </li>
+              <li>Reduce ramp time and improve time-to-impact.</li>
+              <li>
+                Create frequent Voidform moments on a roughly 30-second cycle.
+              </li>
+              <li>
+                Use Dark Ascension as the major cooldown that empowers Voidform
+                into Ascended Voidform.
+              </li>
+              <li>Maintain spread pressure without damage duplication.</li>
+              <li>Support priority target funneling in Mythic+.</li>
+              <li>
+                Preserve Shadow Word: Madness as the current Insanity spender.
+              </li>
+            </ul>
+          </article>
+
+          <article class="card strong">
+            <h3>Design Constraints</h3>
+            <ul class="muted">
+              <li>Avoid strict single-target versus AoE talent traps.</li>
+              <li>Do not recreate Psychic Link with a smaller cap.</li>
+              <li>
+                Do not use passive damage duplication as the AoE solution.
+              </li>
+              <li>Do not turn Shadowform into a temporary cooldown.</li>
+              <li>Do not restore removed abilities just for nostalgia.</li>
+              <li>
+                Do not restore Mind Sear as a channeled filler spell. It returns
+                only as a deliberate AoE setup cast.
+              </li>
+              <li>
+                Keep defensive tools mostly unchanged unless numbers require
+                tuning.
+              </li>
+            </ul>
+          </article>
+        </div>
+      </section>
+
+      <section id="experience" class="page-shell section-block">
+        <div class="section-header">
+          <div class="eyebrow">Player Experience</div>
+          <h2>Why this should feel better to play.</h2>
+          <p class="muted">
+            The design goal is not only to solve tuning problems. The player
+            should also have more buttons that matter, more frequent power
+            moments, and clearer cause-and-effect between setup and payoff.
+          </p>
+        </div>
+
+        <div class="grid two">
+          <article class="card">
+            <h3>More frequent power moments</h3>
+            <p class="muted">
+              Voidform gives Shadow a regular burst cadence instead of long gaps
+              between major cooldowns. The spec should feel active across normal
+              pulls, not only during a two-minute window.
+            </p>
+          </article>
+
+          <article class="card">
+            <h3>Clear setup and payoff</h3>
+            <p class="muted">
+              Resonance makes pressure visible and intentional. The player
+              builds pressure through DoTs, then chooses when to convert that
+              pressure with Void Lash, Mind Blast, and Voidform windows.
+            </p>
+          </article>
+
+          <article class="card">
+            <h3>Priority-target agency</h3>
+            <p class="muted">
+              Shadow should be able to help kill the dangerous enemy in a pull,
+              not only generate background damage. Void Focus and Shadow Word:
+              Madness support deliberate funneling.
+            </p>
+          </article>
+
+          <article class="card">
+            <h3>Preserved class fantasy</h3>
+            <p class="muted">
+              Shadowform remains the default stance, keeping the iconic visual
+              identity intact while Voidform and Dark Ascension create the
+              rotational peaks.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section id="visual-language" class="page-shell section-block">
+        <div class="section-header">
+          <div class="eyebrow">Visual Language</div>
+          <h2>Combat states and enemy effects are visually distinct.</h2>
+          <p class="muted">
+            Icons are used as functional UI language. Each visual identifies a
+            specific state, effect, or payoff layer in the redesigned loop.
+          </p>
+        </div>
+
+        <div class="grid three">
+          <article class="card">
+            <div class="ability-heading">
+              <img
+                class="ability-icon"
+                src="../assets/shadowform.jpg"
+                alt="Shadowform icon"
+              />
+              <div>
+                <span class="tag">Default Stance</span>
+                <h3>Shadowform</h3>
+              </div>
+            </div>
+            <p class="muted">
+              Shadow’s default visual identity. This remains always-on to
+              preserve class fantasy and player recognition.
+            </p>
+          </article>
+
+          <article class="card">
+            <div class="ability-heading">
+              <img
+                class="ability-icon"
+                src="../assets/voidform.jpg"
+                alt="Voidform icon"
+              />
+              <div>
+                <span class="tag">Rotational Window</span>
+                <h3>Voidform</h3>
+              </div>
+            </div>
+            <p class="muted">
+              Frequent baseline power window. Voidform creates regular moments
+              of acceleration without forcing the spec into long cooldown
+              dependency.
+            </p>
+          </article>
+
+          <article class="card">
+            <div class="ability-heading">
+              <img
+                class="ability-icon"
+                src="../assets/invoked_nightmare.jpg"
+                alt="Resonance icon"
+              />
+              <div>
+                <span class="tag">Enemy Effect</span>
+                <h3>Resonance</h3>
+              </div>
+            </div>
+            <p class="muted">
+              Stored pressure on afflicted enemies, visually distinct from
+              ordinary DoTs.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section id="systems" class="page-shell section-block">
+        <div class="section-header">
+          <div class="eyebrow">Five Core Systems</div>
+          <h2>The redesign is built around five connected systems.</h2>
+          <p class="muted">
+            These are the gameplay pillars. They define how Shadow builds
+            pressure, converts that pressure, and escalates into major moments
+            without relying on passive damage duplication.
+          </p>
+        </div>
+
+        <div class="system-map" aria-label="System interaction diagram">
+          <div class="map-node">
+            <b>DoTs</b>
+            <span class="small">Spread setup and identity</span>
+          </div>
+
+          <div class="map-arrow">→</div>
+
+          <div class="map-node">
+            <b>Resonance</b>
+            <span class="small">Stored target pressure</span>
+          </div>
+
+          <div class="map-arrow">→</div>
+
+          <div class="map-node">
+            <b>Voidform</b>
+            <span class="small">Cyclical amplification window</span>
+          </div>
+        </div>
+
+        <div class="flow" aria-label="Power escalation flow">
+          <span class="pill">
+            <img class="mini-icon" src="../assets/shadowform.jpg" alt="" />
+            Shadowform
+          </span>
+          <span class="arrow">→</span>
+          <span class="pill">Normal Cycle</span>
+          <span class="arrow">→</span>
+          <span class="pill">
+            <img class="mini-icon" src="../assets/voidform.jpg" alt="" />
+            Voidform
+          </span>
+          <span class="arrow">→</span>
+          <span class="pill">
+            <img class="mini-icon" src="../assets/void_ascension.jpg" alt="" />
+            Dark Ascension
+          </span>
+          <span class="arrow">→</span>
+          <span class="pill">
+            <img class="mini-icon" src="../assets/voidform.jpg" alt="" />
+            Ascended Voidform
+          </span>
+        </div>
+
+        <div class="grid two system-card-grid">
+          <article class="card">
+            <div class="ability-heading">
+              <img
+                class="ability-icon"
+                src="../assets/shadowform.jpg"
+                alt="Shadowform icon"
+              />
+              <div>
+                <span class="tag">Core System 1</span>
+                <h3>Shadowform Identity</h3>
+              </div>
+            </div>
+
+            <p class="muted">
+              Shadowform remains the spec’s default stance and visual anchor.
+              The redesign does not turn it into a temporary button.
+            </p>
+          </article>
+
+          <article class="card">
+            <div class="ability-heading">
+              <img
+                class="ability-icon"
+                src="../assets/voidform.jpg"
+                alt="Voidform icon"
+              />
+              <div>
+                <span class="tag">Core System 2</span>
+                <h3>Voidform Cycle</h3>
+              </div>
+            </div>
+
+            <p class="muted">
+              Frequent baseline power window. Voidform gives the spec an active
+              cadence without making the player wait for a rare burst phase.
+            </p>
+          </article>
+
+          <article class="card">
+            <div class="ability-heading">
+              <img
+                class="ability-icon"
+                src="../assets/void_ascension.jpg"
+                alt="Dark Ascension icon"
+              />
+              <div>
+                <span class="tag">Core System 3</span>
+                <h3>Dark Ascension</h3>
+              </div>
+            </div>
+
+            <p class="muted">
+              Big-moment cooldown. Dark Ascension empowers upcoming Voidform
+              windows into Ascended Voidform instead of replacing the normal
+              rotation.
+            </p>
+          </article>
+
+          <article class="card">
+            <div class="ability-heading">
+              <img
+                class="ability-icon"
+                src="../assets/shadow_word_pain.jpg"
+                alt="Void Focus icon"
+              />
+              <div>
+                <span class="tag">Core System 4</span>
+                <h3>Void Focus</h3>
+              </div>
+            </div>
+
+            <p class="muted">
+              Converts spread DoT setup into priority target pressure, giving
+              Shadow a clear Mythic+ funnel identity without copying damage.
+            </p>
+          </article>
+
+          <article class="card">
+            <div class="ability-heading">
+              <img
+                class="ability-icon"
+                src="../assets/invoked_nightmare.jpg"
+                alt="Resonance icon"
+              />
+              <div>
+                <span class="tag">Core System 5</span>
+                <h3>Resonance</h3>
+              </div>
+            </div>
+
+            <p class="muted">
+              Stored-pressure system. Resonance lets multi-DoT gameplay build
+              toward controlled payoff instead of passive scaling explosions.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section id="supporting-mechanics" class="page-shell section-block">
+        <div class="section-header">
+          <div class="eyebrow">Supporting Mechanics</div>
+          <h2>
+            Supporting tools solve usability problems without becoming separate
+            design pillars.
+          </h2>
+        </div>
+
+        <div class="grid three">
+          <article class="card">
+            <div class="ability-heading">
+              <img
+                class="ability-icon"
+                src="../assets/mind_sear.jpg"
+                alt="Mind Sear icon"
+              />
+              <div>
+                <span class="tag">AoE Setup Tool</span>
+                <h3>Mind Sear</h3>
+              </div>
+            </div>
+
+            <p class="muted">
+              Mind Sear returns as a single-cast AoE setup spell, not a
+              channeled filler. It applies Vampiric Touch and Shadow Word: Pain
+              to the target and nearby enemies, helping Shadow begin pressure
+              quickly.
+            </p>
+          </article>
+
+          <article class="card">
+            <div class="ability-heading">
+              <img
+                class="ability-icon"
+                src="../assets/void_lash.jpg"
+                alt="Void Lash icon"
+              />
+              <div>
+                <span class="tag">Support Tool</span>
+                <h3>Void Lash</h3>
+              </div>
+            </div>
+
+            <p class="muted">
+              Target-anchored tentacle strike. Replaces Tentacle Slam’s awkward
+              positional targeting with a clearer payoff button.
+            </p>
+          </article>
+
+          <article class="card">
+            <div class="ability-heading">
+              <img
+                class="ability-icon"
+                src="../assets/shadowy_apparitions.jpg"
+                alt="Shadowy Apparitions icon"
+              />
+              <div>
+                <span class="tag">Passive Layer</span>
+                <h3>Shadowy Apparitions</h3>
+              </div>
+            </div>
+
+            <p class="muted">
+              Shadowy Apparitions remain part of Shadow’s baseline passive
+              identity. Apex talents can enhance them into Void Apparitions
+              rather than replacing the base apparition system entirely.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section id="alternatives" class="page-shell section-block">
+        <div class="section-header">
+          <div class="eyebrow">Rejected Direction</div>
+          <h2>Psychic Link is explicitly avoided, not preserved.</h2>
+          <p class="muted">
+            This redesign does not treat Psychic Link as a viable foundation to
+            retune. The issue is structural: passive damage duplication
+            pressures every damage spell, every target-count profile, and every
+            single-target versus AoE balance pass.
+          </p>
+        </div>
+
+        <div class="grid two">
+          <article class="card strong">
+            <h3>Why Psychic Link does not return</h3>
+            <p class="muted">
+              A lower cap or softer tuning would still leave Shadow’s
+              single-target and AoE damage tied together. Every future damage
+              adjustment would continue to risk changing both priority damage
+              and spread output at the same time.
+            </p>
+          </article>
+
+          <article class="card strong">
+            <h3>What a real alternative would be</h3>
+            <p class="muted">
+              A different redesign could add explicit cleave buttons, such as
+              baseline Void Volley, Void Bolt-style cleave, or this redesigned
+              Mind Sear. Those would be intentional AoE tools, not passive
+              duplication attached to the entire spellbook.
+            </p>
+          </article>
+        </div>
+
+        <div class="callout">
+          <strong>Design stance:</strong> Shadow’s AoE should come from
+          intentional buttons, capped payoff systems, and target decisions. It
+          should not come from copying the rest of the rotation across every
+          afflicted target.
+        </div>
+      </section>
+
+      <section id="hero-apex" class="page-shell section-block">
+        <div class="section-header">
+          <div class="eyebrow">Hero and Apex Talent Integration</div>
+          <h2>Hero and Apex talents modify the loop without replacing it.</h2>
+          <p class="muted">
+            Archon and Voidweaver should remain distinct, but neither should
+            force Shadow away from its core loop. Apex talents should reinforce
+            apparition and idol identity without recreating passive damage
+            duplication.
+          </p>
+        </div>
+
+        <div class="grid two">
+          <article class="card">
+            <div class="ability-heading">
+              <img
+                class="ability-icon"
+                src="../assets/halo.jpg"
+                alt="Halo icon"
+              />
+              <div>
+                <span class="tag">Hero Talent</span>
+                <h3>Archon</h3>
+              </div>
+            </div>
+
+            <p class="muted">
+              Archon keeps Halo as its signature layer. It should amplify
+              cadence, Resonance output, Apparition generation, or Voidform
+              timing without becoming a separate rotation.
+            </p>
+          </article>
+
+          <article class="card">
+            <div class="ability-heading">
+              <img
+                class="ability-icon"
+                src="../assets/entropic_rift.jpg"
+                alt="Entropic Rift icon"
+              />
+              <div>
+                <span class="tag">Hero Talent</span>
+                <h3>Voidweaver</h3>
+              </div>
+            </div>
+
+            <p class="muted">
+              Voidweaver no longer uses Halo. It should lean into Void-flavored
+              pressure windows, Rift payoff, and deeper Resonance generation.
+            </p>
+          </article>
+        </div>
+
+        <div class="grid three system-card-grid">
+          <article class="card">
+            <div class="ability-heading">
+              <img
+                class="ability-icon"
+                src="../assets/shadowy_apparitions.jpg"
+                alt="Shadowy Apparitions icon"
+              />
+              <div>
+                <span class="tag">Apex Baseline</span>
+                <h3>Shadowy Apparitions</h3>
+              </div>
+            </div>
+
+            <p class="muted">
+              When one of the capstone idol effects is triggered, a Shadowy
+              Apparition is spawned. This keeps the classic apparition layer
+              visible and familiar.
+            </p>
+          </article>
+
+          <article class="card">
+            <div class="ability-heading">
+              <img
+                class="ability-icon"
+                src="../assets/void_apparitions.jpg"
+                alt="Void Apparitions icon"
+              />
+              <div>
+                <span class="tag">Apex Upgrade</span>
+                <h3>Void Apparitions</h3>
+              </div>
+            </div>
+
+            <p class="muted">
+              Shadowy Apparitions have a chance to spawn as Void Apparitions,
+              dealing additional damage and visually signaling an empowered
+              capstone interaction.
+            </p>
+          </article>
+
+          <article class="card">
+            <div class="ability-heading">
+              <img
+                class="ability-icon"
+                src="../assets/void_lash.jpg"
+                alt="Void Lash icon"
+              />
+              <div>
+                <span class="tag">Capstone Trigger</span>
+                <h3>Void Lash</h3>
+              </div>
+            </div>
+
+            <p class="muted">
+              Void Lash replaces Tentacle Slam as the reliable capstone trigger.
+              It has a 100% chance to activate one of the four idol capstones,
+              preserving the apex interaction without keeping Tentacle Slam.
+            </p>
+          </article>
+        </div>
+
+        <div class="callout">
+          <strong>Apex talent constraint:</strong> Shadowy Apparitions remain
+          the baseline. Void Apparitions are an empowered outcome. Void Lash
+          replaces Tentacle Slam as the controlled trigger for idol-capstone
+          interactions.
+        </div>
+      </section>
+
+      <section id="before-after" class="page-shell section-block">
+        <div class="section-header">
+          <div class="eyebrow">Before vs After</div>
+          <h2>What changes with the redesign.</h2>
+        </div>
+
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th>Current / Previous Pattern</th>
+              <th>Redesigned Pattern</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr>
+              <td>
+                Always-on Shadowform risked becoming a cooldown in earlier draft
+              </td>
+              <td>
+                Shadowform remains the default stance. Voidform becomes the
+                recurring rotational window.
+              </td>
+            </tr>
+
+            <tr>
+              <td>2-minute Voidform dependency</td>
+              <td>
+                Frequent Voidform cycles, with Dark Ascension reserved for
+                larger Ascended Voidform windows.
+              </td>
+            </tr>
+
+            <tr>
+              <td>Psychic Link-style damage duplication</td>
+              <td>
+                Resonance stores pressure and converts it through controlled
+                payoff buttons.
+              </td>
+            </tr>
+
+            <tr>
+              <td>Slow or awkward multi-target setup</td>
+              <td>
+                Mind Sear returns as a capped AoE DoT setup cast with 2 charges.
+              </td>
+            </tr>
+
+            <tr>
+              <td>Devouring Plague spender references</td>
+              <td>
+                Shadow Word: Madness becomes the current spender and Resonance
+                support tool.
+              </td>
+            </tr>
+
+            <tr>
+              <td>Tentacle Slam positional friction</td>
+              <td>
+                Void Lash becomes a target-anchored tentacle payoff and
+                idol-capstone trigger.
+              </td>
+            </tr>
+
+            <tr>
+              <td>Shadowy Apparitions fully replaced by Void Apparitions</td>
+              <td>
+                Shadowy Apparitions remain baseline. Void Apparitions become an
+                empowered apex outcome.
+              </td>
+            </tr>
+
+            <tr>
+              <td>Hero talents acting like separate rotations</td>
+              <td>
+                Archon and Voidweaver modify the same loop with different
+                emphasis.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="timeline" class="page-shell section-block">
+        <div class="section-header">
+          <div class="eyebrow">Cadence Snapshot</div>
+          <h2>The loop stays stable while power windows change emphasis.</h2>
+        </div>
+
+        <div class="grid two">
+          <article class="card">
+            <span class="tag">Baseline Loop</span>
+            <h3>Standard pull cadence</h3>
+
+            <div class="timeline">
+              <div class="time-row">
+                <div class="time">0s</div>
+                <div class="bar">
+                  <span class="bar-dot timeline-label">
+                    <img
+                      class="mini-icon"
+                      src="../assets/mind_sear.jpg"
+                      alt=""
+                    />
+                    DoT Setup
+                  </span>
+                </div>
+              </div>
+
+              <div class="time-row">
+                <div class="time">2s</div>
+                <div class="bar">
+                  <span class="bar-build timeline-label">
+                    <img
+                      class="mini-icon"
+                      src="../assets/invoked_nightmare.jpg"
+                      alt=""
+                    />
+                    Resonance Build
+                  </span>
+                </div>
+              </div>
+
+              <div class="time-row">
+                <div class="time">5s</div>
+                <div class="bar">
+                  <span class="bar-void timeline-label">
+                    <img
+                      class="mini-icon"
+                      src="../assets/voidform.jpg"
+                      alt=""
+                    />
+                    Voidform
+                  </span>
+                </div>
+              </div>
+
+              <div class="time-row">
+                <div class="time">7s</div>
+                <div class="bar">
+                  <span class="bar-lash timeline-label">
+                    <img
+                      class="mini-icon"
+                      src="../assets/shadow_word_madness.jpg"
+                      alt=""
+                    />
+                    Madness Spend
+                  </span>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="card">
+            <span class="tag">Escalated Loop</span>
+            <h3>Dark Ascension timing</h3>
+
+            <div class="timeline">
+              <div class="time-row">
+                <div class="time">0s</div>
+                <div class="bar">
+                  <span class="bar-dot timeline-label">
+                    <img
+                      class="mini-icon"
+                      src="../assets/mind_sear.jpg"
+                      alt=""
+                    />
+                    DoT Setup
+                  </span>
+                </div>
+              </div>
+
+              <div class="time-row">
+                <div class="time">2s</div>
+                <div class="bar">
+                  <span class="bar-asc timeline-label">
+                    <img
+                      class="mini-icon"
+                      src="../assets/void_ascension.jpg"
+                      alt=""
+                    />
+                    Dark Ascension
+                  </span>
+                </div>
+              </div>
+
+              <div class="time-row">
+                <div class="time">5s</div>
+                <div class="bar">
+                  <span class="bar-void timeline-label">
+                    <img
+                      class="mini-icon"
+                      src="../assets/voidform.jpg"
+                      alt=""
+                    />
+                    Ascended Voidform
+                  </span>
+                </div>
+              </div>
+
+              <div class="time-row">
+                <div class="time">7s</div>
+                <div class="bar">
+                  <span class="bar-lash timeline-label">
+                    <img
+                      class="mini-icon"
+                      src="../assets/void_lash.jpg"
+                      alt=""
+                    />
+                    Void Lash
+                  </span>
+                </div>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section id="tradeoffs" class="page-shell section-block">
+        <div class="section-header">
+          <div class="eyebrow">Tradeoffs</div>
+          <h2>What this design intentionally gives up.</h2>
+          <p class="muted">
+            A credible redesign should define not only its benefits, but also
+            the costs it accepts.
+          </p>
+        </div>
+
+        <div class="grid three">
+          <article class="card">
+            <h3>Lower passive AoE spikes</h3>
+            <p class="muted">
+              Removing damage duplication reduces extreme burst scenarios, but
+              creates more stable and predictable output.
+            </p>
+          </article>
+
+          <article class="card">
+            <h3>More active target decisions</h3>
+            <p class="muted">
+              Players choose priority targets instead of relying on passive
+              spread damage to solve every pull.
+            </p>
+          </article>
+
+          <article class="card">
+            <h3>Names may need iteration</h3>
+            <p class="muted">
+              Dark Ascension, Voidform, and Ascended Voidform can still be
+              renamed during iteration. The important part is the three-layer
+              structure: default stance, recurring window, major empowered
+              window.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section id="failure-cases" class="page-shell section-block">
+        <div class="section-header">
+          <div class="eyebrow">Failure Cases</div>
+          <h2>Where the system could struggle.</h2>
+        </div>
+
+        <div class="grid two">
+          <article class="card">
+            <h3>Low target count fights</h3>
+            <p class="muted">
+              Resonance generation may be lower in pure single-target
+              encounters, requiring careful tuning so Shadow remains competitive
+              without overbuffing multi-target.
+            </p>
+          </article>
+
+          <article class="card">
+            <h3>Extremely short-lived mobs</h3>
+            <p class="muted">
+              DoT setup may not fully convert into payoff if enemies die too
+              quickly. Mind Sear and Void Lash would need enough front-loaded
+              value to avoid feeling wasted.
+            </p>
+          </article>
+
+          <article class="card">
+            <h3>Council-style encounters</h3>
+            <p class="muted">
+              Spread pressure must stay controlled so the redesign does not
+              recreate Psychic Link’s scaling volatility under a different name.
+            </p>
+          </article>
+
+          <article class="card">
+            <h3>Cooldown naming confusion</h3>
+            <p class="muted">
+              Voidform, Dark Ascension, and Ascended Voidform must be visually
+              and mechanically distinct so players understand what state they
+              are in.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section id="philosophy" class="page-shell section-block">
+        <div class="section-header">
+          <div class="eyebrow">Design Philosophy</div>
+          <h2>Preserve fantasy while improving execution.</h2>
+          <p class="muted">
+            Hero and apex talents should add texture to the redesigned loop, not
+            fragment the spec into disconnected rotations.
+          </p>
+        </div>
+
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th>Problem Pattern</th>
+              <th>Why It Hurts</th>
+              <th>Replacement Pattern</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr>
+              <td>Passive damage duplication</td>
+              <td class="muted">
+                Creates scaling volatility and forces broad spell tuning to
+                account for copied damage in every target-count profile.
+              </td>
+              <td>
+                Stored damage, capped detonations, primary-target amplification,
+                and cycle-based escalation.
+              </td>
+            </tr>
+
+            <tr>
+              <td>Strict ST versus AoE talents</td>
+              <td class="muted">
+                Creates builds that feel wrong or incomplete outside their
+                intended scenario.
+              </td>
+              <td>
+                Baseline competence with talents that modify cadence,
+                interaction, and execution.
+              </td>
+            </tr>
+
+            <tr>
+              <td>Cooldowns replacing the core loop</td>
+              <td class="muted">
+                Makes the spec feel flat outside the major window and overly
+                dependent on pull timing.
+              </td>
+              <td>
+                Shadowform remains the default stance, Voidform becomes the
+                recurring window, and Dark Ascension creates the larger Ascended
+                Voidform moment.
+              </td>
+            </tr>
+
+            <tr>
+              <td>Old Mind Sear as passive filler</td>
+              <td class="muted">
+                A channeled filler risks turning AoE back into a passive
+                downtime pattern instead of an intentional setup decision.
+              </td>
+              <td>
+                Mind Sear returns as a single AoE setup cast with charges,
+                target caps, and talent direction.
+              </td>
+            </tr>
+
+            <tr>
+              <td>Positional targeting gimmicks</td>
+              <td class="muted">
+                Makes ability value depend on awkward targeting rather than
+                deliberate combat decisions.
+              </td>
+              <td>
+                Target-anchored effects with clear visuals and predictable
+                rules.
+              </td>
+            </tr>
+
+            <tr>
+              <td>Apex effects replacing baseline identity</td>
+              <td class="muted">
+                Fully replacing Shadowy Apparitions would remove a familiar
+                class texture that still works.
+              </td>
+              <td>
+                Shadowy Apparitions remain baseline, while Void Apparitions
+                become an empowered capstone outcome.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="callout">
+          <strong>Design takeaway:</strong> This redesign keeps Shadowform and
+          Shadowy Apparitions as recognizable identity anchors while shifting
+          gameplay from passive damage replication to deliberate pressure
+          conversion.
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="page-shell">
+        <strong>Shadow Priest Redesign</strong>
+        <p class="small">Modern Spec Redesign</p>
+
+        <div class="footer-links">
+          <a class="button secondary" href="#top">Back to top</a>
+          <a class="button secondary" href="detailed.html">Detailed design</a>
+          <a class="button secondary" href="../index.html">Priest hub</a>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

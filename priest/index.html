@@ -1,0 +1,394 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="A modern Priest class redesign resource exploring Shadow and Discipline as future-facing World of Warcraft spec concepts."
+    />
+    <title>Priest Class Redesign | Modern Spec Concepts</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+
+  <body class="priest-page">
+    <header class="site-header">
+      <nav class="page-shell nav">
+        <a href="#top" class="brand">Priest Class Redesign</a>
+
+        <div class="nav-links">
+          <a href="#overview">Overview</a>
+          <a href="#how-to-read">How to Read</a>
+          <a href="#specs">Specs</a>
+          <a href="#philosophy">Philosophy</a>
+          <a href="#scope">Scope</a>
+        </div>
+      </nav>
+    </header>
+
+    <main id="top">
+      <section class="hero page-shell">
+        <div>
+          <div class="eyebrow">Modern Priest Redesign</div>
+          <h1>Priest Class Redesign</h1>
+
+          <p class="hero-copy">
+            A two-spec class redesign project focused on preserving Priest
+            fantasy while improving combat cadence, tuning clarity, resource
+            interaction, and moment-to-moment decision making.
+          </p>
+
+          <div class="thesis">
+            Shadow should convert pressure deliberately. Discipline should shape
+            damage deliberately.
+          </div>
+
+          <div class="button-row">
+            <a class="button" href="#specs">View Spec Redesigns</a>
+            <a class="button secondary" href="#how-to-read"
+              >How to Read This Project</a
+            >
+          </div>
+        </div>
+
+        <aside class="hero-card" aria-label="Project summary">
+          <span class="tag">Project Scope</span>
+
+          <div class="cycle">
+            <div class="cycle-step">
+              <img class="mini-icon" src="assets/shadowform.jpg" alt="" />
+              <span><strong>1.</strong> Preserve class fantasy</span>
+            </div>
+
+            <div class="cycle-step">
+              <img
+                class="mini-icon"
+                src="assets/invoked_nightmare.jpg"
+                alt=""
+              />
+              <span><strong>2.</strong> Replace volatile scaling loops</span>
+            </div>
+
+            <div class="cycle-step">
+              <img class="mini-icon" src="assets/atonement.jpg" alt="" />
+              <span><strong>3.</strong> Clarify spec identity</span>
+            </div>
+
+            <div class="cycle-step">
+              <img class="mini-icon" src="assets/wisdom.jpg" alt="" />
+              <span><strong>4.</strong> Improve resource logic</span>
+            </div>
+
+            <div class="cycle-step">
+              <img class="mini-icon" src="assets/voidform.jpg" alt="" />
+              <span><strong>5.</strong> Create stronger gameplay cadence</span>
+            </div>
+          </div>
+        </aside>
+      </section>
+
+      <section id="overview" class="page-shell section-block">
+        <div class="section-header">
+          <div class="eyebrow">Overview</div>
+          <h2>Two redesigns, one shared goal.</h2>
+
+          <p class="muted">
+            This project explores how Shadow and Discipline Priest could be
+            modernized without losing the ideas that make each spec
+            recognizable. Shadow focuses on controlled pressure conversion.
+            Discipline focuses on capped damage shaping and deliberate recovery.
+          </p>
+        </div>
+
+        <div class="grid three">
+          <article class="card">
+            <span class="tag">Shadow</span>
+            <h3>Pressure conversion</h3>
+            <p class="muted">
+              Shadow builds pressure through DoTs and Resonance, then converts
+              that setup into priority damage through Voidform windows and
+              payoff abilities.
+            </p>
+          </article>
+
+          <article class="card">
+            <span class="tag">Discipline</span>
+            <h3>Damage shaping</h3>
+            <p class="muted">
+              Discipline no longer directly converts damage into healing.
+              Instead, Atonement delays damage, Contrition stores healing
+              potential, and release spells resolve pressure.
+            </p>
+          </article>
+
+          <article class="card">
+            <span class="tag">Resource Goal</span>
+            <h3>Readable system design</h3>
+            <p class="muted">
+              Each page includes problem framing, goals, tradeoffs, kit
+              treatment, risks, tuning notes, and sample player-facing language.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section id="how-to-read" class="page-shell section-block">
+        <div class="section-header">
+          <div class="eyebrow">How to Read This Project</div>
+          <h2>Start broad, then move into mechanics.</h2>
+          <p class="muted">
+            The hub gives the project thesis. Each overview explains the design
+            direction and player experience. Each detailed page defines system
+            rules, tuning levers, priority behavior, risks, and sample
+            player-facing tooltip language.
+          </p>
+        </div>
+
+        <div class="grid three">
+          <article class="card strong">
+            <h3>1. Hub</h3>
+            <p class="muted">
+              Use this page to understand the shared redesign philosophy and how
+              Shadow and Discipline relate as spec redesigns.
+            </p>
+          </article>
+
+          <article class="card strong">
+            <h3>2. Overview Pages</h3>
+            <p class="muted">
+              Read these for problem framing, goals, core systems, player
+              experience, tradeoffs, and high-level design decisions.
+            </p>
+          </article>
+
+          <article class="card strong">
+            <h3>3. Detailed Pages</h3>
+            <p class="muted">
+              Use these for exact mechanics, example priorities, scenario
+              timelines, tuning notes, UI requirements, and validation risks.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section id="specs" class="page-shell section-block">
+        <div class="section-header">
+          <div class="eyebrow">Spec Redesigns</div>
+          <h2>Choose a spec redesign.</h2>
+        </div>
+
+        <div class="grid two">
+          <article class="card strong">
+            <div class="ability-heading">
+              <img
+                class="ability-icon"
+                src="assets/shadowform.jpg"
+                alt="Shadow Priest icon"
+              />
+              <div>
+                <span class="tag">Damage Spec</span>
+                <h3>Shadow Priest</h3>
+              </div>
+            </div>
+
+            <p class="muted">
+              A redesign built around Shadowform as the default stance, Voidform
+              as a recurring combat window, Dark Ascension as the major
+              escalation, and Resonance as a controlled replacement for passive
+              damage duplication.
+            </p>
+
+            <div class="flow">
+              <span class="pill">
+                <img class="mini-icon" src="assets/shadowform.jpg" alt="" />
+                Shadowform
+              </span>
+              <span class="arrow">→</span>
+              <span class="pill">
+                <img class="mini-icon" src="assets/voidform.jpg" alt="" />
+                Voidform
+              </span>
+              <span class="arrow">→</span>
+              <span class="pill">
+                <img class="mini-icon" src="assets/void_ascension.jpg" alt="" />
+                Dark Ascension
+              </span>
+            </div>
+
+            <div class="button-row">
+              <a class="button" href="shadow/index.html">View Overview</a>
+              <a class="button secondary" href="shadow/detailed.html"
+                >Read Detailed Design</a
+              >
+            </div>
+          </article>
+
+          <article class="card strong">
+            <div class="ability-heading">
+              <img
+                class="ability-icon"
+                src="assets/atonement.jpg"
+                alt="Discipline Priest icon"
+              />
+              <div>
+                <span class="tag">Healing Spec</span>
+                <h3>Discipline Priest</h3>
+              </div>
+            </div>
+
+            <p class="muted">
+              A redesign built around Deferred Atonement, Contrition, Siphoned
+              Faith, and deliberate healing releases. The goal is to preserve
+              offensive healing without direct damage-to-healing scaling.
+            </p>
+
+            <div class="flow">
+              <span class="pill">
+                <img class="mini-icon" src="assets/atonement.jpg" alt="" />
+                Atonement
+              </span>
+              <span class="arrow">→</span>
+              <span class="pill">
+                <img class="mini-icon" src="assets/piety.jpg" alt="" />
+                Contrition
+              </span>
+              <span class="arrow">→</span>
+              <span class="pill">
+                <img class="mini-icon" src="assets/wisdom.jpg" alt="" />
+                Siphoned Faith
+              </span>
+            </div>
+
+            <div class="button-row">
+              <a class="button" href="discipline/index.html">View Overview</a>
+              <a class="button secondary" href="discipline/detailed.html"
+                >Read Detailed Design</a
+              >
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section id="philosophy" class="page-shell section-block">
+        <div class="section-header">
+          <div class="eyebrow">Design Philosophy</div>
+          <h2>The redesigns focus on identity, constraints, and tunability.</h2>
+        </div>
+
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th>Design Focus</th>
+              <th>Shadow</th>
+              <th>Discipline</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr>
+              <td>Fantasy Preservation</td>
+              <td>
+                Shadowform remains the default stance and visual identity.
+              </td>
+              <td>
+                Discipline remains an offensive healer, not a generic reactive
+                healer.
+              </td>
+            </tr>
+
+            <tr>
+              <td>Problem Removed</td>
+              <td>
+                Passive damage duplication and volatile multi-target scaling.
+              </td>
+              <td>Direct damage-to-healing conversion and shield dominance.</td>
+            </tr>
+
+            <tr>
+              <td>New Core System</td>
+              <td>Resonance stores pressure for controlled payoff.</td>
+              <td>Deferred Damage smooths pressure without erasing it.</td>
+            </tr>
+
+            <tr>
+              <td>Player Skill Expression</td>
+              <td>
+                Target choice, Resonance timing, Voidform planning, and payoff
+                execution.
+              </td>
+              <td>
+                Atonement coverage, Contrition buildup, release timing, and mana
+                sustain.
+              </td>
+            </tr>
+
+            <tr>
+              <td>Tuning Constraint</td>
+              <td>
+                Flat damage, caps, target limits, and controlled payoff windows.
+              </td>
+              <td>
+                Deferred Damage cap, Contrition stack limits, and spell-specific
+                mana returns.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="scope" class="page-shell section-block">
+        <div class="section-header">
+          <div class="eyebrow">Project Scope</div>
+          <h2>What this design resource is meant to show.</h2>
+        </div>
+
+        <div class="grid two">
+          <article class="card">
+            <h3>Included</h3>
+            <ul class="muted">
+              <li>Problem framing and design goals</li>
+              <li>Core gameplay loop proposals</li>
+              <li>Spell and kit treatment</li>
+              <li>Tradeoffs and failure cases</li>
+              <li>Priority lists and sample timelines</li>
+              <li>Tooltip-style player-facing language</li>
+            </ul>
+          </article>
+
+          <article class="card">
+            <h3>Not included</h3>
+            <ul class="muted">
+              <li>Final numerical tuning</li>
+              <li>Complete talent tree layouts</li>
+              <li>Encounter-by-encounter balance sheets</li>
+              <li>Full simulation or log validation</li>
+              <li>Production UI mockups beyond icon/state examples</li>
+            </ul>
+          </article>
+        </div>
+
+        <div class="callout">
+          <strong>Design takeaway:</strong> This project is intended to organize
+          modern Priest redesign ideas with clear system reasoning, constraint
+          awareness, and player-facing clarity. It is not a final
+          expansion-ready balance proposal.
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="page-shell">
+        <strong>Priest Class Redesign</strong>
+        <p class="small">Modern Priest Redesign Resource</p>
+
+        <div class="footer-links">
+          <a class="button secondary" href="#top">Back to top</a>
+          <a class="button secondary" href="shadow/index.html">Shadow</a>
+          <a class="button secondary" href="discipline/index.html"
+            >Discipline</a
+          >
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

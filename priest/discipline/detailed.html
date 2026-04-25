@@ -1,0 +1,2116 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Detailed mechanics, tuning rules, timelines, talent examples, UI requirements, and test plan for a Discipline Priest class redesign concept."
+    />
+    <title>Discipline Priest Redesign | Detailed Design</title>
+    <link rel="stylesheet" href="../styles.css" />
+  </head>
+
+  <body class="discipline-page detail-page">
+    <header class="site-header">
+      <nav class="page-shell nav">
+        <a href="../index.html" class="brand">Priest Class Redesign</a>
+
+        <div class="nav-links">
+          <a href="../index.html">Priest Hub</a>
+          <a href="index.html">Overview</a>
+          <a href="#summary">Summary</a>
+          <a href="#atonement">Systems</a>
+          <a href="#priorities">Gameplay</a>
+          <a href="#choice-nodes">Talents</a>
+          <a href="#hero">Hero / Apex</a>
+          <a href="#test-plan">Validation</a>
+          <a href="#tooltips">Tooltips</a>
+        </div>
+      </nav>
+    </header>
+
+    <main class="page-shell section-block" id="top">
+      <a href="../index.html" class="back-link">← Back to Priest hub</a>
+      <a href="index.html" class="back-link">← Back to Discipline overview</a>
+
+      <div class="eyebrow">Detailed Spec Design</div>
+      <h1>Discipline System Rules</h1>
+
+      <p class="hero-copy">
+        This page defines the mechanical rules behind Deferred Atonement,
+        Contrition, Siphoned Faith, healing releases, talent direction, UI
+        requirements, tuning levers, encounter examples, and how Discipline
+        handles triage, group damage, rot, burst, Mythic+, and raid healing
+        without direct damage-to-healing conversion.
+      </p>
+
+      <div class="note">
+        <strong>Design target:</strong> Discipline remains an offensive healer,
+        but damage no longer directly converts into healing. Damage builds
+        healing potential, sustains mana, and prepares the priest to resolve
+        incoming pressure through deliberate release spells.
+      </div>
+
+      <div class="note">
+        <strong>Talent target:</strong> Choice nodes should lean Discipline
+        toward a healing profile, not create a pass-or-fail build check. A
+        dungeon-focused player should still answer boss damage. A raid-focused
+        player should still answer triage. Talents change comfort, cadence, and
+        efficiency, not baseline access to required healing patterns.
+      </div>
+
+      <section id="summary" class="section-block">
+        <div class="section-header">
+          <div class="eyebrow">Design Summary</div>
+          <h2>
+            The detailed rules preserve the overview’s core thesis: Discipline
+            shapes damage, prepares healing, and releases pressure deliberately.
+          </h2>
+        </div>
+
+        <div class="grid two">
+          <article class="card">
+            <h3>Problem</h3>
+            <p class="muted">
+              Direct Atonement healing makes Discipline difficult to tune. If
+              damage is strong, healing becomes too strong. If healing is
+              controlled, damage often feels weak or purely functional.
+            </p>
+          </article>
+
+          <article class="card">
+            <h3>Goal</h3>
+            <p class="muted">
+              Preserve offensive healer identity while separating damage,
+              healing, and mana tuning so each system can be adjusted without
+              breaking the others.
+            </p>
+          </article>
+
+          <article class="card">
+            <h3>Solution</h3>
+            <p class="muted">
+              Atonement delays a capped amount of incoming damage. Offensive
+              spells build Contrition and restore mana. Healing spells release
+              Contrition to heal and clear Deferred Damage.
+            </p>
+          </article>
+
+          <article class="card">
+            <h3>Resulting Playstyle</h3>
+            <p class="muted">
+              Discipline applies Atonement, attacks to prepare allies, smooths
+              incoming damage, and chooses when to resolve pressure with
+              Penance, Radiance, Prayer of Healing, Shield, or cooldowns.
+            </p>
+          </article>
+        </div>
+
+        <div class="callout">
+          <strong>Mechanical contract:</strong> Atonement enables the system.
+          Offense builds the resource. Incoming damage creates pressure. Healing
+          releases resolve that pressure.
+        </div>
+      </section>
+
+      <section id="system-map" class="section-block">
+        <div class="section-header">
+          <div class="eyebrow">System Relationship</div>
+          <h2>The core loop is simple, but each state has strict rules.</h2>
+        </div>
+
+        <div class="diagram">
+          <div class="target">
+            <img
+              class="ability-icon"
+              src="../assets/atonement.jpg"
+              alt="Atonement icon"
+            />
+            <b>Atonement</b>
+            <span class="small">Marks allies and enables damage delay.</span>
+          </div>
+
+          <div class="target main">
+            <img
+              class="ability-icon"
+              src="../assets/piety.jpg"
+              alt="Contrition icon"
+            />
+            <b>Contrition</b>
+            <span class="small">Stores healing potential through offense.</span>
+          </div>
+
+          <div class="target">
+            <img
+              class="ability-icon"
+              src="../assets/holy_penance.jpg"
+              alt="Penance icon"
+            />
+            <b>Release</b>
+            <span class="small"
+              >Consumes stacks to heal and clear pressure.</span
+            >
+          </div>
+        </div>
+
+        <div class="flow" aria-label="Discipline system flow">
+          <span class="pill">
+            <img class="mini-icon" src="../assets/atonement.jpg" alt="" />
+            Apply Atonement
+          </span>
+          <span class="arrow">→</span>
+          <span class="pill">
+            <img class="mini-icon" src="../assets/piety.jpg" alt="" />
+            Build Contrition
+          </span>
+          <span class="arrow">→</span>
+          <span class="pill">
+            <img class="mini-icon" src="../assets/clarity_of_will.jpg" alt="" />
+            Defer Damage
+          </span>
+          <span class="arrow">→</span>
+          <span class="pill">
+            <img class="mini-icon" src="../assets/holy_penance.jpg" alt="" />
+            Release Healing
+          </span>
+          <span class="arrow">→</span>
+          <span class="pill">
+            <img class="mini-icon" src="../assets/wisdom.jpg" alt="" />
+            Sustain Mana
+          </span>
+        </div>
+      </section>
+
+      <section id="atonement" class="section-block">
+        <div class="section-header">
+          <div class="eyebrow">Atonement Rules</div>
+          <h2>
+            Atonement marks allies for damage shaping, not direct healing
+            conversion.
+          </h2>
+        </div>
+
+        <div class="grid two">
+          <article class="card">
+            <div class="ability-heading">
+              <img
+                class="ability-icon"
+                src="../assets/atonement.jpg"
+                alt="Atonement icon"
+              />
+              <div>
+                <span class="tag">Ally State</span>
+                <h3>Atonement</h3>
+              </div>
+            </div>
+
+            <p class="muted">
+              Atonement enables Discipline’s system on an ally. While active, a
+              capped portion of incoming damage is delayed, and the ally can
+              receive Contrition stacks from the priest’s offensive spells.
+            </p>
+          </article>
+
+          <article class="card">
+            <div class="ability-heading">
+              <img
+                class="ability-icon"
+                src="../assets/power_word_radiance.jpg"
+                alt="Radiance icon"
+              />
+              <div>
+                <span class="tag">Application</span>
+                <h3>How Atonement is applied</h3>
+              </div>
+            </div>
+
+            <p class="muted">
+              Atonement is applied through Power Word: Radiance, Power Word:
+              Shield, Flash Heal, Shadow Mend, Plea, and selected cooldown
+              interactions such as Evangelism.
+            </p>
+          </article>
+        </div>
+
+        <div class="grid two system-card-grid">
+          <article class="card">
+            <h3>Baseline duration</h3>
+            <p class="muted">
+              Atonement lasts 15 sec from normal applicators. Power Word:
+              Radiance applies a shorter 12 sec Atonement to affected allies to
+              keep raid and dungeon setup windows tunable.
+            </p>
+          </article>
+
+          <article class="card">
+            <h3>Applicator intent</h3>
+            <p class="muted">
+              Shield and direct heals are precise applicators. Radiance is the
+              group applicator. Evangelism is the planned-window extender. The
+              player should choose an applicator based on expected damage, not
+              because one spell is always mathematically required.
+            </p>
+          </article>
+        </div>
+
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th>Applicator</th>
+              <th>Atonement Role</th>
+              <th>Design Intent</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Power Word: Shield</td>
+              <td>Precise single-target application</td>
+              <td class="muted">
+                Used for predictable danger, tank pressure, or emergency
+                mitigation. Strong, but too expensive to become filler.
+              </td>
+            </tr>
+            <tr>
+              <td>Flash Heal / Shadow Mend</td>
+              <td>Reactive single-target application</td>
+              <td class="muted">
+                Gives Discipline a direct recovery path when setup was missed or
+                a single ally suddenly becomes unsafe.
+              </td>
+            </tr>
+            <tr>
+              <td>Plea</td>
+              <td>Low-intensity maintenance application</td>
+              <td class="muted">
+                Useful for light preparation or downtime without competing with
+                Shield as premium mitigation.
+              </td>
+            </tr>
+            <tr>
+              <td>Power Word: Radiance</td>
+              <td>Group application and group release</td>
+              <td class="muted">
+                Prepares multiple allies and can also consume Contrition to
+                resolve group pressure.
+              </td>
+            </tr>
+            <tr>
+              <td>Evangelism</td>
+              <td>Window extension and preparation accelerator</td>
+              <td class="muted">
+                Supports planned raid events without turning every moment into a
+                scripted ramp requirement.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="callout">
+          <strong>Rule change:</strong> Atonement no longer says “your damage
+          heals this ally.” Instead, it says “this ally is prepared for
+          Discipline’s damage-shaping and Contrition systems.”
+        </div>
+
+        <div class="note">
+          <strong>Tuning levers:</strong> Atonement duration, Radiance duration,
+          applicator mana cost, number of Radiance targets, Evangelism extension
+          amount, and which cooldowns can seed initial Contrition.
+        </div>
+      </section>
+
+      <section id="deferred-damage" class="section-block">
+        <div class="section-header">
+          <div class="eyebrow">Deferred Damage</div>
+          <h2>Discipline delays damage instead of absorbing it.</h2>
+          <p class="muted">
+            This brings back the controlled, preventive feeling of shield-heavy
+            Discipline without allowing shields to erase damage outright.
+          </p>
+        </div>
+
+        <div class="grid two">
+          <article class="card">
+            <div class="ability-heading">
+              <img
+                class="ability-icon"
+                src="../assets/clarity_of_will.jpg"
+                alt="Deferred Damage icon"
+              />
+              <div>
+                <span class="tag">Damage Shaping</span>
+                <h3>Deferred Damage</h3>
+              </div>
+            </div>
+
+            <p class="muted">
+              Allies with Atonement have 25% of incoming damage delayed over 6
+              sec instead of taken immediately. This delayed damage is visible
+              on the party frame as Deferred Damage.
+            </p>
+          </article>
+
+          <article class="card">
+            <h3>Deferred cap</h3>
+            <p class="muted">
+              Deferred Damage cannot exceed 25% of the target’s maximum health.
+              If the pool is capped, remaining damage is taken immediately. This
+              prevents infinite safety and naturally scales the buffer with the
+              player’s gear.
+            </p>
+          </article>
+        </div>
+
+        <div class="diagram">
+          <div class="target">
+            <img
+              class="ability-icon"
+              src="../assets/atonement.jpg"
+              alt="Atonement icon"
+            />
+            <b>Atonement Active</b>
+            <span class="small">The ally is eligible for damage delay.</span>
+          </div>
+
+          <div class="target main">
+            <img
+              class="ability-icon"
+              src="../assets/clarity_of_will.jpg"
+              alt="Deferred Damage icon"
+            />
+            <b>Damage Deferred</b>
+            <span class="small"
+              >A capped portion of damage is delayed over time.</span
+            >
+          </div>
+
+          <div class="target">
+            <img
+              class="ability-icon"
+              src="../assets/holy_penance.jpg"
+              alt="Penance icon"
+            />
+            <b>Pressure Resolved</b>
+            <span class="small"
+              >Release spells heal and clear Deferred Damage.</span
+            >
+          </div>
+        </div>
+
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th>Rule</th>
+              <th>Value</th>
+              <th>Reason</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Damage delayed</td>
+              <td>25% of incoming damage</td>
+              <td class="muted">
+                Meaningful enough to smooth pressure without replacing healer
+                response.
+              </td>
+            </tr>
+            <tr>
+              <td>Delay duration</td>
+              <td>6 sec</td>
+              <td class="muted">
+                Long enough for the priest to react, short enough that ignored
+                pressure remains dangerous.
+              </td>
+            </tr>
+            <tr>
+              <td>Pool cap</td>
+              <td>25% of target maximum health</td>
+              <td class="muted">
+                Prevents stacked effects from creating functional immunity.
+              </td>
+            </tr>
+            <tr>
+              <td>Overflow behavior</td>
+              <td>Excess damage is taken immediately</td>
+              <td class="muted">
+                Large hits still threaten the target if the deferred pool is
+                already full.
+              </td>
+            </tr>
+            <tr>
+              <td>Release interaction</td>
+              <td>Healing releases reduce or clear the pool</td>
+              <td class="muted">
+                Turns healing choice into pressure resolution, not passive
+                prevention.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="callout">
+          <strong>Design intent:</strong> Deferred Damage gives the healer time
+          to respond without removing danger. It smooths damage, but it does not
+          make allies safe by default.
+        </div>
+
+        <div class="note">
+          <strong>Tuning levers:</strong> Percent delayed, delay duration,
+          maximum health cap, overflow behavior, and how much Deferred Damage is
+          cleared per Contrition stack.
+        </div>
+      </section>
+
+      <section id="contrition-rules" class="section-block">
+        <div class="section-header">
+          <div class="eyebrow">Contrition Rules</div>
+          <h2>
+            Contrition turns offensive uptime into stored healing potential.
+          </h2>
+        </div>
+
+        <div class="grid two">
+          <article class="card">
+            <div class="ability-heading">
+              <img
+                class="ability-icon"
+                src="../assets/piety.jpg"
+                alt="Contrition icon"
+              />
+              <div>
+                <span class="tag">Ally Resource</span>
+                <h3>How Contrition builds</h3>
+              </div>
+            </div>
+
+            <p class="muted">
+              Offensive spells generate Contrition on allies affected by
+              Atonement. Contrition stacks up to 5 times per ally and lasts 12
+              sec. Adding a new stack refreshes the duration.
+            </p>
+          </article>
+
+          <article class="card">
+            <div class="ability-heading">
+              <img
+                class="ability-icon"
+                src="../assets/holy_penance.jpg"
+                alt="Penance icon"
+              />
+              <div>
+                <span class="tag">Release</span>
+                <h3>How Contrition is consumed</h3>
+              </div>
+            </div>
+
+            <p class="muted">
+              Penance, Power Word: Radiance, Prayer of Healing, and selected
+              cooldowns consume Contrition to heal allies and reduce their
+              Deferred Damage pool.
+            </p>
+          </article>
+        </div>
+
+        <div class="grid two system-card-grid">
+          <article class="card">
+            <h3>Builder spells</h3>
+            <p class="muted">
+              Smite, Mind Blast, offensive Penance, Shadow Word: Pain ticks,
+              Shadow Word: Death, Entropic Rift, and Voidweaver spells can build
+              Contrition while Atonement is active.
+            </p>
+          </article>
+
+          <article class="card">
+            <h3>Release logic</h3>
+            <p class="muted">
+              Single-target releases consume more stacks from one ally. Group
+              releases consume fewer stacks across several allies. This gives
+              tuning control between spot healing and group healing.
+            </p>
+          </article>
+        </div>
+
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th>Builder</th>
+              <th>Contrition Behavior</th>
+              <th>Intent</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Smite</td>
+              <td>Low stack generation</td>
+              <td class="muted">
+                Baseline preparation and filler sustain during low pressure.
+              </td>
+            </tr>
+            <tr>
+              <td>Mind Blast</td>
+              <td>Medium stack generation</td>
+              <td class="muted">
+                Rewards using high-value offensive cooldowns during setup.
+              </td>
+            </tr>
+            <tr>
+              <td>Offensive Penance</td>
+              <td>Medium / high stack generation</td>
+              <td class="muted">
+                Keeps active offensive-healer gameplay central to the spec.
+              </td>
+            </tr>
+            <tr>
+              <td>Shadow Word: Pain</td>
+              <td>Periodic low stack generation</td>
+              <td class="muted">
+                Provides background preparation without becoming direct passive
+                healing.
+              </td>
+            </tr>
+            <tr>
+              <td>Shadow Word: Death</td>
+              <td>High stack generation</td>
+              <td class="muted">
+                Rewards execute timing and riskier offensive windows.
+              </td>
+            </tr>
+            <tr>
+              <td>Entropic Rift / Voidweaver spells</td>
+              <td>Windowed enhanced generation</td>
+              <td class="muted">
+                Supports aggressive healing windows while keeping healing
+                release separate from damage dealt.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="callout">
+          <strong>Core distinction:</strong> Damage does not heal directly.
+          Damage prepares healing.
+        </div>
+
+        <div class="note">
+          <strong>Tuning levers:</strong> Contrition stack cap, stack duration,
+          stack generation per spell, per-cast versus periodic generation,
+          target count limits, and whether specific cooldowns seed initial
+          stacks.
+        </div>
+      </section>
+
+      <section id="release-rules" class="section-block">
+        <div class="section-header">
+          <div class="eyebrow">Healing Release Rules</div>
+          <h2>Healing spells resolve stored pressure in different patterns.</h2>
+          <p class="muted">
+            The release system lets the kit distinguish single-target triage,
+            group recovery, sustained rot stabilization, and major cooldown
+            recovery without making every heal depend on identical setup.
+          </p>
+        </div>
+
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th>Release Spell</th>
+              <th>Contrition Use</th>
+              <th>Primary Role</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Defensive Penance</td>
+              <td>Consumes all stacks from the target</td>
+              <td class="muted">
+                Strong triage release for a tank or endangered ally.
+              </td>
+            </tr>
+            <tr>
+              <td>Power Word: Radiance</td>
+              <td>Consumes up to 3 stacks from affected allies</td>
+              <td class="muted">
+                Group release for planned or sudden party pressure.
+              </td>
+            </tr>
+            <tr>
+              <td>Prayer of Healing</td>
+              <td>Consumes 1 stack from each ally healed</td>
+              <td class="muted">
+                Efficient sustain release during rot or low-to-medium damage.
+              </td>
+            </tr>
+            <tr>
+              <td>Ultimate Penitence</td>
+              <td>Consumes stacks dynamically from injured allies</td>
+              <td class="muted">
+                Major cooldown release and stabilization tool.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="grid two system-card-grid">
+          <article class="card">
+            <h3>Base heals remain functional</h3>
+            <p class="muted">
+              Contrition improves efficiency and pressure resolution, but it
+              should not make normal healing unusable. Discipline still needs a
+              reactive floor when setup was missed or an ally is unexpectedly
+              targeted.
+            </p>
+          </article>
+
+          <article class="card">
+            <h3>Overheal conversion is limited</h3>
+            <p class="muted">
+              Release overhealing can reduce Deferred Damage on the same target,
+              but should not freely spill into full group healing. This keeps
+              release timing valuable without making it impossible to waste.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section id="kit-treatment" class="section-block">
+        <div class="section-header">
+          <div class="eyebrow">Existing Kit Treatment</div>
+          <h2>
+            The redesign changes the healing model, not the entire spellbook.
+          </h2>
+          <p class="muted">
+            This section clarifies which tools are retained, reworked,
+            constrained, or used as supporting mechanics.
+          </p>
+        </div>
+
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th>Spell / System</th>
+              <th>Treatment</th>
+              <th>Design Reason</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr>
+              <td>Atonement</td>
+              <td>Reworked</td>
+              <td class="muted">
+                No longer directly converts damage into healing. It enables
+                capped damage delay and Contrition generation.
+              </td>
+            </tr>
+
+            <tr>
+              <td>Contrition</td>
+              <td>New core resource</td>
+              <td class="muted">
+                Converts offensive uptime into stored healing potential without
+                making damage itself become healing.
+              </td>
+            </tr>
+
+            <tr>
+              <td>Siphoned Faith</td>
+              <td>New mana engine</td>
+              <td class="muted">
+                Rewards offensive play with mana sustain so pet or shield paths
+                are not mandatory mana fixes.
+              </td>
+            </tr>
+
+            <tr>
+              <td>Power Word: Shield / Void Shield</td>
+              <td>Retained as premium mitigation</td>
+              <td class="muted">
+                Shields remain valuable but should not become the default answer
+                to every damage pattern.
+              </td>
+            </tr>
+
+            <tr>
+              <td>Penance / Power Word: Radiance / Prayer of Healing</td>
+              <td>Retained as release tools</td>
+              <td class="muted">
+                These spells resolve stored pressure by consuming Contrition and
+                reducing Deferred Damage.
+              </td>
+            </tr>
+
+            <tr>
+              <td>Flash Heal / Shadow Mend / Plea</td>
+              <td>Retained as applicators and emergency tools</td>
+              <td class="muted">
+                These support Atonement setup and reactive recovery without
+                becoming the spec’s primary identity.
+              </td>
+            </tr>
+
+            <tr>
+              <td>Pain Suppression / Power Word: Barrier</td>
+              <td>Mostly unchanged</td>
+              <td class="muted">
+                These remain clear external defensive cooldowns. They do not
+                need to be absorbed into the new loop.
+              </td>
+            </tr>
+
+            <tr>
+              <td>Rapture</td>
+              <td>Constrained</td>
+              <td class="muted">
+                Rapture should create an efficient shielding window, not
+                recreate unlimited absorb dominance.
+              </td>
+            </tr>
+
+            <tr>
+              <td>Shadowfiend / Mindbender</td>
+              <td>Optional accelerator</td>
+              <td class="muted">
+                Pets can remain offensive and mana-support tools, but baseline
+                mana should not collapse without them.
+              </td>
+            </tr>
+
+            <tr>
+              <td>Prayer of Mending / Renew</td>
+              <td>Supporting utility</td>
+              <td class="muted">
+                These can remain useful support spells, especially for
+                Oracle-style preparation, without replacing the Contrition loop.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="mana-economy" class="section-block">
+        <div class="section-header">
+          <div class="eyebrow">Mana Economy</div>
+          <h2>
+            Siphoned Faith makes offensive play part of Discipline’s sustain.
+          </h2>
+        </div>
+
+        <div class="grid two">
+          <article class="card">
+            <div class="ability-heading">
+              <img
+                class="ability-icon"
+                src="../assets/wisdom.jpg"
+                alt="Siphoned Faith icon"
+              />
+              <div>
+                <span class="tag">Passive</span>
+                <h3>Siphoned Faith</h3>
+              </div>
+            </div>
+
+            <p class="muted">
+              Offensive spells restore mana when they generate Contrition.
+              Higher-impact offensive spells return more mana than filler
+              spells.
+            </p>
+          </article>
+
+          <article class="card">
+            <div class="ability-heading">
+              <img
+                class="ability-icon"
+                src="../assets/power_word_shield.jpg"
+                alt="Power Word Shield icon"
+              />
+              <div>
+                <span class="tag">Constraint</span>
+                <h3>Shield remains expensive</h3>
+              </div>
+            </div>
+
+            <p class="muted">
+              Power Word: Shield remains a premium mitigation tool. It is not
+              intended to be the default Atonement maintenance spell in every
+              situation.
+            </p>
+          </article>
+        </div>
+
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th>Spell</th>
+              <th>Mana Return</th>
+              <th>Intent</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr>
+              <td>Smite</td>
+              <td>Small</td>
+              <td class="muted">Baseline sustain during downtime.</td>
+            </tr>
+
+            <tr>
+              <td>Mind Blast</td>
+              <td>Medium</td>
+              <td class="muted">
+                Rewards using meaningful offensive cooldowns.
+              </td>
+            </tr>
+
+            <tr>
+              <td>Offensive Penance</td>
+              <td>Medium / High</td>
+              <td class="muted">Supports active offensive-healer play.</td>
+            </tr>
+
+            <tr>
+              <td>Shadow Word: Death</td>
+              <td>High</td>
+              <td class="muted">
+                Rewards execute sniping and high-risk offensive timing.
+              </td>
+            </tr>
+
+            <tr>
+              <td>Entropic Rift / Voidweaver spells</td>
+              <td>Windowed</td>
+              <td class="muted">
+                Supports aggressive healing windows without directly copying
+                damage into healing.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="grid two system-card-grid">
+          <article class="card">
+            <h3>Mana should reward uptime, not demand perfection</h3>
+            <p class="muted">
+              Offensive play should noticeably extend Discipline’s resources,
+              but missing a few offensive globals should not make the spec
+              collapse. The goal is positive reinforcement, not a failure tax.
+            </p>
+          </article>
+
+          <article class="card">
+            <h3>Pets remain optional accelerators</h3>
+            <p class="muted">
+              Shadowfiend and Mindbender can still support offensive pressure
+              and mana return, but the baseline Siphoned Faith loop prevents pet
+              talents from becoming mandatory sustain fixes.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section id="priorities" class="section-block">
+        <div class="section-header">
+          <div class="eyebrow">Priority Lists</div>
+          <h2>Discipline uses healing priorities, not a fixed rotation.</h2>
+        </div>
+
+        <article class="card">
+          <span class="tag">Baseline Dungeon Priority</span>
+          <h3>Mythic+ healing priority</h3>
+
+          <div class="priority">
+            <div class="prio">
+              <div>
+                <h3>
+                  <img class="mini-icon" src="../assets/atonement.jpg" alt="" />
+                  Maintain Atonement on key allies
+                </h3>
+                <p class="muted">
+                  Keep Atonement active on the tank and allies likely to take
+                  damage. Use Radiance for group setup.
+                </p>
+              </div>
+            </div>
+
+            <div class="prio">
+              <div>
+                <h3>
+                  <img class="mini-icon" src="../assets/piety.jpg" alt="" />
+                  Build Contrition through offense
+                </h3>
+                <p class="muted">
+                  Use Smite, Mind Blast, offensive Penance, Shadow Word: Pain,
+                  and Shadow Word: Death to prepare healing.
+                </p>
+              </div>
+            </div>
+
+            <div class="prio">
+              <div>
+                <h3>
+                  <img class="mini-icon" src="../assets/wisdom.jpg" alt="" />
+                  Maintain Siphoned Faith uptime
+                </h3>
+                <p class="muted">
+                  Offensive casts stabilize mana while building Contrition.
+                </p>
+              </div>
+            </div>
+
+            <div class="prio">
+              <div>
+                <h3>
+                  <img
+                    class="mini-icon"
+                    src="../assets/holy_penance.jpg"
+                    alt=""
+                  />
+                  Use Penance to resolve priority damage
+                </h3>
+                <p class="muted">
+                  Defensive Penance consumes Contrition from the target to heal
+                  and reduce Deferred Damage.
+                </p>
+              </div>
+            </div>
+
+            <div class="prio">
+              <div>
+                <h3>
+                  <img
+                    class="mini-icon"
+                    src="../assets/power_word_radiance.jpg"
+                    alt=""
+                  />
+                  Use Radiance for group pressure
+                </h3>
+                <p class="muted">
+                  Radiance applies or refreshes Atonement and releases
+                  Contrition across multiple allies.
+                </p>
+              </div>
+            </div>
+
+            <div class="prio">
+              <div>
+                <h3>
+                  <img
+                    class="mini-icon"
+                    src="../assets/prayer_of_healing.jpg"
+                    alt=""
+                  />
+                  Use Prayer of Healing for efficient sustain
+                </h3>
+                <p class="muted">
+                  Use when the group is under sustained pressure but does not
+                  need a full Radiance release.
+                </p>
+              </div>
+            </div>
+
+            <div class="prio">
+              <div>
+                <h3>
+                  <img
+                    class="mini-icon"
+                    src="../assets/power_word_shield.jpg"
+                    alt=""
+                  />
+                  Shield intentionally
+                </h3>
+                <p class="muted">
+                  Use Shield for predictable danger, tank pressure, or emergency
+                  mitigation, not as a default filler.
+                </p>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="card">
+          <span class="tag">Raid Priority</span>
+          <h3>Planned damage priority</h3>
+
+          <div class="priority">
+            <div class="prio">
+              <div>
+                <h3>
+                  <img
+                    class="mini-icon"
+                    src="../assets/evangelism.jpg"
+                    alt=""
+                  />
+                  Prepare with Evangelism
+                </h3>
+                <p class="muted">
+                  Extend Atonement and seed Contrition before known raid damage.
+                </p>
+              </div>
+            </div>
+
+            <div class="prio">
+              <div>
+                <h3>
+                  <img
+                    class="mini-icon"
+                    src="../assets/mind_blast.jpg"
+                    alt=""
+                  />
+                  Build through high-value offense
+                </h3>
+                <p class="muted">
+                  Use Mind Blast, offensive Penance, Shadow Word: Pain, and
+                  Smite to build Contrition before the event.
+                </p>
+              </div>
+            </div>
+
+            <div class="prio">
+              <div>
+                <h3>
+                  <img
+                    class="mini-icon"
+                    src="../assets/clarity_of_will.jpg"
+                    alt=""
+                  />
+                  Let Atonement smooth the hit
+                </h3>
+                <p class="muted">
+                  Incoming damage is partially deferred, giving the priest time
+                  to release stored healing.
+                </p>
+              </div>
+            </div>
+
+            <div class="prio">
+              <div>
+                <h3>
+                  <img
+                    class="mini-icon"
+                    src="../assets/power_word_radiance.jpg"
+                    alt=""
+                  />
+                  Release with Radiance or Prayer
+                </h3>
+                <p class="muted">
+                  Group releases heal and reduce Deferred Damage across injured
+                  allies.
+                </p>
+              </div>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <section id="choice-nodes" class="section-block">
+        <div class="section-header">
+          <div class="eyebrow">Example Choice Nodes</div>
+          <h2>
+            Talent choices should bias Discipline toward a healing profile, not
+            create trap builds.
+          </h2>
+          <p class="muted">
+            The baseline spec already has triage tools, group healing tools, rot
+            management, burst preparation, raid planning, and Mythic+ recovery.
+            These example nodes change how the priest prefers to solve those
+            problems. They should not make the opposite situation feel broken.
+          </p>
+        </div>
+
+        <article class="card">
+          <span class="tag">Choice Node 1</span>
+          <h3>Triage Release versus Group Release</h3>
+          <p class="muted">
+            This node changes the preferred release target. Neither option is a
+            pure single-target or pure AoE lock. Both still use Contrition and
+            Deferred Damage.
+          </p>
+
+          <div class="grid two system-card-grid">
+            <article class="card">
+              <div class="ability-heading">
+                <img
+                  class="ability-icon"
+                  src="../assets/holy_penance.jpg"
+                  alt="Penance icon"
+                />
+                <div>
+                  <span class="tag">Triage Lean</span>
+                  <h3>Focused Contrition</h3>
+                </div>
+              </div>
+
+              <p class="muted">
+                Defensive Penance consumes Contrition more efficiently on its
+                target. If Penance consumes 4 or more stacks, it also reduces a
+                small amount of Deferred Damage from the lowest-health nearby
+                Atoned ally.
+              </p>
+
+              <div class="tooltip">
+                <strong>Design reason:</strong><br />
+                Stronger tank or priority-target recovery without abandoning the
+                party during dungeon-wide damage.
+              </div>
+            </article>
+
+            <article class="card">
+              <div class="ability-heading">
+                <img
+                  class="ability-icon"
+                  src="../assets/power_word_radiance.jpg"
+                  alt="Radiance icon"
+                />
+                <div>
+                  <span class="tag">Group Lean</span>
+                  <h3>Shared Contrition</h3>
+                </div>
+              </div>
+
+              <p class="muted">
+                Power Word: Radiance and Prayer of Healing release Contrition
+                from one additional Atoned ally. If fewer than 3 allies are
+                injured, a portion of the release is redirected to the most
+                injured Atoned ally.
+              </p>
+
+              <div class="tooltip">
+                <strong>Design reason:</strong><br />
+                Better group smoothing without making the talent dead during a
+                boss phase with only one dangerous target.
+              </div>
+            </article>
+          </div>
+        </article>
+
+        <article class="card">
+          <span class="tag">Choice Node 2</span>
+          <h3>Rot Stabilization versus Burst Preparation</h3>
+          <p class="muted">
+            This node changes timing. One side rewards frequent smaller
+            releases. The other rewards stronger pre-planning before a known
+            event.
+          </p>
+
+          <div class="grid two system-card-grid">
+            <article class="card">
+              <div class="ability-heading">
+                <img
+                  class="ability-icon"
+                  src="../assets/prayer_of_healing.jpg"
+                  alt="Prayer of Healing icon"
+                />
+                <div>
+                  <span class="tag">Rot Lean</span>
+                  <h3>Patient Absolution</h3>
+                </div>
+              </div>
+
+              <p class="muted">
+                Prayer of Healing consumes 1 Contrition from each target healed
+                and causes the next 2 sec of Deferred Damage on those allies to
+                tick 20% slower. This does not increase the Deferred Damage cap.
+              </p>
+
+              <div class="tooltip">
+                <strong>Design reason:</strong><br />
+                Sustained pressure becomes easier to stabilize, but the talent
+                does not trivialize burst because it slows damage rather than
+                increasing the total buffer.
+              </div>
+            </article>
+
+            <article class="card">
+              <div class="ability-heading">
+                <img
+                  class="ability-icon"
+                  src="../assets/evangelism.jpg"
+                  alt="Evangelism icon"
+                />
+                <div>
+                  <span class="tag">Burst Lean</span>
+                  <h3>Prepared Absolution</h3>
+                </div>
+              </div>
+
+              <p class="muted">
+                Evangelism grants 1 additional Contrition to affected allies and
+                causes their first release within 8 sec to reduce extra Deferred
+                Damage. This bonus is reduced if fewer than 3 allies are Atoned.
+              </p>
+
+              <div class="tooltip">
+                <strong>Design reason:</strong><br />
+                Better raid-style planning without making the talent mandatory
+                for single-target or small-party recovery.
+              </div>
+            </article>
+          </div>
+        </article>
+
+        <article class="card">
+          <span class="tag">Choice Node 3</span>
+          <h3>Mythic+ Responsiveness versus Raid Coverage</h3>
+          <p class="muted">
+            This node changes how Atonement coverage is maintained. One side
+            favors fast dungeon pivots. The other favors planned raid setup.
+          </p>
+
+          <div class="grid two system-card-grid">
+            <article class="card">
+              <div class="ability-heading">
+                <img
+                  class="ability-icon"
+                  src="../assets/power_word_shield.jpg"
+                  alt="Power Word Shield icon"
+                />
+                <div>
+                  <span class="tag">Mythic+ Lean</span>
+                  <h3>Rapid Reprieve</h3>
+                </div>
+              </div>
+
+              <p class="muted">
+                Power Word: Shield and Flash Heal extend Atonement by 2 sec on
+                the target when they are below 50% health. This effect can occur
+                once every 12 sec per ally.
+              </p>
+
+              <div class="tooltip">
+                <strong>Design reason:</strong><br />
+                Supports quick dungeon triage and target swaps without becoming
+                the best raid-wide Atonement extension tool.
+              </div>
+            </article>
+
+            <article class="card">
+              <div class="ability-heading">
+                <img
+                  class="ability-icon"
+                  src="../assets/power_word_radiance.jpg"
+                  alt="Power Word Radiance icon"
+                />
+                <div>
+                  <span class="tag">Raid Lean</span>
+                  <h3>Measured Radiance</h3>
+                </div>
+              </div>
+
+              <p class="muted">
+                Power Word: Radiance applies Atonement for 2 additional sec, but
+                its direct healing is slightly reduced. If cast on fewer than 3
+                injured allies, it refunds a small amount of mana.
+              </p>
+
+              <div class="tooltip">
+                <strong>Design reason:</strong><br />
+                Helps raid setup without making Radiance feel terrible in a
+                small-party or boss-only dungeon moment.
+              </div>
+            </article>
+          </div>
+        </article>
+
+        <article class="card">
+          <span class="tag">Choice Node 4</span>
+          <h3>Shield Prevention versus Release Throughput</h3>
+          <p class="muted">
+            This node changes whether the player prefers to soften damage before
+            it lands or resolve it after it becomes Deferred Damage.
+          </p>
+
+          <div class="grid two system-card-grid">
+            <article class="card">
+              <div class="ability-heading">
+                <img
+                  class="ability-icon"
+                  src="../assets/void_shield.jpg"
+                  alt="Void Shield icon"
+                />
+                <div>
+                  <span class="tag">Prevention Lean</span>
+                  <h3>Tempered Shielding</h3>
+                </div>
+              </div>
+
+              <p class="muted">
+                Power Word: Shield absorbs more damage on allies with Atonement,
+                but does not increase the Deferred Damage cap. When the shield
+                breaks, the ally gains 1 Contrition.
+              </p>
+
+              <div class="tooltip">
+                <strong>Design reason:</strong><br />
+                Shielding feels valuable without returning to shield spam as the
+                default answer to all incoming damage.
+              </div>
+            </article>
+
+            <article class="card">
+              <div class="ability-heading">
+                <img
+                  class="ability-icon"
+                  src="../assets/piety.jpg"
+                  alt="Contrition icon"
+                />
+                <div>
+                  <span class="tag">Release Lean</span>
+                  <h3>Penitent Release</h3>
+                </div>
+              </div>
+
+              <p class="muted">
+                Consuming Contrition increases the healing of the release by a
+                small amount. Excess release healing reduces Deferred Damage on
+                the same target instead of becoming full overheal.
+              </p>
+
+              <div class="tooltip">
+                <strong>Design reason:</strong><br />
+                Rewards clean release timing without making shields feel like a
+                mistake.
+              </div>
+            </article>
+          </div>
+        </article>
+
+        <div class="callout">
+          <strong>Choice-node rule:</strong> Every option should preserve the
+          same base loop: apply Atonement, build Contrition, smooth damage, and
+          release pressure. The talent only changes where the player gains
+          efficiency or comfort.
+        </div>
+      </section>
+
+      <section id="examples" class="section-block">
+        <div class="section-header">
+          <div class="eyebrow">Scenario Examples</div>
+          <h2>
+            Concrete situations show how the same rules handle different
+            pressure profiles.
+          </h2>
+        </div>
+
+        <div class="grid two">
+          <article class="card">
+            <span class="tag">Mythic+</span>
+            <h3>5-target pull with tank spikes and group rot</h3>
+            <ol class="muted">
+              <li>Apply Atonement to the tank with Power Word: Shield.</li>
+              <li>Use Radiance as the group begins taking rot damage.</li>
+              <li>
+                Build Contrition through Mind Blast and offensive Penance.
+              </li>
+              <li>Tank spike lands. Part of the damage is deferred.</li>
+              <li>
+                Defensive Penance consumes tank Contrition to heal and clear
+                Deferred Damage.
+              </li>
+              <li>
+                Prayer of Healing or Radiance resolves the remaining group
+                pressure.
+              </li>
+            </ol>
+          </article>
+
+          <article class="card">
+            <span class="tag">Raid</span>
+            <h3>Planned raid-wide burst event</h3>
+            <ol class="muted">
+              <li>
+                Prepare with Radiance and selected single-target applicators.
+              </li>
+              <li>Use Evangelism to extend Atonement and seed Contrition.</li>
+              <li>Build additional Contrition through high-value offense.</li>
+              <li>The burst hit lands. Atonement delays part of the damage.</li>
+              <li>Radiance or Ultimate Penitence releases stored healing.</li>
+              <li>
+                Resume offense to rebuild Contrition and mana after the event.
+              </li>
+            </ol>
+          </article>
+
+          <article class="card">
+            <span class="tag">Triage</span>
+            <h3>One ally targeted by a dangerous mechanic</h3>
+            <ol class="muted">
+              <li>Apply Atonement directly with Shield or Flash Heal.</li>
+              <li>Build a few Contrition stacks if timing allows.</li>
+              <li>Use Pain Suppression if the mechanic is lethal.</li>
+              <li>Resolve the hit with defensive Penance.</li>
+              <li>
+                Use follow-up direct healing if Contrition setup was incomplete.
+              </li>
+            </ol>
+          </article>
+
+          <article class="card">
+            <span class="tag">Sustained Rot</span>
+            <h3>Constant party pressure over 20 seconds</h3>
+            <ol class="muted">
+              <li>Keep Atonement rolling on likely damage targets.</li>
+              <li>Use filler offense to maintain Contrition and mana.</li>
+              <li>Use Prayer of Healing for small, efficient releases.</li>
+              <li>Reserve Radiance for larger group spikes.</li>
+              <li>
+                Use Shield selectively when one ally’s deferred pool approaches
+                cap.
+              </li>
+            </ol>
+          </article>
+        </div>
+      </section>
+
+      <section id="hero" class="section-block">
+        <div class="section-header">
+          <div class="eyebrow">Hero and Apex Talent Integration</div>
+          <h2>
+            Oracle and Voidweaver should modify the loop, not fix the base spec.
+          </h2>
+        </div>
+
+        <div class="grid two">
+          <article class="card">
+            <div class="ability-heading">
+              <img
+                class="ability-icon"
+                src="../assets/evangelism.jpg"
+                alt="Evangelism icon"
+              />
+              <div>
+                <span class="tag">Oracle Direction</span>
+                <h3>Evangelism</h3>
+              </div>
+            </div>
+
+            <p class="muted">
+              Evangelism extends Atonement and grants initial Contrition stacks.
+              It accelerates preparation without creating a shield-dominant
+              prevention model.
+            </p>
+          </article>
+
+          <article class="card">
+            <div class="ability-heading">
+              <img
+                class="ability-icon"
+                src="../assets/entropic_rift.jpg"
+                alt="Entropic Rift icon"
+              />
+              <div>
+                <span class="tag">Voidweaver Direction</span>
+                <h3>Entropic Rift</h3>
+              </div>
+            </div>
+
+            <p class="muted">
+              Entropic Rift increases Contrition generation and Siphoned Faith
+              returns during offensive windows. It rewards aggressive healing
+              without directly copying damage into healing.
+            </p>
+          </article>
+        </div>
+
+        <div class="grid two system-card-grid">
+          <article class="card">
+            <div class="ability-heading">
+              <img
+                class="ability-icon"
+                src="../assets/ultimate_penitence.jpg"
+                alt="Ultimate Penitence icon"
+              />
+              <div>
+                <span class="tag">Apex Cooldown</span>
+                <h3>Ultimate Penitence</h3>
+              </div>
+            </div>
+
+            <p class="muted">
+              Ultimate Penitence acts as a major release and stabilization tool,
+              healing allies while clearing Deferred Damage from high-pressure
+              targets.
+            </p>
+          </article>
+
+          <article class="card">
+            <div class="ability-heading">
+              <img
+                class="ability-icon"
+                src="../assets/collapsing_void.jpg"
+                alt="Collapsing Void icon"
+              />
+              <div>
+                <span class="tag">Voidweaver Payoff</span>
+                <h3>Collapsing Void</h3>
+              </div>
+            </div>
+
+            <p class="muted">
+              Collapsing Void can serve as an offensive payoff that builds
+              Contrition quickly, but it should not directly copy damage into
+              healing.
+            </p>
+          </article>
+        </div>
+
+        <div class="callout">
+          <strong>Hero talent constraint:</strong> Oracle can emphasize
+          preparation and stability. Voidweaver can emphasize offensive pressure
+          and faster Contrition generation. Neither should be required to make
+          the base Discipline loop functional.
+        </div>
+      </section>
+
+      <section id="timelines" class="section-block">
+        <div class="section-header">
+          <div class="eyebrow">Rotation Timelines</div>
+          <h2>The loop changes based on damage pattern.</h2>
+        </div>
+
+        <div class="grid two">
+          <article class="card">
+            <span class="tag">Rot Damage</span>
+            <h3>Steady pressure</h3>
+
+            <div class="timeline">
+              <div class="time-row">
+                <div class="time">0s</div>
+                <div class="bar">
+                  <span class="bar-dot timeline-label">
+                    <img
+                      class="mini-icon"
+                      src="../assets/atonement.jpg"
+                      alt=""
+                    />
+                    Atonement
+                  </span>
+                </div>
+              </div>
+
+              <div class="time-row">
+                <div class="time">2s</div>
+                <div class="bar">
+                  <span class="bar-build timeline-label">
+                    <img class="mini-icon" src="../assets/piety.jpg" alt="" />
+                    Contrition
+                  </span>
+                </div>
+              </div>
+
+              <div class="time-row">
+                <div class="time">4s</div>
+                <div class="bar">
+                  <span class="bar-mana timeline-label">
+                    <img class="mini-icon" src="../assets/wisdom.jpg" alt="" />
+                    Mana Sustain
+                  </span>
+                </div>
+              </div>
+
+              <div class="time-row">
+                <div class="time">6s</div>
+                <div class="bar">
+                  <span class="bar-release timeline-label">
+                    <img
+                      class="mini-icon"
+                      src="../assets/prayer_of_healing.jpg"
+                      alt=""
+                    />
+                    Small Release
+                  </span>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="card">
+            <span class="tag">Burst Damage</span>
+            <h3>Planned group event</h3>
+
+            <div class="timeline">
+              <div class="time-row">
+                <div class="time">-6s</div>
+                <div class="bar">
+                  <span class="bar-dot timeline-label">
+                    <img
+                      class="mini-icon"
+                      src="../assets/evangelism.jpg"
+                      alt=""
+                    />
+                    Prepare
+                  </span>
+                </div>
+              </div>
+
+              <div class="time-row">
+                <div class="time">0s</div>
+                <div class="bar">
+                  <span class="bar-asc timeline-label">
+                    <img
+                      class="mini-icon"
+                      src="../assets/clarity_of_will.jpg"
+                      alt=""
+                    />
+                    Damage Deferred
+                  </span>
+                </div>
+              </div>
+
+              <div class="time-row">
+                <div class="time">2s</div>
+                <div class="bar">
+                  <span class="bar-release timeline-label">
+                    <img
+                      class="mini-icon"
+                      src="../assets/power_word_radiance.jpg"
+                      alt=""
+                    />
+                    Group Release
+                  </span>
+                </div>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section id="ui-requirements" class="section-block">
+        <div class="section-header">
+          <div class="eyebrow">UI Requirements</div>
+          <h2>
+            The system only works if the player can read ally state quickly.
+          </h2>
+          <p class="muted">
+            Deferred Damage and Contrition cannot be hidden background
+            mechanics. The player needs enough UI information to decide whether
+            to build, release, shield, or use a cooldown.
+          </p>
+        </div>
+
+        <div class="grid two">
+          <article class="card">
+            <h3>Party and raid frame display</h3>
+            <p class="muted">
+              Deferred Damage should appear as a distinct health-frame overlay
+              or segmented bar. The player should be able to see when an ally is
+              safe, pressured, or approaching the deferred cap.
+            </p>
+          </article>
+
+          <article class="card">
+            <h3>Contrition visibility</h3>
+            <p class="muted">
+              Contrition stacks should be visible on Atoned allies, ideally as a
+              small stack count or compact icon. Release spells depend on the
+              player knowing who is prepared.
+            </p>
+          </article>
+
+          <article class="card">
+            <h3>Release feedback</h3>
+            <p class="muted">
+              When a release clears Deferred Damage, the UI should show a clear
+              reduction and a readable combat effect. This makes the system feel
+              responsive instead of abstract.
+            </p>
+          </article>
+
+          <article class="card">
+            <h3>Cap warning</h3>
+            <p class="muted">
+              Allies near the Deferred Damage cap should receive a stronger
+              visual state so the priest knows they need a release, shield,
+              external cooldown, or direct healing immediately.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section id="tuning" class="section-block">
+        <div class="section-header">
+          <div class="eyebrow">Tuning Notes</div>
+          <h2>Numbers are placeholders. The structure matters first.</h2>
+        </div>
+
+        <div class="grid two">
+          <article class="card">
+            <h3>Deferred Damage cap</h3>
+            <p class="muted">
+              Atonement delays 25% of incoming damage over 6 sec, capped at 25%
+              of the target’s max health. This prevents infinite safety and
+              scales naturally with gear.
+            </p>
+          </article>
+
+          <article class="card">
+            <h3>Contrition cap</h3>
+            <p class="muted">
+              Contrition stacks up to 5 times per ally. Group releases should
+              consume fewer stacks than single-target releases to preserve
+              tuning control.
+            </p>
+          </article>
+
+          <article class="card">
+            <h3>Shield cost</h3>
+            <p class="muted">
+              Shield stays expensive because it remains a premium mitigation
+              tool. The redesign avoids making Shield the baseline maintenance
+              spell.
+            </p>
+          </article>
+
+          <article class="card">
+            <h3>Mana returns</h3>
+            <p class="muted">
+              Siphoned Faith should reward offensive uptime without making mana
+              irrelevant. Returns should vary by spell and be tuned around
+              dungeon and raid pacing.
+            </p>
+          </article>
+
+          <article class="card">
+            <h3>Talent safety rails</h3>
+            <p class="muted">
+              Choice nodes should avoid hard target-count checks. A raid-leaning
+              talent can scale better with more allies, but it should provide
+              fallback value when only one or two allies are in danger.
+            </p>
+          </article>
+
+          <article class="card">
+            <h3>Reactive healing floor</h3>
+            <p class="muted">
+              The system should reward preparation, but base direct healing must
+              remain strong enough that Discipline can recover from unexpected
+              targeting or imperfect setup.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section id="test-plan" class="section-block">
+        <div class="section-header">
+          <div class="eyebrow">What I Would Test</div>
+          <h2>Validation should focus on clarity, pressure, and sustain.</h2>
+        </div>
+
+        <div class="grid two">
+          <article class="card">
+            <h3>Steady rot encounter</h3>
+            <p class="muted">
+              Confirm that Deferred Damage and Contrition releases answer rot
+              without turning Discipline into Holy.
+            </p>
+          </article>
+
+          <article class="card">
+            <h3>Large burst event</h3>
+            <p class="muted">
+              Test whether the cap prevents damage delay from trivializing
+              planned raid mechanics.
+            </p>
+          </article>
+
+          <article class="card">
+            <h3>High tank pressure</h3>
+            <p class="muted">
+              Validate Penance, Shield, and single-target Contrition release as
+              the main tank-saving tools.
+            </p>
+          </article>
+
+          <article class="card">
+            <h3>Single-target boss inside Mythic+</h3>
+            <p class="muted">
+              Ensure a player who took group or dungeon utility talents still
+              has functional boss healing and does not feel punished for not
+              swapping into a pure single-target build.
+            </p>
+          </article>
+
+          <article class="card">
+            <h3>Mana stress dungeon</h3>
+            <p class="muted">
+              Confirm that offensive uptime stabilizes mana without making
+              resource management irrelevant.
+            </p>
+          </article>
+
+          <article class="card">
+            <h3>Talent cross-pressure test</h3>
+            <p class="muted">
+              Test every example choice node in its non-preferred situation:
+              triage talents during rot, group talents during tank danger, raid
+              talents in a dungeon, and Mythic+ talents on a boss.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section id="risks" class="section-block">
+        <div class="section-header">
+          <div class="eyebrow">Risks and Mitigations</div>
+          <h2>Known risks should be solved by rules, not emergency tuning.</h2>
+        </div>
+
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th>Risk</th>
+              <th>Why It Matters</th>
+              <th>Mitigation</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr>
+              <td>Deferred Damage feels invisible</td>
+              <td class="muted">
+                Players need to see delayed damage clearly to make informed
+                decisions.
+              </td>
+              <td>
+                Show a distinct deferred segment on party frames with cap
+                visibility.
+              </td>
+            </tr>
+
+            <tr>
+              <td>Contrition becomes mandatory for every heal</td>
+              <td class="muted">
+                Reactive healing should not feel unusable without setup.
+              </td>
+              <td>
+                Base heals remain functional. Contrition improves efficiency and
+                pressure resolution.
+              </td>
+            </tr>
+
+            <tr>
+              <td>Siphoned Faith over-restores mana</td>
+              <td class="muted">
+                If mana becomes irrelevant, spell choice loses meaning.
+              </td>
+              <td>
+                Use spell-specific returns and tune around real encounter
+                uptime.
+              </td>
+            </tr>
+
+            <tr>
+              <td>Shield loses identity</td>
+              <td class="muted">
+                Shield cannot dominate, but it still needs to feel important.
+              </td>
+              <td>
+                Keep it expensive, strong, and situationally valuable for
+                predictable danger.
+              </td>
+            </tr>
+
+            <tr>
+              <td>Choice nodes become trap picks</td>
+              <td class="muted">
+                If a player feels useless whenever the encounter does not match
+                the chosen talent, the tree is forcing content swaps instead of
+                offering expression.
+              </td>
+              <td>
+                Give each option fallback value outside its ideal scenario and
+                keep core triage, group, rot, and burst answers baseline.
+              </td>
+            </tr>
+
+            <tr>
+              <td>Deferred cap creates false safety</td>
+              <td class="muted">
+                Players may assume Atoned allies are safe while the deferred
+                pool is already capped.
+              </td>
+              <td>
+                Add cap warnings, overflow behavior, and clear UI treatment for
+                allies approaching maximum deferred damage.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="design-takeaway" class="section-block">
+        <div class="callout">
+          <strong>Design takeaway:</strong> This detailed page documents the
+          mechanical rules behind the Discipline redesign: state readability,
+          tuning levers, talent safety rails, gameplay examples, UI needs, and
+          validation risks.
+        </div>
+      </section>
+
+      <section id="tooltips" class="section-block">
+        <div class="section-header">
+          <div class="eyebrow">Expanded Tooltip Set</div>
+          <h2>Sample in-game language for the redesigned kit.</h2>
+        </div>
+
+        <article class="card">
+          <div class="tooltip">
+            <strong
+              ><img class="mini-icon" src="../assets/atonement.jpg" alt="" />
+              Atonement</strong
+            ><br />
+            Your healing spells apply Atonement for 15 sec. Allies with
+            Atonement have 25% of incoming damage delayed over 6 sec, up to 25%
+            of their maximum health. Your offensive spells build Contrition on
+            allies affected by Atonement.
+          </div>
+
+          <div class="tooltip">
+            <strong
+              ><img class="mini-icon" src="../assets/piety.jpg" alt="" />
+              Contrition</strong
+            ><br />
+            A stacking ally effect generated by your offensive spells while
+            Atonement is active. Stacks up to 5 times for 12 sec. Penance, Power
+            Word: Radiance, and Prayer of Healing consume Contrition to heal and
+            reduce Deferred Damage.
+          </div>
+
+          <div class="tooltip">
+            <strong
+              ><img
+                class="mini-icon"
+                src="../assets/clarity_of_will.jpg"
+                alt=""
+              />
+              Deferred Damage</strong
+            ><br />
+            Damage delayed by Atonement. Deferred Damage is dealt over time and
+            cannot exceed 25% of the target’s maximum health. Healing releases
+            can reduce or clear this pool.
+          </div>
+
+          <div class="tooltip">
+            <strong
+              ><img class="mini-icon" src="../assets/wisdom.jpg" alt="" />
+              Siphoned Faith</strong
+            ><br />
+            Your offensive spells restore mana when they generate Contrition.
+            Smite restores a small amount of mana, while Mind Blast, Penance,
+            and Shadow Word: Death restore increased amounts.
+          </div>
+
+          <div class="tooltip">
+            <strong
+              ><img class="mini-icon" src="../assets/holy_penance.jpg" alt="" />
+              Penance</strong
+            ><br />
+            When cast on an ally, heals the target and consumes all Contrition
+            on them, increasing healing and reducing Deferred Damage per stack
+            consumed. When cast offensively, builds Contrition on Atoned allies.
+          </div>
+
+          <div class="tooltip">
+            <strong
+              ><img
+                class="mini-icon"
+                src="../assets/power_word_radiance.jpg"
+                alt=""
+              />
+              Power Word: Radiance</strong
+            ><br />
+            Applies Atonement to nearby injured allies and consumes up to 3
+            Contrition from each affected ally, healing them and reducing their
+            Deferred Damage.
+          </div>
+
+          <div class="tooltip">
+            <strong
+              ><img
+                class="mini-icon"
+                src="../assets/prayer_of_healing.jpg"
+                alt=""
+              />
+              Prayer of Healing</strong
+            ><br />
+            Heals injured allies and consumes 1 Contrition from each target
+            healed. Efficient for sustained group pressure when full Radiance
+            release is not required.
+          </div>
+
+          <div class="tooltip">
+            <strong
+              ><img
+                class="mini-icon"
+                src="../assets/power_word_shield.jpg"
+                alt=""
+              />
+              Power Word: Shield</strong
+            ><br />
+            Shields an ally and applies Atonement. High mana cost. Intended for
+            predictable danger or emergency mitigation, not routine maintenance.
+          </div>
+
+          <div class="tooltip">
+            <strong
+              ><img class="mini-icon" src="../assets/evangelism.jpg" alt="" />
+              Evangelism</strong
+            ><br />
+            Extends active Atonements and grants 2 Contrition to affected
+            allies. Used before planned damage to accelerate preparation.
+          </div>
+
+          <div class="tooltip">
+            <strong
+              ><img
+                class="mini-icon"
+                src="../assets/ultimate_penitence.jpg"
+                alt=""
+              />
+              Ultimate Penitence</strong
+            ><br />
+            Unleash a major penitence barrage, healing injured allies and
+            consuming Contrition to reduce Deferred Damage on high-pressure
+            targets.
+          </div>
+
+          <div class="tooltip">
+            <strong
+              ><img
+                class="mini-icon"
+                src="../assets/entropic_rift.jpg"
+                alt=""
+              />
+              Entropic Rift</strong
+            ><br />
+            Opens a Voidweaver pressure window. Offensive spells generate
+            additional Contrition and restore increased mana through Siphoned
+            Faith for the duration.
+          </div>
+
+          <div class="tooltip">
+            <strong
+              ><img class="mini-icon" src="../assets/void_shield.jpg" alt="" />
+              Void Shield</strong
+            ><br />
+            A premium shield upgrade used for predictable danger. Applies
+            Atonement and strengthens immediate mitigation without becoming the
+            default maintenance tool.
+          </div>
+        </article>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="page-shell">
+        <strong>Discipline Priest Redesign</strong>
+        <p class="small">Detailed Spec Design</p>
+
+        <div class="footer-links">
+          <a class="button secondary" href="index.html">Overview</a>
+          <a class="button secondary" href="../index.html">Priest Hub</a>
+          <a class="button secondary" href="#top">Back to top</a>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

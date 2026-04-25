@@ -1,0 +1,2111 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Detailed rotation and systems breakdown for a modern Shadow Priest redesign concept."
+    />
+    <title>Shadow Priest Redesign | Detailed Design</title>
+    <link rel="stylesheet" href="../styles.css" />
+  </head>
+
+  <body class="shadow-page detail-page">
+    <header class="site-header">
+      <nav class="page-shell nav">
+        <a href="../index.html" class="brand">Priest Class Redesign</a>
+        <div class="nav-links">
+          <a href="../index.html">Priest Hub</a>
+          <a href="index.html">Overview</a>
+          <a href="#design-summary">Summary</a>
+          <a href="#assumptions">Setup</a>
+          <a href="#resonance-rules">Resonance</a>
+          <a href="#kit-treatment">Kit Changes</a>
+          <a href="#priorities">Priority</a>
+          <a href="#form-window">Forms</a>
+          <a href="#cooldowns">Cooldowns</a>
+          <a href="#talent-lean">Talents</a>
+          <a href="#apparitions">Apparitions</a>
+          <a href="#hero">Hero / Apex</a>
+          <a href="#timelines">Timelines</a>
+          <a href="#opener">Opener</a>
+          <a href="#test-plan">Test Plan</a>
+          <a href="#risks">Risks</a>
+          <a href="#tuning">Tuning</a>
+          <a href="#tooltips">Tooltips</a>
+        </div>
+      </nav>
+    </header>
+
+    <main class="page-shell section-block">
+      <a href="../index.html" class="back-link">← Back to Priest hub</a>
+      <a href="index.html" class="back-link">← Back to Shadow overview</a>
+
+      <div class="eyebrow">Detailed Combat Design</div>
+      <h1>Rotation and System Rules</h1>
+
+      <p class="hero-copy">
+        This page explains how the redesign plays moment-to-moment: DoT setup,
+        priority lists, Voidform cadence, Dark Ascension timing, Hero talent
+        integration, Apex payoff behavior, tuning considerations, and how spread
+        pressure funnels into priority damage.
+      </p>
+
+      <div class="note">
+        <strong>Design target:</strong> The baseline rotation should be
+        understandable without addons or advanced theorycrafting. Players
+        succeed by maintaining DoTs and following priority, and excel through
+        target selection, Resonance preparation, Voidform timing, Dark Ascension
+        planning, and efficient conversion of stored pressure into damage.
+      </div>
+
+      <div class="note">
+        <strong>Form identity note:</strong> Shadowform remains the default
+        stance and visual identity of the spec. Voidform is the recurring
+        rotational power window. Dark Ascension is the major cooldown that
+        empowers Voidform into Ascended Voidform. This preserves Shadow’s class
+        fantasy while still giving the rotation clear small-window and
+        big-window moments.
+      </div>
+
+      <section id="design-summary" class="section-block">
+        <div class="section-header">
+          <div class="eyebrow">Design Summary</div>
+          <h2>The redesign turns Shadow into a cyclical pressure spec.</h2>
+        </div>
+
+        <div class="grid two">
+          <article class="card">
+            <h3>Problem</h3>
+            <p class="muted">
+              Shadow has strong fantasy, but its damage structure can feel
+              uneven in Mythic+: slow setup, long waits between major moments,
+              and volatile multi-target scaling.
+            </p>
+          </article>
+
+          <article class="card">
+            <h3>Goal</h3>
+            <p class="muted">
+              Create a faster, clearer combat loop where Shadow can apply
+              pressure quickly, choose a priority target, and convert stored
+              pressure into controlled payoff.
+            </p>
+          </article>
+
+          <article class="card">
+            <h3>Solution</h3>
+            <p class="muted">
+              Preserve Shadowform as the default stance, use Voidform as the
+              frequent rotational power window, use Dark Ascension as the major
+              escalation tool, and use Resonance as the controlled replacement
+              for passive damage duplication.
+            </p>
+          </article>
+
+          <article class="card">
+            <h3>Resulting Playstyle</h3>
+            <p class="muted">
+              Shadow builds pressure across the pack, funnels damage into the
+              target that matters, and times Void Lash, Mind Blast, Shadow Word:
+              Madness, Voidform, and Ascended Voidform around prepared enemies.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section id="assumptions" class="section-block">
+        <div class="section-header">
+          <div class="eyebrow">Baseline Assumptions</div>
+          <h2>Reduce setup friction without removing DoT skill expression.</h2>
+        </div>
+
+        <div class="grid two">
+          <article class="card">
+            <div class="ability-heading">
+              <img
+                class="ability-icon"
+                src="../assets/vampiric_touch.jpg"
+                alt="Vampiric Touch icon"
+              />
+              <div>
+                <span class="tag">DoT Setup</span>
+                <h3>Misery-style baseline</h3>
+              </div>
+            </div>
+
+            <p class="muted">
+              Vampiric Touch applies Shadow Word: Pain by default. This removes
+              unnecessary double-application friction in multi-target content
+              while keeping DoT uptime central to the spec.
+            </p>
+          </article>
+
+          <article class="card">
+            <div class="ability-heading">
+              <img
+                class="ability-icon"
+                src="../assets/shadow_word_pain.jpg"
+                alt="Shadow Word: Pain icon"
+              />
+              <div>
+                <span class="tag">DoT Refresh</span>
+                <h3>Pandemic-style refresh</h3>
+              </div>
+            </div>
+
+            <p class="muted">
+              DoTs can be safely refreshed near the end of their duration
+              without losing remaining time. The player-facing rule is simple:
+              refresh when the DoT is nearly expired.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section id="dot-application" class="section-block">
+        <div class="section-header">
+          <div class="eyebrow">How Setup Works</div>
+          <h2>“Apply DoTs” needs a real in-game answer.</h2>
+        </div>
+
+        <article class="card">
+          <p class="muted">
+            “Apply DoTs to all targets” should not mean slowly tabbing through
+            every enemy and pressing two buttons per target. In small pulls, the
+            player can manually DoT important enemies. In larger pulls, Mind
+            Sear accelerates setup so Shadow reaches meaningful decisions
+            faster.
+          </p>
+
+          <div class="tooltip">
+            <strong>
+              <img
+                class="mini-icon"
+                src="../assets/vampiric_touch.jpg"
+                alt=""
+              />
+              Vampiric Touch </strong
+            ><br />
+            Applies Vampiric Touch and Shadow Word: Pain to the target, dealing
+            Shadow damage over time and generating Insanity when first applied.
+          </div>
+
+          <div class="tooltip">
+            <strong>
+              <img class="mini-icon" src="../assets/mind_sear.jpg" alt="" />
+              Mind Sear </strong
+            ><br />
+            Sear the target's mind, applying Vampiric Touch and Shadow Word:
+            Pain to your target and up to 4 nearby enemies. Generates Insanity
+            for each enemy affected, reduced beyond the first target.
+          </div>
+
+          <div class="callout">
+            <strong>Practical outcome:</strong> Fast setup gets Shadow into its
+            meaningful decisions sooner: choosing the priority target, building
+            Resonance, planning the next Voidform window, and deciding whether
+            the pull is worth Dark Ascension.
+          </div>
+        </article>
+      </section>
+
+      <section id="core-diagram" class="section-block">
+        <div class="section-header">
+          <div class="eyebrow">System Relationship</div>
+          <h2>
+            Spread pressure becomes focused damage without copying spells.
+          </h2>
+        </div>
+
+        <div class="diagram">
+          <div class="target">
+            <img
+              class="ability-icon"
+              src="../assets/shadow_word_pain.jpg"
+              alt="DoT icon"
+            />
+            <b>Spread Targets</b>
+            <span class="small">
+              DoTs build Resonance and summon Shadowy Apparitions.
+            </span>
+          </div>
+
+          <div class="target main">
+            <img
+              class="ability-icon"
+              src="../assets/invoked_nightmare.jpg"
+              alt="Resonance icon"
+            />
+            <b>Stored Pressure</b>
+            <span class="small">
+              Resonance stacks on enemies as controlled payoff potential.
+            </span>
+          </div>
+
+          <div class="target">
+            <img
+              class="ability-icon"
+              src="../assets/mind_blast.jpg"
+              alt="Priority target icon"
+            />
+            <b>Priority Target</b>
+            <span class="small">
+              Mind Blast, Shadow Word: Madness, and Void Lash shape priority
+              pressure.
+            </span>
+          </div>
+        </div>
+
+        <div class="diagram" style="margin-top: 1rem">
+          <div class="target">
+            <img
+              class="ability-icon"
+              src="../assets/shadowform.jpg"
+              alt="Shadowform icon"
+            />
+            <b>Shadowform</b>
+            <span class="small">Default stance and visual identity.</span>
+          </div>
+
+          <div class="target main">
+            <img
+              class="ability-icon"
+              src="../assets/voidform.jpg"
+              alt="Voidform icon"
+            />
+            <b>Voidform</b>
+            <span class="small">Recurring rotational power window.</span>
+          </div>
+
+          <div class="target">
+            <img
+              class="ability-icon"
+              src="../assets/void_ascension.jpg"
+              alt="Dark Ascension icon"
+            />
+            <b>Dark Ascension</b>
+            <span class="small">Empowers Voidform into Ascended Voidform.</span>
+          </div>
+        </div>
+      </section>
+
+      <section id="resonance-rules" class="section-block">
+        <div class="section-header">
+          <div class="eyebrow">Resonance Rules</div>
+          <h2>Resonance turns DoT uptime into controlled payoff.</h2>
+          <p class="muted">
+            Resonance is not passive damage duplication. It is a stack-based
+            enemy debuff that rewards DoT uptime, target preparation, priority
+            spending, and timing payoff spells into the right enemies.
+          </p>
+        </div>
+
+        <div class="grid two">
+          <article class="card">
+            <div class="ability-heading">
+              <img
+                class="ability-icon"
+                src="../assets/invoked_nightmare.jpg"
+                alt="Resonance icon"
+              />
+              <div>
+                <span class="tag">Enemy Debuff</span>
+                <h3>How Resonance builds</h3>
+              </div>
+            </div>
+
+            <p class="muted">
+              Shadow Word: Pain and Vampiric Touch ticks generate Resonance on
+              affected enemies. Resonance stacks up to 5 times per enemy and
+              lasts 12 sec. Adding a new stack refreshes its duration.
+            </p>
+          </article>
+
+          <article class="card">
+            <div class="ability-heading">
+              <img
+                class="ability-icon"
+                src="../assets/shadow_word_madness.jpg"
+                alt="Shadow Word: Madness icon"
+              />
+              <div>
+                <span class="tag">Priority Support</span>
+                <h3>Shadow Word: Madness interaction</h3>
+              </div>
+            </div>
+
+            <p class="muted">
+              Shadow Word: Madness applies 1 Resonance stack to its target when
+              cast. This effect can occur once every 6 sec per target. During
+              Voidform or Ascended Voidform, Shadow Word: Madness also refreshes
+              Resonance duration on its target.
+            </p>
+          </article>
+        </div>
+
+        <div class="grid two system-card-grid">
+          <article class="card">
+            <div class="ability-heading">
+              <img
+                class="ability-icon"
+                src="../assets/void_lash.jpg"
+                alt="Void Lash icon"
+              />
+              <div>
+                <span class="tag">Payoff</span>
+                <h3>How Resonance is consumed</h3>
+              </div>
+            </div>
+
+            <p class="muted">
+              Mind Blast consumes all Resonance from your current target. Void
+              Lash consumes all Resonance from enemies it strikes. Each consumed
+              stack deals flat Shadow damage based on Spell Power.
+            </p>
+          </article>
+
+          <article class="card">
+            <h3>Stack behavior</h3>
+            <p class="muted">
+              Each enemy tracks its own Resonance stacks. A target at 5 stacks
+              is “ready” for payoff. Consuming Resonance removes all stacks from
+              that enemy, so the player must rebuild pressure before the next
+              payoff.
+            </p>
+          </article>
+        </div>
+
+        <div class="grid two system-card-grid">
+          <article class="card">
+            <h3>Damage model</h3>
+            <p class="muted">
+              Each consumed stack deals flat Shadow damage, such as 18% of Spell
+              Power per stack. Flat damage avoids percent-health tuning problems
+              across bosses, elites, and small mobs.
+            </p>
+          </article>
+
+          <article class="card">
+            <h3>Why Shadow Word: Madness is limited</h3>
+            <p class="muted">
+              Shadow Word: Madness supports priority-target Resonance without
+              becoming the main Resonance engine. Only the cast applies a stack.
+              Its damage-over-time component does not generate extra Resonance.
+            </p>
+          </article>
+        </div>
+
+        <div class="callout">
+          <strong>Tuning intent:</strong> Resonance should reward preparing
+          enemies before a payoff window, while Shadow Word: Madness helps the
+          priority target catch up without creating runaway scaling during
+          high-Insanity or high-Haste windows.
+        </div>
+      </section>
+
+      <section id="kit-treatment" class="section-block">
+        <div class="section-header">
+          <div class="eyebrow">Kit Changes</div>
+          <h2>
+            How the existing Shadow kit is adjusted to support the new loop.
+          </h2>
+          <p class="muted">
+            These changes remove passive scaling problems and refocus the kit
+            around deliberate setup, controlled payoff, and clear cooldown
+            cadence.
+          </p>
+        </div>
+
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th>Spell / System</th>
+              <th>Treatment</th>
+              <th>Design Reason</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr>
+              <td>Shadowform</td>
+              <td>Preserved as default stance</td>
+              <td class="muted">
+                Keeps Shadow’s iconic visual identity intact instead of turning
+                it into a temporary cooldown.
+              </td>
+            </tr>
+
+            <tr>
+              <td>Voidform</td>
+              <td>Reframed as the small rotational cooldown</td>
+              <td class="muted">
+                Creates frequent power moments that fit Mythic+ pacing without
+                requiring a long cooldown cycle.
+              </td>
+            </tr>
+
+            <tr>
+              <td>Dark Ascension</td>
+              <td>Reintroduced as the major cooldown concept</td>
+              <td class="muted">
+                Functions as the large escalation button, empowering Voidform
+                into Ascended Voidform for planned burst windows.
+              </td>
+            </tr>
+
+            <tr>
+              <td>Shadow Word: Madness</td>
+              <td>Retained as the primary Insanity spender</td>
+              <td class="muted">
+                Replaces Devouring Plague references and supports
+                priority-target Resonance without becoming the main Resonance
+                engine.
+              </td>
+            </tr>
+
+            <tr>
+              <td>Devouring Plague</td>
+              <td>Removed from redesign language</td>
+              <td class="muted">
+                Midnight moved this spender identity into Shadow Word: Madness,
+                so the design should use current naming.
+              </td>
+            </tr>
+
+            <tr>
+              <td>Mind Sear</td>
+              <td>Reworked as AoE setup</td>
+              <td class="muted">
+                Mind Sear returns as a familiar name and icon, but not as old
+                channeled filler. It becomes a deliberate cast that applies DoTs
+                to a capped number of targets.
+              </td>
+            </tr>
+
+            <tr>
+              <td>Shadowy Apparitions</td>
+              <td>Retained as baseline passive</td>
+              <td class="muted">
+                Shadowy Apparitions remain part of the spec’s baseline identity.
+                Apex talents can upgrade or transform some of them into Void
+                Apparitions.
+              </td>
+            </tr>
+
+            <tr>
+              <td>Void Apparitions</td>
+              <td>Apex enhancement</td>
+              <td class="muted">
+                Void Apparitions become an enhanced apparition outcome tied to
+                capstone idol triggers, rather than replacing Shadowy
+                Apparitions outright.
+              </td>
+            </tr>
+
+            <tr>
+              <td>Tentacle Slam</td>
+              <td>Reworked into Void Lash</td>
+              <td class="muted">
+                Keeps the tentacle fantasy but removes awkward positional
+                targeting and “furthest target” gameplay.
+              </td>
+            </tr>
+
+            <tr>
+              <td>Shadowfiend / Voidwraith</td>
+              <td>Retained through talents, not as a rotational button</td>
+              <td class="muted">
+                Depth of Shadows and Voidwraith remain passive or proc-driven
+                damage layers without adding button bloat.
+              </td>
+            </tr>
+
+            <tr>
+              <td>Fade / Dispersion / Flash Heal</td>
+              <td>Mostly unchanged</td>
+              <td class="muted">
+                Defensive tools remain solid. Protective Light keeps Flash Heal
+                relevant as a self-defensive button.
+              </td>
+            </tr>
+
+            <tr>
+              <td>Void Shift, Psychic Horror, Shadow Crash, Void Bolt</td>
+              <td>Removed</td>
+              <td class="muted">
+                The redesign does not restore removed Midnight abilities that do
+                not support the new loop.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="priorities" class="section-block">
+        <div class="section-header">
+          <div class="eyebrow">Priority Lists</div>
+          <h2>The rotation is priority-based, not a strict script.</h2>
+        </div>
+
+        <article class="card">
+          <span class="tag">Single Target</span>
+          <h3>Boss priority list</h3>
+
+          <div class="priority">
+            <div class="prio">
+              <div>
+                <h3>
+                  <img
+                    class="mini-icon"
+                    src="../assets/vampiric_touch.jpg"
+                    alt=""
+                  />
+                  Maintain Vampiric Touch
+                </h3>
+                <p class="muted">
+                  Refresh when close to expiring. Shadow Word: Pain is
+                  maintained through Vampiric Touch baseline.
+                </p>
+              </div>
+            </div>
+
+            <div class="prio">
+              <div>
+                <h3>
+                  <img class="mini-icon" src="../assets/voidform.jpg" alt="" />
+                  Use Voidform on cooldown
+                </h3>
+                <p class="muted">
+                  Use frequently as the baseline rotational power window unless
+                  a known add wave or damage window is imminent.
+                </p>
+              </div>
+            </div>
+
+            <div class="prio">
+              <div>
+                <h3>
+                  <img
+                    class="mini-icon"
+                    src="../assets/void_ascension.jpg"
+                    alt=""
+                  />
+                  Use Dark Ascension for planned damage
+                </h3>
+                <p class="muted">
+                  Use before a boss damage amp, add wave, or high-value burn
+                  window. It empowers your next two Voidforms into Ascended
+                  Voidform.
+                </p>
+              </div>
+            </div>
+
+            <div class="prio">
+              <div>
+                <h3>
+                  <img
+                    class="mini-icon"
+                    src="../assets/invoked_nightmare.jpg"
+                    alt=""
+                  />
+                  Build Resonance before consuming it
+                </h3>
+                <p class="muted">
+                  Maintain DoTs long enough to build Resonance stacks. Shadow
+                  Word: Madness can add 1 stack on cast to help the priority
+                  target reach payoff faster.
+                </p>
+              </div>
+            </div>
+
+            <div class="prio">
+              <div>
+                <h3>
+                  <img class="mini-icon" src="../assets/void_lash.jpg" alt="" />
+                  Use Void Lash during Voidform windows
+                </h3>
+                <p class="muted">
+                  Void Lash benefits from the active window and consumes
+                  Resonance from enemies it strikes. During Ascended Voidform,
+                  it strikes one additional afflicted target.
+                </p>
+              </div>
+            </div>
+
+            <div class="prio">
+              <div>
+                <h3>
+                  <img
+                    class="mini-icon"
+                    src="../assets/mind_blast.jpg"
+                    alt=""
+                  />
+                  Cast Mind Blast on cooldown
+                </h3>
+                <p class="muted">
+                  Primary generator and single-target Resonance spender.
+                  Consumes all Resonance from your current target when stacks
+                  are present.
+                </p>
+              </div>
+            </div>
+
+            <div class="prio">
+              <div>
+                <h3>
+                  <img
+                    class="mini-icon"
+                    src="../assets/shadow_word_madness.jpg"
+                    alt=""
+                  />
+                  Spend Insanity on Shadow Word: Madness
+                </h3>
+                <p class="muted">
+                  Use before capping. Shadow Word: Madness applies 1 Resonance
+                  to its target when cast, limited to once every 6 sec per
+                  target.
+                </p>
+              </div>
+            </div>
+
+            <div class="prio">
+              <div>
+                <h3>
+                  <img
+                    class="mini-icon"
+                    src="../assets/shadow_word_death.jpg"
+                    alt=""
+                  />
+                  Use Shadow Word: Death in execute
+                </h3>
+                <p class="muted">
+                  Use below 20% health or when a short-lived add needs to die
+                  immediately. With Depth of Shadows, execute casts can trigger
+                  additional Shadowfiends.
+                </p>
+              </div>
+            </div>
+
+            <div class="prio">
+              <div>
+                <h3>
+                  <img class="mini-icon" src="../assets/mind_flay.jpg" alt="" />
+                  Mind Flay as filler
+                </h3>
+                <p class="muted">
+                  Channel when nothing higher priority is available.
+                </p>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="card">
+          <span class="tag">Mythic+</span>
+          <h3>Multi-target priority list</h3>
+
+          <div class="priority">
+            <div class="prio">
+              <div>
+                <h3>
+                  <img class="mini-icon" src="../assets/mind_sear.jpg" alt="" />
+                  Open with Mind Sear on 3+ targets
+                </h3>
+                <p class="muted">
+                  Quickly applies Vampiric Touch and Shadow Word: Pain so Shadow
+                  can start building Resonance.
+                </p>
+              </div>
+            </div>
+
+            <div class="prio">
+              <div>
+                <h3>
+                  <img
+                    class="mini-icon"
+                    src="../assets/vampiric_touch.jpg"
+                    alt=""
+                  />
+                  Manually DoT high-priority enemies if needed
+                </h3>
+                <p class="muted">
+                  If Mind Sear misses a dangerous caster or distant add,
+                  manually apply Vampiric Touch.
+                </p>
+              </div>
+            </div>
+
+            <div class="prio">
+              <div>
+                <h3>
+                  <img
+                    class="mini-icon"
+                    src="../assets/mind_blast.jpg"
+                    alt=""
+                  />
+                  Focus the kill target
+                </h3>
+                <p class="muted">
+                  Pick the priority enemy and funnel damage through Void Focus
+                  instead of constantly tabbing for padding.
+                </p>
+              </div>
+            </div>
+
+            <div class="prio">
+              <div>
+                <h3>
+                  <img class="mini-icon" src="../assets/voidform.jpg" alt="" />
+                  Use Voidform for meaningful pulls
+                </h3>
+                <p class="muted">
+                  Voidform is designed around a roughly 30-second cadence that
+                  aligns with typical pull pacing.
+                </p>
+              </div>
+            </div>
+
+            <div class="prio">
+              <div>
+                <h3>
+                  <img
+                    class="mini-icon"
+                    src="../assets/void_ascension.jpg"
+                    alt=""
+                  />
+                  Use Dark Ascension on large or dangerous pulls
+                </h3>
+                <p class="muted">
+                  The “big pull” lever. It empowers the next two Voidforms into
+                  Ascended Voidform without making the spec inactive outside
+                  cooldowns.
+                </p>
+              </div>
+            </div>
+
+            <div class="prio">
+              <div>
+                <h3>
+                  <img
+                    class="mini-icon"
+                    src="../assets/invoked_nightmare.jpg"
+                    alt=""
+                  />
+                  Build Resonance before consuming it
+                </h3>
+                <p class="muted">
+                  Build stacks on relevant enemies before consuming them with
+                  Mind Blast or Void Lash. Shadow Word: Madness helps the
+                  priority target build stacks faster without affecting the
+                  whole pack.
+                </p>
+              </div>
+            </div>
+
+            <div class="prio">
+              <div>
+                <h3>
+                  <img
+                    class="mini-icon"
+                    src="../assets/shadow_word_madness.jpg"
+                    alt=""
+                  />
+                  Use Shadow Word: Madness to support priority funnel
+                </h3>
+                <p class="muted">
+                  Spend Insanity on the priority target. On cast, Shadow Word:
+                  Madness adds 1 Resonance stack to that target, limited to once
+                  every 6 sec per target.
+                </p>
+              </div>
+            </div>
+
+            <div class="prio">
+              <div>
+                <h3>
+                  <img class="mini-icon" src="../assets/void_lash.jpg" alt="" />
+                  Use Void Lash when Resonance is built
+                </h3>
+                <p class="muted">
+                  Converts setup into payoff by consuming Resonance from enemies
+                  it strikes and triggering one of the idol capstone effects.
+                </p>
+              </div>
+            </div>
+
+            <div class="prio">
+              <div>
+                <h3>
+                  <img
+                    class="mini-icon"
+                    src="../assets/shadow_word_death.jpg"
+                    alt=""
+                  />
+                  Use Shadow Word: Death to secure kills
+                </h3>
+                <p class="muted">
+                  Best on priority mobs, dangerous casts, or enemies entering
+                  execute range.
+                </p>
+              </div>
+            </div>
+
+            <div class="prio">
+              <div>
+                <h3>
+                  <img class="mini-icon" src="../assets/mind_flay.jpg" alt="" />
+                  Mind Flay as filler on the priority target
+                </h3>
+                <p class="muted">
+                  Simple filler rule: channel into the enemy that needs to die.
+                </p>
+              </div>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <section id="form-window" class="section-block">
+        <div class="section-header">
+          <div class="eyebrow">Form Windows</div>
+          <h2>
+            Shadowform is the default stance. Voidform is the recurring window.
+            Dark Ascension creates Ascended Voidform.
+          </h2>
+        </div>
+
+        <article class="card">
+          <p class="muted">
+            Shadowform remains the always-on identity layer. Voidform becomes
+            the frequent rotational power window that creates regular moments of
+            acceleration. Dark Ascension is the larger cooldown that empowers
+            Voidform into Ascended Voidform for major pulls or planned burst
+            windows.
+          </p>
+
+          <div class="flow">
+            <span class="pill">
+              <img class="mini-icon" src="../assets/shadowform.jpg" alt="" />
+              Shadowform
+            </span>
+            <span class="arrow">→</span>
+            <span class="pill">
+              <img class="mini-icon" src="../assets/voidform.jpg" alt="" />
+              Voidform
+            </span>
+            <span class="arrow">→</span>
+            <span class="pill">
+              <img
+                class="mini-icon"
+                src="../assets/void_ascension.jpg"
+                alt=""
+              />
+              Dark Ascension
+            </span>
+            <span class="arrow">→</span>
+            <span class="pill">
+              <img class="mini-icon" src="../assets/voidform.jpg" alt="" />
+              Ascended Voidform
+            </span>
+          </div>
+        </article>
+      </section>
+
+      <section id="cooldowns" class="section-block">
+        <div class="section-header">
+          <div class="eyebrow">Cooldown Structure</div>
+          <h2>
+            Cooldowns create frequent decisions without forcing long downtime.
+          </h2>
+          <p class="muted">
+            These values are placeholders, but they define the intended pacing:
+            Voidform is the regular rotational window, Dark Ascension is the
+            major planned window, and Void Lash is the flexible payoff tool that
+            bridges single-target and cleave.
+          </p>
+        </div>
+
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th>Spell</th>
+              <th>Proposed Cooldown</th>
+              <th>Role</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr>
+              <td>Voidform</td>
+              <td>30 sec cooldown</td>
+              <td class="muted">
+                Frequent rotational power window. Creates regular cadence
+                without making Shadow wait for a 2-minute burst cycle.
+              </td>
+            </tr>
+
+            <tr>
+              <td>Dark Ascension</td>
+              <td>2 min cooldown</td>
+              <td class="muted">
+                Major escalation cooldown. Causes the next two Voidforms to
+                become Ascended Voidform.
+              </td>
+            </tr>
+
+            <tr>
+              <td>Void Lash</td>
+              <td>2 charges, 20 sec recharge</td>
+              <td class="muted">
+                Replaces Tentacle Slam as the target-anchored payoff button and
+                idol-capstone trigger.
+              </td>
+            </tr>
+
+            <tr>
+              <td>Mind Sear</td>
+              <td>2 charges, 18 sec recharge</td>
+              <td class="muted">
+                Single-cast AoE setup spell. Applies Vampiric Touch and Shadow
+                Word: Pain to the target and up to 4 nearby enemies. The second
+                charge is baseline so large pulls do not feel starved for setup.
+              </td>
+            </tr>
+
+            <tr>
+              <td>Mind Blast</td>
+              <td>1 charge baseline</td>
+              <td class="muted">
+                Primary generator and single-target Resonance spender. A talent
+                can add a second charge for priority-damage leaning builds.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="talent-lean" class="section-block">
+        <div class="section-header">
+          <div class="eyebrow">Talent Direction</div>
+          <h2>
+            Talents should lean the kit, not split it into incompatible builds.
+          </h2>
+          <p class="muted">
+            Shadow should remain functional in both single-target and
+            multi-target by default. Talent choice nodes can bias the player
+            toward faster setup, stronger priority payoff, or wider cleave
+            without making the other mode feel incomplete.
+          </p>
+        </div>
+
+        <article class="card">
+          <span class="tag">Choice Node 1</span>
+          <h3>Mind Sear Setup Node</h3>
+          <p class="muted">
+            This node changes what Mind Sear is best at. The baseline spell
+            already has 2 charges, so neither option is required for basic AoE
+            usability.
+          </p>
+
+          <div class="grid two system-card-grid">
+            <article class="card">
+              <div class="ability-heading">
+                <img
+                  class="ability-icon"
+                  src="../assets/mind_blast.jpg"
+                  alt="Mind Blast icon"
+                />
+                <div>
+                  <span class="tag">Priority / Boss Lean</span>
+                  <h3>Focused Sear</h3>
+                </div>
+              </div>
+
+              <p class="muted">
+                Mind Sear applies 2 additional Resonance stacks to your primary
+                target. If the target is already at maximum Resonance, Mind Sear
+                increases your next Mind Blast damage by 20%.
+              </p>
+            </article>
+
+            <article class="card">
+              <div class="ability-heading">
+                <img
+                  class="ability-icon"
+                  src="../assets/mind_sear.jpg"
+                  alt="Mind Sear icon"
+                />
+                <div>
+                  <span class="tag">Large AoE Lean</span>
+                  <h3>Expansive Sear</h3>
+                </div>
+              </div>
+
+              <p class="muted">
+                Mind Sear affects up to 2 additional nearby enemies. Casting the
+                second charge within 8 sec applies 1 additional Resonance stack
+                to all affected enemies.
+              </p>
+            </article>
+          </div>
+        </article>
+
+        <article class="card">
+          <span class="tag">Choice Node 2</span>
+          <h3>Payoff Node</h3>
+          <p class="muted">
+            This node changes how Shadow spends its prepared pressure. One path
+            favors priority-target control through Mind Blast. The other favors
+            controlled cleave through Void Lash.
+          </p>
+
+          <div class="grid two system-card-grid">
+            <article class="card">
+              <div class="ability-heading">
+                <img
+                  class="ability-icon"
+                  src="../assets/mind_blast.jpg"
+                  alt="Mind Blast icon"
+                />
+                <div>
+                  <span class="tag">Priority Payoff</span>
+                  <h3>Mind Blast Talent</h3>
+                </div>
+              </div>
+
+              <p class="muted">
+                Mind Blast gains a second charge and deals increased Resonance
+                payoff damage to your current target. This supports boss damage,
+                priority targets, and dangerous enemies in Mythic+.
+              </p>
+            </article>
+
+            <article class="card">
+              <div class="ability-heading">
+                <img
+                  class="ability-icon"
+                  src="../assets/void_lash.jpg"
+                  alt="Void Lash icon"
+                />
+                <div>
+                  <span class="tag">Cleave Payoff</span>
+                  <h3>Void Lash Talent</h3>
+                </div>
+              </div>
+
+              <p class="muted">
+                Void Lash strikes 1 to 2 additional afflicted enemies and
+                consumes Resonance from those targets. This supports larger
+                pulls without recreating passive Psychic Link-style duplication.
+              </p>
+            </article>
+          </div>
+        </article>
+
+        <div class="callout">
+          <strong>Talent philosophy:</strong> Mind Sear talents change setup.
+          Mind Blast and Void Lash talents change payoff. Both nodes preserve
+          the same core loop while giving players encounter-tailoring choices.
+        </div>
+      </section>
+
+      <section id="apparitions" class="section-block">
+        <div class="section-header">
+          <div class="eyebrow">Apparition and Idol Rules</div>
+          <h2>
+            Shadowy Apparitions remain baseline. Void Apparitions become the
+            empowered Apex outcome.
+          </h2>
+          <p class="muted">
+            This keeps Shadow’s familiar passive visual layer intact while still
+            giving Apex talents a stronger Void payoff. Void Apparitions are not
+            a full replacement for Shadowy Apparitions.
+          </p>
+        </div>
+
+        <div class="grid three">
+          <article class="card">
+            <div class="ability-heading">
+              <img
+                class="ability-icon"
+                src="../assets/shadowy_apparitions.jpg"
+                alt="Shadowy Apparitions icon"
+              />
+              <div>
+                <span class="tag">Baseline Passive</span>
+                <h3>Shadowy Apparitions</h3>
+              </div>
+            </div>
+
+            <p class="muted">
+              Shadowy Apparitions remain part of the base kit. They preserve
+              familiar Shadow Priest visual feedback and continue to represent
+              passive pressure from DoT gameplay.
+            </p>
+          </article>
+
+          <article class="card">
+            <div class="ability-heading">
+              <img
+                class="ability-icon"
+                src="../assets/void_apparitions.jpg"
+                alt="Void Apparitions icon"
+              />
+              <div>
+                <span class="tag">Apex Upgrade</span>
+                <h3>Void Apparitions</h3>
+              </div>
+            </div>
+
+            <p class="muted">
+              When a capstone idol effect is triggered, a Shadowy Apparition is
+              spawned. Shadowy Apparitions have a chance to spawn as Void
+              Apparitions, dealing additional damage.
+            </p>
+          </article>
+
+          <article class="card">
+            <div class="ability-heading">
+              <img
+                class="ability-icon"
+                src="../assets/void_lash.jpg"
+                alt="Void Lash icon"
+              />
+              <div>
+                <span class="tag">Capstone Trigger</span>
+                <h3>Void Lash</h3>
+              </div>
+            </div>
+
+            <p class="muted">
+              Void Lash replaces Tentacle Slam as the reliable idol trigger.
+              Void Lash has a 100% chance to activate one of the four capstone
+              idols, preserving the Apex interaction without keeping Tentacle
+              Slam.
+            </p>
+          </article>
+        </div>
+
+        <div class="callout">
+          <strong>Apex rule:</strong> Shadowy Apparitions stay as the normal
+          passive. Void Apparitions are an upgraded result. Void Lash is the new
+          deterministic trigger for idol-capstone interactions.
+        </div>
+      </section>
+
+      <section id="hero" class="section-block">
+        <div class="section-header">
+          <div class="eyebrow">Hero and Apex Talent Integration</div>
+          <h2>Modifiers, not replacements.</h2>
+          <p class="muted">
+            Archon and Voidweaver should remain distinct, but neither should
+            force Shadow away from its redesigned core loop.
+          </p>
+        </div>
+
+        <div class="grid two">
+          <article class="card">
+            <div class="ability-heading">
+              <img
+                class="ability-icon"
+                src="../assets/halo.jpg"
+                alt="Halo icon"
+              />
+              <div>
+                <span class="tag">Archon</span>
+                <h3>Halo Amplifier</h3>
+              </div>
+            </div>
+
+            <p class="muted">
+              Archon emphasizes Halo as a cadence amplifier. Halo should
+              increase Resonance output, support Apparition generation, or
+              slightly extend Voidform windows.
+            </p>
+
+            <div class="tooltip">
+              <strong>Design Alignment:</strong><br />
+              Halo becomes a rotational amplifier rather than a separate burst
+              package. It supports the same Voidform → Resonance → Void Lash
+              loop.
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="ability-heading">
+              <img
+                class="ability-icon"
+                src="../assets/entropic_rift.jpg"
+                alt="Entropic Rift icon"
+              />
+              <div>
+                <span class="tag">Voidweaver</span>
+                <h3>Rift Pressure Window</h3>
+              </div>
+            </div>
+
+            <p class="muted">
+              Voidweaver should lean into Entropic Rift, Collapsing Void, and
+              deeper Void pressure while preserving Resonance and Void Focus. It
+              no longer needs Halo as a shared package.
+            </p>
+
+            <div class="tooltip">
+              <strong>Design Alignment:</strong><br />
+              Voidweaver enhances a pressure window rather than creating a
+              separate mini-rotation.
+            </div>
+          </article>
+        </div>
+
+        <div class="grid three system-card-grid">
+          <article class="card">
+            <div class="ability-heading">
+              <img
+                class="ability-icon"
+                src="../assets/shadowy_apparitions.jpg"
+                alt="Shadowy Apparitions icon"
+              />
+              <div>
+                <span class="tag">Apex Baseline</span>
+                <h3>Shadowy Apparitions</h3>
+              </div>
+            </div>
+
+            <p class="muted">
+              When one of the capstone idol effects is triggered, a Shadowy
+              Apparition is spawned. This preserves Shadow’s familiar passive
+              identity.
+            </p>
+          </article>
+
+          <article class="card">
+            <div class="ability-heading">
+              <img
+                class="ability-icon"
+                src="../assets/void_apparitions.jpg"
+                alt="Void Apparitions icon"
+              />
+              <div>
+                <span class="tag">Apex Upgrade</span>
+                <h3>Void Apparitions</h3>
+              </div>
+            </div>
+
+            <p class="muted">
+              Shadowy Apparitions have a chance to spawn as Void Apparitions,
+              dealing additional damage and visually signaling an empowered
+              capstone interaction.
+            </p>
+
+            <div class="tooltip">
+              <strong>Design Alignment:</strong><br />
+              Void Apparitions enhance the existing apparition layer instead of
+              replacing it outright.
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="ability-heading">
+              <img
+                class="ability-icon"
+                src="../assets/void_lash.jpg"
+                alt="Void Lash icon"
+              />
+              <div>
+                <span class="tag">Apex Trigger</span>
+                <h3>Void Lash</h3>
+              </div>
+            </div>
+
+            <p class="muted">
+              Void Lash replaces Tentacle Slam as the deterministic trigger for
+              idol-capstone effects. It has a 100% chance to activate one of the
+              four capstone idols.
+            </p>
+
+            <div class="tooltip">
+              <strong>Design Alignment:</strong><br />
+              The tentacle fantasy remains, but the trigger becomes target
+              anchored, readable, and connected to Resonance payoff.
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section id="timelines" class="section-block">
+        <div class="section-header">
+          <div class="eyebrow">Rotation Timelines</div>
+          <h2>Same loop, different emphasis.</h2>
+        </div>
+
+        <div class="grid two">
+          <article class="card">
+            <span class="tag">Baseline Loop</span>
+            <h3>Normal 5-target priority pull</h3>
+
+            <div class="timeline">
+              <div class="time-row">
+                <div class="time">0s</div>
+                <div class="bar">
+                  <span class="bar-dot timeline-label">
+                    <img
+                      class="mini-icon"
+                      src="../assets/mind_sear.jpg"
+                      alt=""
+                    />
+                    Mind Sear / DoTs
+                  </span>
+                </div>
+              </div>
+              <div class="time-row">
+                <div class="time">2s</div>
+                <div class="bar">
+                  <span class="bar-build timeline-label">
+                    <img
+                      class="mini-icon"
+                      src="../assets/shadow_word_madness.jpg"
+                      alt=""
+                    />
+                    Madness Priority Target
+                  </span>
+                </div>
+              </div>
+              <div class="time-row">
+                <div class="time">4s</div>
+                <div class="bar">
+                  <span class="bar-build timeline-label">
+                    <img
+                      class="mini-icon"
+                      src="../assets/invoked_nightmare.jpg"
+                      alt=""
+                    />
+                    5 Resonance Stacks
+                  </span>
+                </div>
+              </div>
+              <div class="time-row">
+                <div class="time">5s</div>
+                <div class="bar">
+                  <span class="bar-void timeline-label">
+                    <img
+                      class="mini-icon"
+                      src="../assets/voidform.jpg"
+                      alt=""
+                    />
+                    Voidform
+                  </span>
+                </div>
+              </div>
+              <div class="time-row">
+                <div class="time">6s</div>
+                <div class="bar">
+                  <span class="bar-lash timeline-label">
+                    <img
+                      class="mini-icon"
+                      src="../assets/void_lash.jpg"
+                      alt=""
+                    />
+                    Consume Resonance
+                  </span>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="card">
+            <span class="tag">Large Pull</span>
+            <h3>Dark Ascension timing</h3>
+
+            <div class="timeline">
+              <div class="time-row">
+                <div class="time">0s</div>
+                <div class="bar">
+                  <span class="bar-dot timeline-label">
+                    <img
+                      class="mini-icon"
+                      src="../assets/mind_sear.jpg"
+                      alt=""
+                    />
+                    Mind Sear / DoTs
+                  </span>
+                </div>
+              </div>
+              <div class="time-row">
+                <div class="time">2s</div>
+                <div class="bar">
+                  <span class="bar-asc timeline-label">
+                    <img
+                      class="mini-icon"
+                      src="../assets/void_ascension.jpg"
+                      alt=""
+                    />
+                    Dark Ascension
+                  </span>
+                </div>
+              </div>
+              <div class="time-row">
+                <div class="time">3s</div>
+                <div class="bar">
+                  <span class="bar-build timeline-label">
+                    <img
+                      class="mini-icon"
+                      src="../assets/shadow_word_madness.jpg"
+                      alt=""
+                    />
+                    Madness Priority Target
+                  </span>
+                </div>
+              </div>
+              <div class="time-row">
+                <div class="time">4s</div>
+                <div class="bar">
+                  <span class="bar-build timeline-label">
+                    <img
+                      class="mini-icon"
+                      src="../assets/invoked_nightmare.jpg"
+                      alt=""
+                    />
+                    5 Resonance Stacks
+                  </span>
+                </div>
+              </div>
+              <div class="time-row">
+                <div class="time">5s</div>
+                <div class="bar">
+                  <span class="bar-void timeline-label">
+                    <img
+                      class="mini-icon"
+                      src="../assets/voidform.jpg"
+                      alt=""
+                    />
+                    Ascended Voidform #1
+                  </span>
+                </div>
+              </div>
+              <div class="time-row">
+                <div class="time">6s</div>
+                <div class="bar">
+                  <span class="bar-lash timeline-label">
+                    <img
+                      class="mini-icon"
+                      src="../assets/void_lash.jpg"
+                      alt=""
+                    />
+                    Consume Resonance
+                  </span>
+                </div>
+              </div>
+              <div class="time-row">
+                <div class="time">35s</div>
+                <div class="bar">
+                  <span class="bar-void timeline-label">
+                    <img
+                      class="mini-icon"
+                      src="../assets/voidform.jpg"
+                      alt=""
+                    />
+                    Ascended Voidform #2
+                  </span>
+                </div>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section id="opener" class="section-block">
+        <div class="section-header">
+          <div class="eyebrow">Sample Opener</div>
+          <h2>5-target pull with one priority enemy.</h2>
+        </div>
+
+        <article class="card">
+          <div class="flow">
+            <span class="pill">
+              <img class="mini-icon" src="../assets/mind_sear.jpg" alt="" />
+              Mind Sear
+            </span>
+            <span class="arrow">→</span>
+            <span class="pill">
+              <img class="mini-icon" src="../assets/mind_blast.jpg" alt="" />
+              Focus Target + Mind Blast
+            </span>
+            <span class="arrow">→</span>
+            <span class="pill">
+              <img
+                class="mini-icon"
+                src="../assets/shadow_word_madness.jpg"
+                alt=""
+              />
+              Shadow Word: Madness
+            </span>
+            <span class="arrow">→</span>
+            <span class="pill">
+              <img
+                class="mini-icon"
+                src="../assets/invoked_nightmare.jpg"
+                alt=""
+              />
+              5 Resonance Stacks
+            </span>
+            <span class="arrow">→</span>
+            <span class="pill">
+              <img class="mini-icon" src="../assets/voidform.jpg" alt="" />
+              Voidform
+            </span>
+            <span class="arrow">→</span>
+            <span class="pill">
+              <img class="mini-icon" src="../assets/void_lash.jpg" alt="" />
+              Consume Resonance
+            </span>
+          </div>
+
+          <table class="comparison-table">
+            <thead>
+              <tr>
+                <th>Time</th>
+                <th>Action</th>
+                <th>Reason</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr>
+                <td>0s</td>
+                <td>Mind Sear</td>
+                <td class="muted">
+                  Applies DoTs quickly and starts Resonance generation.
+                </td>
+              </tr>
+              <tr>
+                <td>2s</td>
+                <td>Target priority enemy</td>
+                <td class="muted">
+                  Sets up Void Focus funneling instead of tab-target damage
+                  padding.
+                </td>
+              </tr>
+              <tr>
+                <td>3s</td>
+                <td>Mind Blast</td>
+                <td class="muted">
+                  Generates Insanity and can consume Resonance from the current
+                  target if stacks are already present.
+                </td>
+              </tr>
+              <tr>
+                <td>4s</td>
+                <td>Shadow Word: Madness</td>
+                <td class="muted">
+                  Spends Insanity on the priority target and applies 1 Resonance
+                  stack, limited to once every 6 sec per target.
+                </td>
+              </tr>
+              <tr>
+                <td>5s</td>
+                <td>Voidform</td>
+                <td class="muted">
+                  Starts the baseline rotational power window once setup exists.
+                </td>
+              </tr>
+              <tr>
+                <td>6s</td>
+                <td>Void Lash</td>
+                <td class="muted">
+                  Hits the priority target, cleaves DoTed enemies, consumes
+                  Resonance, triggers an idol capstone, and removes consumed
+                  stacks.
+                </td>
+              </tr>
+              <tr>
+                <td>8s+</td>
+                <td>Shadow Word: Madness / Mind Blast / SW:D</td>
+                <td class="muted">
+                  Continue pressure, spend Insanity, rebuild Resonance, and
+                  finish the priority target.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </article>
+      </section>
+
+      <section id="complexity" class="section-block">
+        <div class="section-header">
+          <div class="eyebrow">Complexity Check</div>
+          <h2>The spec should be easy to begin and rewarding to refine.</h2>
+        </div>
+
+        <div class="grid two">
+          <article class="card">
+            <h3>Average player path</h3>
+            <p class="muted">
+              Mind Sear → focus target → Shadow Word: Madness → Voidform →
+              consume Resonance with Void Lash or Mind Blast. The spec works
+              without perfect optimization.
+            </p>
+          </article>
+
+          <article class="card">
+            <h3>Skilled player path</h3>
+            <p class="muted">
+              Builds Resonance before Voidform, uses Shadow Word: Madness to
+              accelerate priority-target stacks, maintains DoTs on valuable
+              targets, times Void Lash, plans Dark Ascension, chooses the
+              correct funnel target, and decides whether to talent toward Mind
+              Blast priority damage or Void Lash cleave.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section id="test-plan" class="section-block">
+        <div class="section-header">
+          <div class="eyebrow">What I Would Test</div>
+          <h2>
+            Validation should focus on pacing, clarity, and scaling control.
+          </h2>
+          <p class="muted">
+            These are the encounter profiles I would use to evaluate whether the
+            redesign succeeds mechanically before final tuning.
+          </p>
+        </div>
+
+        <div class="grid two">
+          <article class="card">
+            <h3>1-target boss</h3>
+            <p class="muted">
+              Validate that Shadow remains functional when Resonance has fewer
+              targets to build from. Single-target should feel stable without
+              requiring excessive compensation.
+            </p>
+          </article>
+
+          <article class="card">
+            <h3>5-target priority pull</h3>
+            <p class="muted">
+              Confirm that Mind Sear, Shadow Word: Madness, Resonance, and Void
+              Lash create a clear funnel pattern into the priority target.
+            </p>
+          </article>
+
+          <article class="card">
+            <h3>8-target equal-value pull</h3>
+            <p class="muted">
+              Check whether Resonance payoff feels satisfying without recreating
+              Psychic Link-style scaling spikes.
+            </p>
+          </article>
+
+          <article class="card">
+            <h3>Council encounter</h3>
+            <p class="muted">
+              Test sustained multi-target uptime to ensure Resonance caps,
+              target limits, and reduced damage beyond 5 targets prevent runaway
+              scaling.
+            </p>
+          </article>
+
+          <article class="card">
+            <h3>Short-lived add waves</h3>
+            <p class="muted">
+              Validate that Mind Sear and Shadow Word: Madness provide enough
+              immediate value when enemies die before full DoT and Resonance
+              conversion.
+            </p>
+          </article>
+
+          <article class="card">
+            <h3>Large coordinated pull</h3>
+            <p class="muted">
+              Test Dark Ascension timing to ensure Ascended Voidform feels
+              powerful without making normal Voidform windows feel irrelevant.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section id="risks" class="section-block">
+        <div class="section-header">
+          <div class="eyebrow">Risks and Mitigations</div>
+          <h2>
+            Known risks should be handled through rules, not emergency tuning.
+          </h2>
+        </div>
+
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th>Risk</th>
+              <th>Why It Matters</th>
+              <th>Mitigation</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr>
+              <td>Resonance overperforms on council fights</td>
+              <td class="muted">
+                High uptime on multiple targets could recreate the same scaling
+                problem this redesign is trying to avoid.
+              </td>
+              <td>
+                Use a 5-stack cap, reduced damage beyond 5 targets, and optional
+                diminishing returns.
+              </td>
+            </tr>
+
+            <tr>
+              <td>Shadow Word: Madness becomes too central</td>
+              <td class="muted">
+                If it builds too much Resonance, it becomes both the best
+                spender and the best setup tool.
+              </td>
+              <td>
+                Shadow Word: Madness only applies 1 Resonance on cast, with a 6
+                sec per-target limiter. Its follow-up damage does not generate
+                extra stacks.
+              </td>
+            </tr>
+
+            <tr>
+              <td>Ascended Voidform overshadows Voidform</td>
+              <td class="muted">
+                If the empowered state is too strong, normal Voidform windows
+                feel like filler instead of the core loop.
+              </td>
+              <td>
+                Ascended Voidform should extend and enhance the cycle, not
+                replace it. Its bonus should be meaningful but bounded.
+              </td>
+            </tr>
+
+            <tr>
+              <td>Void Lash becomes mandatory in every talent build</td>
+              <td class="muted">
+                Because Void Lash triggers idol capstones and consumes
+                Resonance, it could crowd out Mind Blast and single-target
+                decisions.
+              </td>
+              <td>
+                Keep Void Lash as the cleave-leaning payoff, while Mind Blast
+                remains the priority-target Resonance spender. Talents can lean
+                one direction without disabling the other.
+              </td>
+            </tr>
+
+            <tr>
+              <td>Void Apparitions replace too much classic identity</td>
+              <td class="muted">
+                Fully replacing Shadowy Apparitions would remove a recognizable
+                Shadow Priest visual and combat texture.
+              </td>
+              <td>
+                Keep Shadowy Apparitions baseline. Void Apparitions are an
+                enhanced Apex outcome, not a full replacement.
+              </td>
+            </tr>
+
+            <tr>
+              <td>Mind Sear solves too much setup</td>
+              <td class="muted">
+                If it applies too broadly, Shadow loses target selection and DoT
+                upkeep as skill expression.
+              </td>
+              <td>
+                Keep baseline Mind Sear capped at the target plus 4 nearby
+                enemies. Expansive Sear can increase coverage as a talent
+                choice. Manual DoT application still matters for distant or
+                dangerous targets.
+              </td>
+            </tr>
+
+            <tr>
+              <td>Cooldown naming confusion</td>
+              <td class="muted">
+                Voidform, Dark Ascension, and Ascended Voidform must feel
+                visually and mechanically distinct.
+              </td>
+              <td>
+                Keep Shadowform as the always-on stance, reserve Voidform for
+                the recurring window, and reserve Ascended Voidform for the
+                major empowered state.
+              </td>
+            </tr>
+
+            <tr>
+              <td>Hero talents become required fixes</td>
+              <td class="muted">
+                Archon or Voidweaver should not be needed to make the base spec
+                feel complete.
+              </td>
+              <td>
+                Keep the base loop functional first. Hero talents should modify
+                emphasis, not solve missing fundamentals.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="tuning" class="section-block">
+        <div class="section-header">
+          <div class="eyebrow">Tuning Notes</div>
+          <h2>Numbers are placeholders. The structure matters first.</h2>
+          <p class="muted">
+            This redesign uses sample values to communicate design intent.
+            Final tuning would depend on encounter testing, target count
+            scaling, dungeon pacing, raid boss profiles, Voidform frequency, and
+            Dark Ascension’s Ascended Voidform value budget.
+          </p>
+        </div>
+
+        <div class="grid two">
+          <article class="card">
+            <h3>Resonance caps</h3>
+            <p class="muted">
+              Resonance should stack up to 5 times per enemy and be consumed all
+              at once by payoff spells. Additional tuning can use target caps or
+              diminishing returns to prevent council fights from recreating
+              Psychic Link-style scaling problems.
+            </p>
+          </article>
+
+          <article class="card">
+            <h3>Shadow Word: Madness limiter</h3>
+            <p class="muted">
+              Shadow Word: Madness applies 1 Resonance on cast only. A 6 sec
+              per-target limiter lets it support priority funneling without
+              overfeeding Resonance during high-Insanity windows.
+            </p>
+          </article>
+
+          <article class="card">
+            <h3>Ascended Voidform value budget</h3>
+            <p class="muted">
+              Ascended Voidform should feel stronger than normal Voidform, but
+              not so strong that players feel punished for using normal Voidform
+              windows between Dark Ascension cycles.
+            </p>
+          </article>
+
+          <article class="card">
+            <h3>Void Lash charge economy</h3>
+            <p class="muted">
+              Two charges let Void Lash bridge pull timing and capstone-idol
+              activation without requiring the player to press it on cooldown
+              every time. The 20 sec recharge prevents excessive burst stacking.
+            </p>
+          </article>
+
+          <article class="card">
+            <h3>Mind Sear target cap</h3>
+            <p class="muted">
+              The baseline 5-target application cap keeps setup fast without
+              making every pull instantly fully solved. Expansive Sear can widen
+              coverage for large-pull builds without making that coverage
+              baseline.
+            </p>
+          </article>
+
+          <article class="card">
+            <h3>Hero and Apex variance</h3>
+            <p class="muted">
+              Archon, Voidweaver, Shadowy Apparitions, and Void Apparitions can
+              shift emphasis, but base Shadow should not rely on any one hero or
+              Apex interaction to feel functional.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section id="tooltips" class="section-block">
+        <div class="section-header">
+          <div class="eyebrow">Expanded Tooltip Set</div>
+          <h2>Sample in-game language for the redesigned kit.</h2>
+        </div>
+
+        <article class="card">
+          <div class="tooltip">
+            <strong>
+              <img class="mini-icon" src="../assets/shadowform.jpg" alt="" />
+              Shadowform </strong
+            ><br />
+            Assume a Shadowform, increasing your Shadow damage and changing your
+            visual appearance. Shadowform is the default identity stance and is
+            not part of the rotational cooldown structure.
+          </div>
+
+          <div class="tooltip">
+            <strong>
+              <img class="mini-icon" src="../assets/voidform.jpg" alt="" />
+              Voidform </strong
+            ><br />
+            Enter Voidform for 10 sec, increasing Haste by 15% and causing your
+            damage-over-time effects to tick 25% faster. While empowered by Dark
+            Ascension, Voidform becomes Ascended Voidform.
+          </div>
+
+          <div class="tooltip">
+            <strong>
+              <img class="mini-icon" src="../assets/voidform.jpg" alt="" />
+              Ascended Voidform </strong
+            ><br />
+            An empowered Voidform state triggered by Dark Ascension. Lasts 3 sec
+            longer, increases Resonance generation, and causes Void Lash to
+            strike one additional afflicted target.
+          </div>
+
+          <div class="tooltip">
+            <strong>
+              <img
+                class="mini-icon"
+                src="../assets/void_ascension.jpg"
+                alt=""
+              />
+              Dark Ascension </strong
+            ><br />
+            Ascend into deeper Void power for 20 sec, causing your next 2
+            Voidforms to become Ascended Voidform.
+          </div>
+
+          <div class="tooltip">
+            <strong>
+              <img
+                class="mini-icon"
+                src="../assets/shadow_word_pain.jpg"
+                alt=""
+              />
+              Void Focus </strong
+            ><br />
+            Your damaging spells deal 3% increased damage to your current target
+            for each other enemy affected by Shadow Word: Pain or Vampiric
+            Touch, up to 15%.
+          </div>
+
+          <div class="tooltip">
+            <strong>
+              <img
+                class="mini-icon"
+                src="../assets/invoked_nightmare.jpg"
+                alt=""
+              />
+              Resonance </strong
+            ><br />
+            Your Shadow Word: Pain and Vampiric Touch ticks build Resonance on
+            affected enemies, stacking up to 5 times for 12 sec. Shadow Word:
+            Madness applies 1 Resonance to its target when cast. This effect can
+            occur once every 6 sec per target. Mind Blast consumes all Resonance
+            from your current target, dealing Shadow damage per stack consumed.
+            Void Lash consumes all Resonance from enemies it strikes, dealing
+            reduced damage beyond 5 targets.
+          </div>
+
+          <div class="tooltip">
+            <strong>
+              <img
+                class="mini-icon"
+                src="../assets/shadow_word_madness.jpg"
+                alt=""
+              />
+              Shadow Word: Madness </strong
+            ><br />
+            Spend Insanity to assault the target's mind, dealing Shadow damage.
+            Applies 1 Resonance to the target when cast. This Resonance effect
+            can occur once every 6 sec per target. During Voidform or Ascended
+            Voidform, also refreshes Resonance duration on the target.
+          </div>
+
+          <div class="tooltip">
+            <strong>
+              <img class="mini-icon" src="../assets/void_lash.jpg" alt="" />
+              Void Lash </strong
+            ><br />
+            Strike your target with a Void Tentacle, damaging your target and
+            nearby afflicted enemies. Consumes all Resonance from enemies
+            struck, dealing Shadow damage for each stack consumed. Has 2 charges
+            and a 20 sec recharge. Activates one of your four idol capstones.
+          </div>
+
+          <div class="tooltip">
+            <strong>
+              <img class="mini-icon" src="../assets/mind_sear.jpg" alt="" />
+              Mind Sear </strong
+            ><br />
+            Apply Vampiric Touch and Shadow Word: Pain to your target and up to
+            4 nearby enemies.
+          </div>
+
+          <div class="tooltip">
+            <strong>
+              <img
+                class="mini-icon"
+                src="../assets/shadowy_apparitions.jpg"
+                alt=""
+              />
+              Shadowy Apparitions </strong
+            ><br />
+            Your damage-over-time effects can summon Shadowy Apparitions that
+            travel to afflicted targets, dealing Shadow damage. Shadowy
+            Apparitions remain the baseline apparition system.
+          </div>
+
+          <div class="tooltip">
+            <strong>
+              <img
+                class="mini-icon"
+                src="../assets/void_apparitions.jpg"
+                alt=""
+              />
+              Void Apparitions </strong
+            ><br />
+            When an effect from one of your capstone idols is triggered, spawn a
+            Shadowy Apparition. Shadowy Apparitions have a chance to spawn as a
+            Void Apparition, dealing additional damage.
+          </div>
+
+          <div class="tooltip">
+            <strong>
+              <img
+                class="mini-icon"
+                src="../assets/shadow_word_death.jpg"
+                alt=""
+              />
+              Depth of Shadows </strong
+            ><br />
+            Shadow Word: Death has a chance to call additional Shadowfiends when
+            it strikes a target below 20% health. This keeps Shadowfiend as a
+            talent-driven damage layer rather than a rotational button.
+          </div>
+
+          <div class="tooltip">
+            <strong>
+              <img class="mini-icon" src="../assets/voidwraith.jpg" alt="" />
+              Voidwraith </strong
+            ><br />
+            Replaces Shadowfiend with a ranged Voidwraith that deals increased
+            damage based on the target's current health percentage.
+          </div>
+        </article>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="page-shell">
+        <strong>Shadow Priest Redesign</strong>
+        <p class="small">Detailed Combat Design Page</p>
+
+        <div class="footer-links">
+          <a class="button secondary" href="index.html"
+            >Back to Shadow overview</a
+          >
+          <a class="button secondary" href="../index.html">Priest hub</a>
+          <a class="button secondary" href="#top">Back to top</a>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
