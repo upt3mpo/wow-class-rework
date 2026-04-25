@@ -120,11 +120,12 @@ It is intended as:
 
 ## Access
 
-- Priest Hub: `/index.html`
-- Shadow Overview: `/shadow/index.html`
-- Shadow Detailed: `/shadow/detailed.html`
-- Discipline Overview: `/discipline/index.html`
-- Discipline Detailed: `/discipline/detailed.html`
+- Root redirect: `/` → `/priest/index.html` (added `index.html` at repository root)
+- Priest Hub: `/priest/index.html`
+- Shadow Overview: `/priest/shadow/index.html`
+- Shadow Detailed: `/priest/shadow/detailed.html`
+- Discipline Overview: `/priest/discipline/index.html`
+- Discipline Detailed: `/priest/discipline/detailed.html`
 
 ---
 
