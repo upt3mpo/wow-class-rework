@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="Detailed mechanics, tuning rules, timelines, talent examples, UI requirements, and test plan for a Discipline Priest class redesign concept."
+      content="Detailed system rules, tuning levers, timelines, talent examples, UI requirements, validation risks, and tooltip language for a Discipline Priest redesign concept."
     />
     <title>Discipline Priest Redesign | Detailed Design</title>
     <link rel="stylesheet" href="../styles.css" />
@@ -38,7 +38,7 @@
       <h1>Discipline System Rules</h1>
 
       <p class="hero-copy">
-        This page defines the mechanical rules behind Deferred Atonement,
+        This page defines the system rules behind Deferred Atonement,
         Contrition, Siphoned Faith, healing releases, talent direction, UI
         requirements, tuning levers, encounter examples, and how Discipline
         handles triage, group damage, rot, burst, Mythic+, and raid healing
@@ -64,7 +64,7 @@
         <div class="section-header">
           <div class="eyebrow">Design Summary</div>
           <h2>
-            The detailed rules preserve the overview’s core thesis: Discipline
+            The detailed systems preserve the overview’s core thesis: Discipline
             shapes damage, prepares healing, and releases pressure deliberately.
           </h2>
         </div>
@@ -108,7 +108,7 @@
         </div>
 
         <div class="callout">
-          <strong>Mechanical contract:</strong> Atonement enables the system.
+          <strong>System contract:</strong> Atonement enables the system.
           Offense builds the resource. Incoming damage creates pressure. Healing
           releases resolve that pressure.
         </div>
@@ -128,7 +128,9 @@
               alt="Atonement icon"
             />
             <b>Atonement</b>
-            <span class="small">Marks allies and enables damage delay.</span>
+            <span class="small"
+              >Marks allies and enables capped damage shaping.</span
+            >
           </div>
 
           <div class="target main">
@@ -309,7 +311,7 @@
         <div class="callout">
           <strong>Rule change:</strong> Atonement no longer says “your damage
           heals this ally.” Instead, it says “this ally is prepared for
-          Discipline’s damage-shaping and Contrition systems.”
+          Discipline’s damage-shaping, Contrition, and release systems.”
         </div>
 
         <div class="note">
@@ -324,7 +326,7 @@
           <div class="eyebrow">Deferred Damage</div>
           <h2>Discipline delays damage instead of absorbing it.</h2>
           <p class="muted">
-            This brings back the controlled, preventive feeling of shield-heavy
+            This preserves the controlled, preventive feeling of shield-heavy
             Discipline without allowing shields to erase damage outright.
           </p>
         </div>
@@ -450,8 +452,8 @@
 
         <div class="callout">
           <strong>Design intent:</strong> Deferred Damage gives the healer time
-          to respond without removing danger. It smooths damage, but it does not
-          make allies safe by default.
+          to respond without removing danger. It smooths pressure, but it does
+          not make allies safe by default.
         </div>
 
         <div class="note">
@@ -465,7 +467,7 @@
         <div class="section-header">
           <div class="eyebrow">Contrition Rules</div>
           <h2>
-            Contrition turns offensive uptime into stored healing potential.
+            Contrition turns offensive uptime into stored release potential.
           </h2>
         </div>
 
@@ -526,7 +528,8 @@
             <p class="muted">
               Single-target releases consume more stacks from one ally. Group
               releases consume fewer stacks across several allies. This gives
-              tuning control between spot healing and group healing.
+              tuning control between spot healing, group healing, and Deferred
+              Damage resolution.
             </p>
           </article>
         </div>
@@ -589,7 +592,7 @@
 
         <div class="callout">
           <strong>Core distinction:</strong> Damage does not heal directly.
-          Damage prepares healing.
+          Damage prepares healing and sustain.
         </div>
 
         <div class="note">
@@ -607,7 +610,8 @@
           <p class="muted">
             The release system lets the kit distinguish single-target triage,
             group recovery, sustained rot stabilization, and major cooldown
-            recovery without making every heal depend on identical setup.
+            recovery without making every heal depend on identical setup or
+            identical target counts.
           </p>
         </div>
 
@@ -681,7 +685,7 @@
           </h2>
           <p class="muted">
             This section clarifies which tools are retained, reworked,
-            constrained, or used as supporting mechanics.
+            constrained, or used as supporting systems.
           </p>
         </div>
 
@@ -700,7 +704,7 @@
               <td>Reworked</td>
               <td class="muted">
                 No longer directly converts damage into healing. It enables
-                capped damage delay and Contrition generation.
+                capped damage shaping and Contrition generation.
               </td>
             </tr>
 
@@ -911,7 +915,7 @@
       <section id="priorities" class="section-block">
         <div class="section-header">
           <div class="eyebrow">Priority Lists</div>
-          <h2>Discipline uses healing priorities, not a fixed rotation.</h2>
+          <h2>Discipline uses healing priorities, not a fixed script.</h2>
         </div>
 
         <article class="card">
@@ -1106,8 +1110,8 @@
         <div class="section-header">
           <div class="eyebrow">Example Choice Nodes</div>
           <h2>
-            Talent choices should bias Discipline toward a healing profile, not
-            create trap builds.
+            Talent choices should bias Discipline toward a healing profile
+            without creating trap builds.
           </h2>
           <p class="muted">
             The baseline spec already has triage tools, group healing tools, rot
@@ -1465,7 +1469,8 @@
         <div class="section-header">
           <div class="eyebrow">Hero and Apex Talent Integration</div>
           <h2>
-            Oracle and Voidweaver should modify the loop, not fix the base spec.
+            Oracle and Voidweaver should modify the loop, not repair the base
+            spec.
           </h2>
         </div>
 
@@ -1564,7 +1569,7 @@
       <section id="timelines" class="section-block">
         <div class="section-header">
           <div class="eyebrow">Rotation Timelines</div>
-          <h2>The loop changes based on damage pattern.</h2>
+          <h2>The loop changes based on pressure pattern.</h2>
         </div>
 
         <div class="grid two">
@@ -1681,9 +1686,9 @@
             The system only works if the player can read ally state quickly.
           </h2>
           <p class="muted">
-            Deferred Damage and Contrition cannot be hidden background
-            mechanics. The player needs enough UI information to decide whether
-            to build, release, shield, or use a cooldown.
+            Deferred Damage and Contrition cannot be hidden background systems.
+            The player needs enough UI information to decide whether to build,
+            release, shield, or use a cooldown.
           </p>
         </div>
 
@@ -1729,7 +1734,7 @@
       <section id="tuning" class="section-block">
         <div class="section-header">
           <div class="eyebrow">Tuning Notes</div>
-          <h2>Numbers are placeholders. The structure matters first.</h2>
+          <h2>Numbers are placeholders. The system structure matters first.</h2>
         </div>
 
         <div class="grid two">
@@ -1851,7 +1856,9 @@
       <section id="risks" class="section-block">
         <div class="section-header">
           <div class="eyebrow">Risks and Mitigations</div>
-          <h2>Known risks should be solved by rules, not emergency tuning.</h2>
+          <h2>
+            Known risks should be solved by system rules, not emergency tuning.
+          </h2>
         </div>
 
         <table class="comparison-table">
@@ -1940,8 +1947,8 @@
       <section id="design-takeaway" class="section-block">
         <div class="callout">
           <strong>Design takeaway:</strong> This detailed page documents the
-          mechanical rules behind the Discipline redesign: state readability,
-          tuning levers, talent safety rails, gameplay examples, UI needs, and
+          system rules behind the Discipline redesign: state readability, tuning
+          levers, talent safety rails, gameplay examples, UI needs, and
           validation risks.
         </div>
       </section>

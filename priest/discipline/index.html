@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="A modern Discipline Priest redesign concept built around capped deferred damage, Contrition, offensive mana sustain, and deliberate healing releases."
+      content="A systems-driven Discipline Priest redesign concept built around capped deferred damage, Contrition, offensive mana sustain, and deliberate healing releases."
     />
     <title>Discipline Priest Redesign | Deferred Atonement</title>
     <link rel="stylesheet" href="../styles.css" />
@@ -40,9 +40,10 @@
 
           <p class="hero-copy">
             A Discipline Priest redesign focused on preserving offensive healer
-            identity while removing direct damage-to-healing scaling. Atonement
-            now shapes incoming damage, Contrition stores healing potential, and
-            Siphoned Faith rewards offensive play with mana sustain.
+            identity while separating damage, healing, and mana tuning.
+            Atonement shapes incoming damage, Contrition stores healing
+            potential, and Siphoned Faith rewards offensive play with mana
+            sustain.
           </p>
 
           <div class="thesis">
@@ -109,7 +110,7 @@
           <p class="muted">
             This overview explains the design direction, player experience, and
             high-level system changes. Exact values, talent examples, timelines,
-            and tooltips belong in the detailed page.
+            validation risks, and tooltip language belong in the detailed page.
           </p>
         </div>
 
@@ -118,7 +119,7 @@
             <h3>Core Change</h3>
             <p class="muted">
               Atonement no longer directly converts damage into healing. It
-              marks allies for capped damage delay and Contrition generation.
+              marks allies for capped damage shaping and Contrition generation.
             </p>
           </article>
 
@@ -154,7 +155,9 @@
             Healing through damage is one of the strongest healer concepts in
             World of Warcraft, but direct Atonement conversion forces
             Discipline’s damage, healing, ramp timing, and mana economy to be
-            tuned around each other too tightly.
+            tuned around each other too tightly. This redesign keeps the
+            offensive identity while making each layer easier to tune
+            independently.
           </p>
         </div>
 
@@ -205,9 +208,10 @@
             <h3>Primary Goals</h3>
             <ul class="muted">
               <li>Keep Discipline’s identity as an offensive healer.</li>
-              <li>Separate damage tuning from healing throughput.</li>
+              <li>Separate damage, healing, and mana tuning.</li>
               <li>
-                Replace direct Atonement healing with capped damage shaping.
+                Replace direct Atonement healing with capped damage shaping and
+                deliberate release spells.
               </li>
               <li>
                 Give Discipline real answers to rot, burst, and triage damage.
@@ -230,7 +234,7 @@
           <article class="card strong">
             <h3>Design Constraints</h3>
             <ul class="muted">
-              <li>Do not recreate weak Atonement under a different name.</li>
+              <li>Do not recreate direct Atonement under a different name.</li>
               <li>
                 Do not make Power Word: Shield the default answer to every
                 damage pattern.
@@ -310,7 +314,7 @@
 
           <p class="muted">
             Discipline’s redesigned loop depends on readable ally states: who is
-            marked, who is prepared, who is carrying deferred damage, and when
+            marked, who is prepared, who is carrying Deferred Damage, and when
             that pressure is released.
           </p>
         </div>
@@ -387,7 +391,8 @@
           <p class="muted">
             The goal is not to remove Discipline’s proactive identity. The goal
             is to shift it away from raw absorb dominance and direct damage
-            conversion into a more tunable damage-shaping model.
+            conversion into a more tunable damage-shaping model with clear
+            system boundaries.
           </p>
         </div>
 
@@ -545,7 +550,8 @@
         <div class="section-header">
           <div class="eyebrow">Supporting Mechanics</div>
           <h2>
-            Existing spells keep their identity, but their jobs become clearer.
+            Existing spells keep their identity, but their system roles become
+            clearer.
           </h2>
         </div>
 
@@ -619,8 +625,8 @@
           </h2>
           <p class="muted">
             The overview keeps spell treatment high-level. Exact stack rules,
-            mana values, talent examples, timelines, and tooltip language belong
-            in the detailed design page.
+            mana values, talent examples, timelines, validation risks, and
+            tooltip language belong in the detailed design page.
           </p>
         </div>
 
@@ -712,7 +718,7 @@
       <section id="hero-apex" class="page-shell section-block">
         <div class="section-header">
           <div class="eyebrow">Hero and Apex Talent Integration</div>
-          <h2>Hero talents modify the loop without fixing the base spec.</h2>
+          <h2>Hero talents modify the loop without repairing the base spec.</h2>
 
           <p class="muted">
             Oracle and Voidweaver should change emphasis, not repair missing
@@ -1005,7 +1011,7 @@
       <section id="tradeoffs" class="page-shell section-block">
         <div class="section-header">
           <div class="eyebrow">Tradeoffs</div>
-          <h2>What this design intentionally gives up.</h2>
+          <h2>What this design intentionally trades away.</h2>
 
           <p class="muted">
             This redesign does not try to make Discipline universally safe. It
@@ -1180,8 +1186,8 @@
         <div class="callout">
           <strong>Design takeaway:</strong> This redesign shows how to preserve
           Discipline’s offensive-healer identity while replacing direct
-          damage-to-healing scaling with readable, capped, and tunable healing
-          systems.
+          damage-to-healing scaling with readable, capped, and tunable systems
+          for damage shaping, healing release, and mana sustain.
         </div>
       </section>
     </main>

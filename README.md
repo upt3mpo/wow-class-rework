@@ -1,6 +1,6 @@
 # Priest Class Redesign (World of Warcraft)
 
-A full redesign of Shadow and Discipline Priest focused on modernizing combat systems while preserving core class fantasy.
+A systems-driven redesign of Shadow and Discipline Priest focused on modernizing combat loops while preserving core class identity.
 
 This project explores how both specs could evolve to support clearer gameplay loops, better tuning control, and stronger moment-to-moment decision making across raid and Mythic+ content.
 
@@ -8,7 +8,7 @@ This project explores how both specs could evolve to support clearer gameplay lo
 
 ## Overview
 
-This redesign focuses on two core directions:
+This redesign explores two distinct directions:
 
 - **Shadow:** Controlled pressure conversion through cyclical Voidform gameplay
 - **Discipline:** Damage shaping through delayed damage and deliberate healing release
@@ -66,7 +66,7 @@ Exact system behavior and supporting information:
 
 - Replaces direct damage-to-healing conversion with **Deferred Atonement**
 - Introduces **Contrition** as stored healing potential
-- Uses **release spells** to resolve damage and healing deliberately
+- Uses **release spells** to resolve stored damage and healing deliberately
 - Separates damage, healing, and mana for better tuning control
 
 **Core idea:**
@@ -81,7 +81,7 @@ This project emphasizes:
 
 - Class identity and fantasy preservation
 - Clear system boundaries and constraints
-- Tunable mechanics instead of passive scaling
+- Tunable systems instead of passive scaling
 - Gameplay that rewards decision-making over automation
 - Readable cause-and-effect for players
 
@@ -113,14 +113,15 @@ This is a design exploration of how Priest specs could be structured for future 
 It is intended as:
 
 - A structured gameplay design resource
-- A reference for discussing class mechanics and combat systems
-- An example of system-driven class design thinking
+- A reference for class mechanics and combat systems
+- An example of system-driven class design
+- A portfolio piece demonstrating combat system design for MMO/ARPG gameplay
 
 ---
 
 ## Access
 
-- Root redirect: `/` → `/priest/index.html` (added `index.html` at repository root)
+- Root redirect: `/` → `/priest/index.html`
 - Priest Hub: `/priest/index.html`
 - Shadow Overview: `/priest/shadow/index.html`
 - Shadow Detailed: `/priest/shadow/detailed.html`
