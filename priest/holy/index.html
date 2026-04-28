@@ -1,0 +1,721 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Holy Priest spec assessment: Why a structural redesign is not warranted, what the real problems are, and what finishing Holy actually means."
+    />
+    <title>Holy Priest | Spec Assessment</title>
+    <link rel="stylesheet" href="../styles.css" />
+  </head>
+
+  <body class="priest-page">
+    <header class="site-header">
+      <nav class="page-shell nav">
+        <a href="../index.html" class="brand">Priest Class Redesign</a>
+
+        <div class="nav-links">
+          <a href="../index.html">Priest Hub</a>
+          <a href="#at-a-glance">At a Glance</a>
+          <a href="#what-works">What Works</a>
+          <a href="#problems">Problems</a>
+          <a href="#tension">Design Tension</a>
+          <a href="#when-it-works">When It Works</a>
+          <a href="#philosophy">Philosophy</a>
+        </div>
+      </nav>
+    </header>
+
+    <main id="top">
+      <section class="hero page-shell">
+        <div>
+          <div class="eyebrow">Spec Assessment</div>
+          <h1>Finishing Holy, Not Rebuilding It</h1>
+
+          <p class="hero-copy">
+            A Holy Priest assessment examining what works, what does not, and
+            why the answer is better tuning and a cleaner Apotheosis loop. Not a
+            new system. Shadow had a structural volatility problem. Discipline
+            had a coupling problem. Holy has neither. What it has is a strong
+            burst window, a thin baseline, and a mana economy that lives and
+            dies with its cooldowns.
+          </p>
+
+          <div class="thesis">
+            When the foundation is right, the work is tuning. Not redesign.
+          </div>
+
+          <div class="button-row">
+            <a class="button" href="#what-works">What Works</a>
+            <a class="button secondary" href="#problems">What Needs Fixing</a>
+            <a class="button secondary" href="../index.html"
+              >Back to Priest Hub</a
+            >
+          </div>
+        </div>
+
+        <aside class="hero-card" aria-label="Assessment summary">
+          <span class="tag">Core Loop</span>
+
+          <div class="cycle">
+            <div class="cycle-step">
+              <img
+                class="mini-icon"
+                src="../assets/prayer_of_mending.jpg"
+                alt=""
+              />
+              <span
+                ><strong>1.</strong> Keep Prayer of Mending on cooldown</span
+              >
+            </div>
+
+            <div class="cycle-step">
+              <img
+                class="mini-icon"
+                src="../assets/holy_word_serenity.jpg"
+                alt=""
+              />
+              <span><strong>2.</strong> Use Holy Words on cooldown</span>
+            </div>
+
+            <div class="cycle-step">
+              <img class="mini-icon" src="../assets/flash_heal.jpg" alt="" />
+              <span><strong>3.</strong> Build Lightweaver with Flash Heal</span>
+            </div>
+
+            <div class="cycle-step">
+              <img
+                class="mini-icon"
+                src="../assets/prayer_of_healing.jpg"
+                alt=""
+              />
+              <span><strong>4.</strong> Spend on Prayer of Healing</span>
+            </div>
+
+            <div class="cycle-step">
+              <img class="mini-icon" src="../assets/apotheosis.jpg" alt="" />
+              <span><strong>5.</strong> Apotheosis to reset and sustain</span>
+            </div>
+          </div>
+        </aside>
+      </section>
+
+      <section id="at-a-glance" class="page-shell section-block">
+        <div class="section-header">
+          <div class="eyebrow">At a Glance</div>
+          <h2>This is an assessment, not a redesign.</h2>
+
+          <p class="muted">
+            Holy's rotation in Midnight is deliberately simple: keep Prayer of
+            Mending active, use Holy Words on cooldown, build Lightweaver
+            through Flash Heal casts, and spend on Prayer of Healing when mana
+            allows. That simplicity is not the problem. The problem is what
+            happens when the cooldowns are gone and nothing is left but
+            expensive filler waiting for Apotheosis to come back. The spec does
+            not need a new foundation. It needs the floor under its baseline to
+            be higher.
+          </p>
+        </div>
+
+        <div class="grid three">
+          <article class="card">
+            <span class="tag">Identity</span>
+            <h3>Cooldown-driven burst healer</h3>
+            <p class="muted">
+              Holy builds toward power windows, releases them through Holy Words
+              and Apotheosis, then manages the gap between them. The fantasy is
+              intact and the structure is sound.
+            </p>
+          </article>
+
+          <article class="card">
+            <span class="tag">Core System</span>
+            <h3>Holy Word loop works</h3>
+            <p class="muted">
+              Spell usage reducing Holy Word cooldowns rewards encounter
+              knowledge and active casting. Flash Heal, Prayer of Healing, and
+              Renew each connect to a Holy Word. The cause-and-effect is
+              readable and the skill ceiling is real.
+            </p>
+          </article>
+
+          <article class="card">
+            <span class="tag">Real Problem</span>
+            <h3>Apotheosis dependency</h3>
+            <p class="muted">
+              The spec feels complete inside an Apotheosis window and thin
+              outside one. This is a cooldown pacing and mana floor problem. Not
+              a system problem. The structure works. The baseline needs to be
+              stronger between windows.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section id="what-works" class="page-shell section-block">
+        <div class="section-header">
+          <div class="eyebrow">What Works</div>
+          <h2>
+            The Holy Word system and Lightweaver loop are both doing their jobs.
+          </h2>
+
+          <p class="muted">
+            Holy Word: Serenity and Sanctify are not just cooldowns: They are
+            the spec's payoff layer, and the rotation earns them. Casting Flash
+            Heal reduces Serenity. Casting Prayer of Healing and Renew reduce
+            Sanctify. The player builds toward major moments through ordinary
+            play. Lightweaver adds a second loop on top: Flash Heal stacks feed
+            into stronger Prayer of Healing casts. Two interconnected systems,
+            both readable, both rewarding knowledge over autopilot.
+          </p>
+        </div>
+
+        <div class="grid two">
+          <article class="card strong">
+            <div class="ability-heading">
+              <img
+                class="ability-icon"
+                src="../assets/holy_word_serenity.jpg"
+                alt="Holy Word: Serenity icon"
+              />
+              <div>
+                <span class="tag">Core System</span>
+                <h3>Holy Word Cooldown Reduction</h3>
+              </div>
+            </div>
+            <p class="muted">
+              Spell usage reducing Holy Word cooldowns creates meaningful
+              cause-and-effect between filler casting and major payoff moments.
+              Flash Heal and Heal reduce Serenity. Prayer of Healing and Renew
+              reduce Sanctify. Smite reduces Chastise. The system is elegant,
+              legible, and should not be changed.
+            </p>
+          </article>
+
+          <article class="card strong">
+            <div class="ability-heading">
+              <img
+                class="ability-icon"
+                src="../assets/flash_heal.jpg"
+                alt="Flash Heal icon"
+              />
+              <div>
+                <span class="tag">Resource Loop</span>
+                <h3>Lightweaver</h3>
+              </div>
+            </div>
+            <p class="muted">
+              Flash Heal builds Lightweaver stacks that empower Prayer of
+              Healing casts. This creates a meaningful setup-payoff relationship
+              for AoE healing and is the main tool that makes Prayer of Healing
+              feel worth pressing when Apotheosis is not active.
+            </p>
+          </article>
+        </div>
+
+        <div class="grid three" style="margin-top: 1.5rem">
+          <article class="card">
+            <div class="ability-heading">
+              <img
+                class="ability-icon"
+                src="../assets/apotheosis.jpg"
+                alt="Apotheosis icon"
+              />
+              <div>
+                <span class="tag">Major Cooldown</span>
+                <h3>Apotheosis</h3>
+              </div>
+            </div>
+            <p class="muted">
+              Resets Holy Word cooldowns, reduces their mana cost, and
+              accelerates cooldown reduction for the duration. The spec's best
+              moment and its primary mana valve. Pool at least one charge of
+              Serenity and Sanctify before activating. Pair with Halo in Archon
+              for synchronized peak output. Use frequently; Do not sit on it.
+            </p>
+          </article>
+
+          <article class="card">
+            <div class="ability-heading">
+              <img
+                class="ability-icon"
+                src="../assets/prayer_of_mending.jpg"
+                alt="Prayer of Mending icon"
+              />
+              <div>
+                <span class="tag">Passive Identity</span>
+                <h3>Prayer of Mending</h3>
+              </div>
+            </div>
+            <p class="muted">
+              Stacks up to 14, 7 per cast. Unfolding Vision keeps stacks active
+              longer by refreshing them when you cast on an ally that already
+              has stacks; Reducing waste and increasing passive output. Managing
+              overcapping without letting duration expire is the spec's primary
+              skill expression outside of cooldown windows.
+            </p>
+          </article>
+
+          <article class="card">
+            <div class="ability-heading">
+              <img
+                class="ability-icon"
+                src="../assets/guardian_spirit.jpg"
+                alt="Guardian Spirit icon"
+              />
+              <div>
+                <span class="tag">Emergency Tool</span>
+                <h3>Guardian Spirit</h3>
+              </div>
+            </div>
+            <p class="muted">
+              One of the best emergency buttons in the game. Increases healing
+              received by 60% and prevents death once. Clear, readable,
+              high-stakes. Preserve as-is.
+            </p>
+          </article>
+        </div>
+
+        <table class="comparison-table" style="margin-top: 1.5rem">
+          <thead>
+            <tr>
+              <th>Spell / System</th>
+              <th>Assessment</th>
+              <th>Recommendation</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Holy Word cooldown reduction</td>
+              <td>Core loop working as intended. Readable cause-and-effect.</td>
+              <td>Preserve</td>
+            </tr>
+            <tr>
+              <td>Lightweaver</td>
+              <td>
+                Flash Heal → Prayer of Healing loop adds real depth. Works.
+              </td>
+              <td>Preserve</td>
+            </tr>
+            <tr>
+              <td>Apotheosis</td>
+              <td>
+                Strong burst window and mana valve. The gap around it is the
+                problem, not the ability itself.
+              </td>
+              <td>Preserve: address the gap between windows</td>
+            </tr>
+            <tr>
+              <td>Prayer of Mending stacking</td>
+              <td>
+                Meaningful uptime skill with real consequence from Unfolding
+                Vision.
+              </td>
+              <td>Preserve</td>
+            </tr>
+            <tr>
+              <td>Guardian Spirit / Divine Hymn</td>
+              <td>Strong, legible, high-stakes. No changes warranted.</td>
+              <td>Preserve</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="problems" class="page-shell section-block">
+        <div class="section-header">
+          <div class="eyebrow">What's Actually Wrong</div>
+          <h2>The spec has a strong ceiling and a thin floor.</h2>
+
+          <p class="muted">
+            Inside an Apotheosis window, Holy feels like a complete healer.
+            Outside one, it is often casting expensive spells at reduced
+            efficiency, waiting for cooldowns to reset naturally. That gap, not
+            the structure itself, is the real problem. And it is a tuning and
+            cooldown pacing problem, not a reason to replace the system.
+          </p>
+        </div>
+
+        <div class="grid three">
+          <article class="card strong">
+            <span class="tag">Problem 1</span>
+            <h3>Feast / Famine Around Apotheosis</h3>
+            <p class="muted">
+              Apotheosis resets Holy Words, reduces their mana cost, and
+              accelerates cooldown reduction simultaneously. The spec's output
+              and mana efficiency both peak inside this window. When Apotheosis
+              is on cooldown, Holy Words rebuild through natural reduction,
+              which takes time, costs mana without the discount, and leaves the
+              player in a noticeably weaker state.
+            </p>
+            <p class="muted">
+              The loop is not broken. The gap between windows is too wide and
+              too thin. A spec with a strong burst identity should feel
+              competent in its baseline. Not merely adequate while waiting for
+              the next reset.
+            </p>
+          </article>
+
+          <article class="card strong">
+            <span class="tag">Problem 2</span>
+            <h3>Prayer of Healing as a Mana Trap</h3>
+            <p class="muted">
+              Prayer of Healing is the spec's primary AoE tool and also its most
+              expensive spell. Lightweaver makes it feel worth pressing when
+              stacks are built, but building those stacks requires Flash Heal
+              casts, which take time and mana of their own. Outside a
+              Lightweaver or Apotheosis window, there is no efficient AoE
+              fallback.
+            </p>
+            <p class="muted">
+              The mana economy swings between spending freely during windows and
+              rationing carefully in between. Players who commit too much during
+              a burst phase can find themselves starved for the next several
+              encounters, not because of bad decisions, but because the recovery
+              tools are tied to the same cooldown cycle.
+            </p>
+          </article>
+
+          <article class="card strong">
+            <span class="tag">Problem 3</span>
+            <h3>Baseline With No Depth Fallback</h3>
+            <p class="muted">
+              The rotation is simple by design. Holy is not a complex spec and
+              does not need to be. But simple rotations require a strong
+              baseline so skilled players have meaningful decisions between
+              cooldowns. Currently, the between-window rotation is Prayer of
+              Mending uptime and Smite filler for Surge of Light procs.
+            </p>
+            <p class="muted">
+              That is not enough consequence for a player who wants to feel in
+              control when all their buttons are on cooldown. The spec needs
+              more texture in the gap. Not more buttons, but more reason to care
+              about the decisions that exist between Apotheosis windows.
+            </p>
+          </article>
+        </div>
+
+        <div class="callout">
+          <strong>Design distinction:</strong> These are cooldown pacing and
+          mana economy problems. Not structural problems. Replacing the Holy
+          Word system or reworking Apotheosis would solve the wrong problem with
+          the wrong tool. The right answer is improving the baseline between
+          windows, not changing what the windows do.
+        </div>
+      </section>
+
+      <section id="tension" class="page-shell section-block">
+        <div class="section-header">
+          <div class="eyebrow">Design Tension</div>
+          <h2>
+            Archon and Oracle differentiate the burst window, but not the gap.
+          </h2>
+
+          <p class="muted">
+            Both Hero talent trees are coherent. Archon pairs Halo with
+            Apotheosis for synchronized burst and sustained Surge of Light
+            procs. Oracle focuses on Prayer of Mending throughput. Piety
+            passively redirects overheal to injured allies in Midnight, and
+            Prompt Prognosis adds efficient spot healing. The two paths feel
+            genuinely different inside their windows. The issue is that both
+            share the same thin baseline between them. Hero talents change the
+            shape of the burst, but not what the spec is doing while waiting for
+            it.
+          </p>
+        </div>
+
+        <div class="grid two">
+          <article class="card strong">
+            <div class="ability-heading">
+              <img
+                class="ability-icon"
+                src="../assets/halo.jpg"
+                alt="Halo icon"
+              />
+              <div>
+                <span class="tag">Archon</span>
+                <h3>Halo + Apotheosis Synchronization</h3>
+              </div>
+            </div>
+            <p class="muted">
+              Halo lasts longer and deals increased healing under Archon.
+              Pairing it with Apotheosis creates a defined burst window where
+              output and mana efficiency both peak at once. The loop is clear:
+              pool Holy Word charges before the window, activate Apotheosis and
+              Halo together, spend everything, then rebuild.
+            </p>
+            <p class="muted">
+              Surge of Light procs from Halo and offensive casts generate free,
+              stronger Flash Heals; a useful between-window tool that reduces
+              the gap somewhat without closing it. Smite as filler is more
+              meaningful in Archon because every proc has healing value.
+            </p>
+          </article>
+
+          <article class="card strong">
+            <div class="ability-heading">
+              <img
+                class="ability-icon"
+                src="../assets/prayer_of_mending.jpg"
+                alt="Prayer of Mending icon"
+              />
+              <div>
+                <span class="tag">Oracle</span>
+                <h3>Prayer of Mending Management</h3>
+              </div>
+            </div>
+            <p class="muted">
+              Oracle gains an additional charge of Prayer of Mending, making
+              active stack management more rewarding. Piety now passively
+              redirects overheal to injured allies without requiring a button. A
+              meaningful change that reduces the amount of healing wasted during
+              low-damage moments. Unfolding Vision keeps stacks active longer by
+              refreshing on cast.
+            </p>
+            <p class="muted">
+              Oracle's between-window baseline is slightly stronger than
+              Archon's because Prayer of Mending does more work. But it relies
+              on Apotheosis for the same mana relief and cooldown reset when the
+              group takes serious damage.
+            </p>
+          </article>
+        </div>
+
+        <div class="callout">
+          <strong>Design tension:</strong> The Hero talents differentiate the
+          burst windows well. The remaining work is giving both paths more
+          identity in the baseline so the spec does not feel like it is simply
+          waiting for the next Apotheosis regardless of which tree the player
+          chose.
+        </div>
+      </section>
+
+      <section id="when-it-works" class="page-shell section-block">
+        <div class="section-header">
+          <div class="eyebrow">When It Works</div>
+          <h2>When Holy is working, it feels like confident triage.</h2>
+
+          <p class="muted">
+            The fantasy at its best: the healer who always knows what the next
+            three seconds need. Prayer of Mending placed before the damage
+            lands. Holy Word: Serenity held for the spike. Lightweaver stacks
+            ready for the group hit. Apotheosis timed to the fight's heaviest
+            moment and paired with Halo for maximum output. The player is not
+            reacting, They are reading the encounter and placing tools before
+            the moment arrives.
+          </p>
+
+          <p class="muted">
+            That experience is achievable with the current system. What
+            undermines it is the gap after the window closes. When the player is
+            rebuilding toward the next Apotheosis and the rotation reduces to
+            Prayer of Mending uptime, Flash Heal stacking, and careful mana
+            rationing.
+          </p>
+        </div>
+
+        <div class="grid two">
+          <div>
+            <div class="eyebrow" style="margin-bottom: 0.5rem">
+              Archon - Burst Window
+            </div>
+            <p class="small muted" style="margin-bottom: 1rem">
+              Apotheosis + Halo synchronized
+            </p>
+
+            <div class="flow" style="flex-wrap: wrap; gap: 0.5rem">
+              <span class="pill">
+                <img
+                  class="mini-icon"
+                  src="../assets/prayer_of_mending.jpg"
+                  alt=""
+                />
+                Mending placed
+              </span>
+              <span class="arrow">→</span>
+              <span class="pill">
+                <img class="mini-icon" src="../assets/halo.jpg" alt="" />
+                Halo + Apotheosis
+              </span>
+              <span class="arrow">→</span>
+              <span class="pill">
+                <img
+                  class="mini-icon"
+                  src="../assets/holy_word_serenity.jpg"
+                  alt=""
+                />
+                Holy Words spent
+              </span>
+              <span class="arrow">→</span>
+              <span class="pill">
+                <img
+                  class="mini-icon"
+                  src="../assets/prayer_of_healing.jpg"
+                  alt=""
+                />
+                Prayer of Healing
+              </span>
+            </div>
+          </div>
+
+          <div>
+            <div class="eyebrow" style="margin-bottom: 0.5rem">
+              Between Windows
+            </div>
+            <p class="small muted" style="margin-bottom: 1rem">
+              Baseline while Apotheosis rebuilds
+            </p>
+
+            <div class="flow" style="flex-wrap: wrap; gap: 0.5rem">
+              <span class="pill">
+                <img
+                  class="mini-icon"
+                  src="../assets/prayer_of_mending.jpg"
+                  alt=""
+                />
+                Mending uptime
+              </span>
+              <span class="arrow">→</span>
+              <span class="pill">
+                <img class="mini-icon" src="../assets/flash_heal.jpg" alt="" />
+                Flash Heal (Lightweaver)
+              </span>
+              <span class="arrow">→</span>
+              <span class="pill">
+                <img
+                  class="mini-icon"
+                  src="../assets/holy_word_serenity.jpg"
+                  alt=""
+                />
+                Holy Words as available
+              </span>
+              <span class="arrow">→</span>
+              <span class="pill">
+                <img class="mini-icon" src="../assets/apotheosis.jpg" alt="" />
+                Rebuild to Apotheosis
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout" style="margin-top: 1.5rem">
+          The burst window is strong. The gap needs to be stronger. Improve the
+          mana floor between Apotheosis windows, tighten the cooldown pacing so
+          the rebuild feels purposeful rather than passive, and give the
+          between-window rotation more consequence. Holy does not need to be
+          rebuilt. It needs the valley between its peaks to be less steep.
+        </div>
+      </section>
+
+      <section id="philosophy" class="page-shell section-block">
+        <div class="section-header">
+          <div class="eyebrow">Design Philosophy</div>
+          <h2>Recognizing when not to redesign is part of the work.</h2>
+        </div>
+
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th>Pattern</th>
+              <th>Assessment</th>
+              <th>Recommendation</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Holy Word cooldown reduction</td>
+              <td>
+                Core loop working as intended. Cause-and-effect is readable and
+                rewards encounter knowledge.
+              </td>
+              <td>Preserve</td>
+            </tr>
+            <tr>
+              <td>Lightweaver</td>
+              <td>
+                Flash Heal → Prayer of Healing loop adds real depth and makes
+                AoE feel earned.
+              </td>
+              <td>Preserve</td>
+            </tr>
+            <tr>
+              <td>Apotheosis burst window</td>
+              <td>
+                Strong mana valve and cooldown reset in one ability. Pairs well
+                with Hero talents. The window itself is not the problem.
+              </td>
+              <td>Preserve the window - address the gap around it</td>
+            </tr>
+            <tr>
+              <td>Baseline between windows</td>
+              <td>
+                Thin. Prayer of Mending uptime and Smite filler is not enough
+                texture for a spec with a strong burst identity.
+              </td>
+              <td>
+                Improve - raise the mana floor, give the baseline more
+                consequence between windows
+              </td>
+            </tr>
+            <tr>
+              <td>Prayer of Healing cost</td>
+              <td>
+                Expensive outside Lightweaver and Apotheosis. Creates mana
+                swings that punish normal play patterns.
+              </td>
+              <td>
+                Tuning pass - reduce base cost or strengthen Lightweaver's
+                efficiency gain
+              </td>
+            </tr>
+            <tr>
+              <td>Archon / Oracle baseline</td>
+              <td>
+                Burst windows feel distinct. The between-window rotation does
+                not feel meaningfully different between the two trees.
+              </td>
+              <td>
+                Talent pass - give both paths more identity in the baseline, not
+                just the burst
+              </td>
+            </tr>
+            <tr>
+              <td>Guardian Spirit / Divine Hymn</td>
+              <td>
+                Strong, legible, high-stakes cooldowns. No changes warranted.
+              </td>
+              <td>Preserve</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="callout">
+          <strong>Assessment takeaway:</strong> Shadow and Discipline had
+          structural problems that required new systems. Holy has a strong
+          foundation with a specific pacing and mana economy problem: the gap
+          between Apotheosis windows is too wide and too thin. This assessment
+          is intentional. Not every spec needs to be rebuilt, and knowing the
+          difference is part of the design work.
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="page-shell">
+        <strong>Holy Priest Assessment</strong>
+        <p class="small">Spec Assessment Page</p>
+
+        <div class="footer-links">
+          <a class="button secondary" href="#top">Back to top</a>
+          <a class="button secondary" href="../index.html">Priest Hub</a>
+          <a class="button secondary" href="../shadow/index.html">Shadow</a>
+          <a class="button secondary" href="../discipline/index.html"
+            >Discipline</a
+          >
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

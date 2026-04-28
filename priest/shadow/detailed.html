@@ -33,6 +33,7 @@
           <a href="#test-plan">Test Plan</a>
           <a href="#risks">Risks</a>
           <a href="#tuning">Tuning</a>
+          <a href="#ui-requirements">UI</a>
           <a href="#tooltips">Tooltips</a>
         </div>
       </nav>
@@ -1748,6 +1749,26 @@
 
           <tbody>
             <tr>
+              <td>Resonance underperforms in single-target</td>
+              <td class="muted">
+                With only one DoTed target, Resonance builds from a single
+                source of ticks rather than several. Stack generation is slower,
+                payoff windows feel weaker, and the spec can feel underpowered
+                on pure single-target bosses even if the numbers are technically
+                competitive.
+              </td>
+              <td>
+                Resonance generates at an accelerated rate: approximately 1.5x
+                when the player has only one DoTed enemy in range. This
+                compensates for reduced tick count without requiring a separate
+                single-target system. Shadow Word: Madness's per-target cooldown
+                is also reduced from 6 sec to 4 sec when no other DoTed enemies
+                are nearby, letting it fill the Resonance gap more actively
+                without breaking multi-target balance. Neither change requires a
+                new ability. Both are conditional modifiers on existing rules.
+              </td>
+            </tr>
+            <tr>
               <td>Resonance overperforms on council fights</td>
               <td class="muted">
                 High uptime on multiple targets could recreate the same scaling
@@ -1920,6 +1941,118 @@
               Apex interaction to feel functional.
             </p>
           </article>
+        </div>
+      </section>
+
+      <section id="ui-requirements" class="section-block">
+        <div class="section-header">
+          <div class="eyebrow">UI Requirements</div>
+          <h2>
+            The system only works if the player can read game state without an
+            addon.
+          </h2>
+          <p class="muted">
+            UI design is not an afterthought. It is part of class design. A
+            system that requires a third-party addon to be readable is a system
+            that has partially failed at the design level. Shadow's redesign
+            depends on three readable states: Resonance stacks on enemies, the
+            current form window, and the Dark Ascension empowerment. All three
+            need to work in the default UI before the spec ships.
+          </p>
+        </div>
+
+        <div class="grid three">
+          <article class="card strong">
+            <div class="ability-heading">
+              <img
+                class="ability-icon"
+                src="../assets/invoked_nightmare.jpg"
+                alt="Resonance icon"
+              />
+              <div>
+                <span class="tag">Enemy Debuff</span>
+                <h3>Resonance Stack Visibility</h3>
+              </div>
+            </div>
+            <p class="muted">
+              Resonance stacks on enemies need to be readable on enemy
+              nameplates in the default UI. Not buried in a debuff list or
+              invisible without the need of addons. Stack count should display
+              clearly so the player can tell at a glance which targets are
+              prepared for payoff and which are still building.
+            </p>
+            <p class="muted">
+              Enemies at 5 stacks should have a distinct visual state, a color
+              shift or glow on the nameplate, so the priority decision is
+              immediate rather than requiring the player to mouse over every
+              target. The current default nameplate system can support this with
+              priority debuff display. It needs to be configured to do so.
+            </p>
+          </article>
+
+          <article class="card strong">
+            <div class="ability-heading">
+              <img
+                class="ability-icon"
+                src="../assets/voidform.jpg"
+                alt="Voidform icon"
+              />
+              <div>
+                <span class="tag">Form State</span>
+                <h3>Voidform vs. Ascended Voidform</h3>
+              </div>
+            </div>
+            <p class="muted">
+              Voidform uses its current in-game animation. The visual language
+              already exists and works. No redesign needed. The spec's visual
+              identity during the rotational window is intact.
+            </p>
+            <p class="muted">
+              Ascended Voidform should use Dark Ascension's wing animation,
+              repurposed as the empowered state visual. The wings carry
+              immediate visual weight and are already associated in players'
+              minds with a major power moment. Reusing that animation as the
+              Ascended Voidform state creates clear, memorable differentiation
+              between the normal window and the empowered one without requiring
+              new art budget.
+            </p>
+          </article>
+
+          <article class="card strong">
+            <div class="ability-heading">
+              <img
+                class="ability-icon"
+                src="../assets/void_ascension.jpg"
+                alt="Dark Ascension icon"
+              />
+              <div>
+                <span class="tag">Cooldown State</span>
+                <h3>Dark Ascension Empowerment Indicator</h3>
+              </div>
+            </div>
+            <p class="muted">
+              When Dark Ascension is active and the player's next Voidform will
+              be Ascended, the player needs to know that before pressing the
+              button. A buff indicator showing "Next Voidform: Ascended" with a
+              remaining charge count (2 → 1 → 0) gives the player the planning
+              information they need without requiring them to track it mentally.
+            </p>
+            <p class="muted">
+              This is a simple aura display. It belongs in the default UI, not
+              delegated to addons. Planned burst windows only feel meaningful if
+              the player has reliable, visible confirmation of what they are
+              planning around.
+            </p>
+          </article>
+        </div>
+
+        <div class="callout">
+          <strong>Design responsibility:</strong> The default UI should be
+          designed alongside the class system, not after it. Resonance stacks,
+          form state differentiation, and cooldown empowerment indicators are
+          not addon features. They are requirements for the spec to communicate
+          its own mechanics to the player. If the default UI cannot display them
+          clearly, the spec design is incomplete.
         </div>
       </section>
 

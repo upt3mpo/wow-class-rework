@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="A systems-driven Priest class redesign resource exploring Shadow and Discipline as modern World of Warcraft spec concepts."
+      content="A systems-driven Priest class redesign resource exploring Shadow and Discipline as modern World of Warcraft spec concepts, with a Holy spec assessment."
     />
     <title>Priest Class Redesign | Modern Spec Concepts</title>
     <link rel="stylesheet" href="styles.css" />
@@ -40,7 +40,7 @@
 
           <div class="thesis">
             Shadow should convert pressure deliberately. Discipline should shape
-            damage deliberately.
+            damage deliberately. Holy should be finished, not rebuilt.
           </div>
 
           <div class="button-row">
@@ -90,13 +90,14 @@
       <section id="overview" class="page-shell section-block">
         <div class="section-header">
           <div class="eyebrow">Overview</div>
-          <h2>Two redesigns, one shared goal.</h2>
+          <h2>Two redesigns, one assessment, one shared goal.</h2>
 
           <p class="muted">
             This project explores how Shadow and Discipline Priest could be
             modernized without losing the ideas that make each spec
-            recognizable. Shadow focuses on controlled pressure conversion.
-            Discipline focuses on capped damage shaping and deliberate recovery.
+            recognizable. Holy is assessed separately. Its foundation is sound,
+            and its problems are tuning-level rather than structural. Not every
+            spec needs to be rebuilt.
           </p>
         </div>
 
@@ -122,12 +123,13 @@
           </article>
 
           <article class="card">
-            <span class="tag">Resource Goal</span>
-            <h3>Readable systems design</h3>
+            <span class="tag">Holy</span>
+            <h3>Finish, don't rebuild</h3>
             <p class="muted">
-              Each page includes problem framing, goals, tradeoffs, kit
-              treatment, risks, tuning notes, and sample player-facing language
-              to show how the design would be evaluated.
+              The Holy Word system works. The fantasy is intact. The problem is
+              a strong burst window around Apotheosis and a thin baseline
+              between them: a cooldown pacing and mana floor issue, not a
+              structural one.
             </p>
           </article>
         </div>
@@ -141,7 +143,9 @@
             The hub gives the project thesis. Each overview explains the design
             direction and player experience. Each detailed page defines system
             rules, tuning levers, priority behavior, risks, and sample
-            player-facing tooltip language.
+            player-facing tooltip language. Holy uses an assessment format
+            instead. One page that explains what works, what does not, and why a
+            redesign is not the right answer.
           </p>
         </div>
 
@@ -150,7 +154,7 @@
             <h3>1. Hub</h3>
             <p class="muted">
               Use this page to understand the shared redesign philosophy and how
-              Shadow and Discipline relate as spec redesigns.
+              Shadow, Discipline, and Holy relate as design decisions.
             </p>
           </article>
 
@@ -158,15 +162,17 @@
             <h3>2. Overview Pages</h3>
             <p class="muted">
               Read these for problem framing, goals, core systems, player
-              experience, tradeoffs, and high-level design decisions.
+              experience, tradeoffs, and high-level design decisions. Shadow and
+              Discipline each have a full overview.
             </p>
           </article>
 
           <article class="card strong">
-            <h3>3. Detailed Pages</h3>
+            <h3>3. Detailed & Assessment Pages</h3>
             <p class="muted">
-              Use these for exact mechanics, example priorities, scenario
-              timelines, tuning notes, UI requirements, and validation risks.
+              Shadow and Discipline include detailed pages with exact mechanics,
+              timelines, and tooltip language. Holy uses a single assessment
+              page. No detailed page needed.
             </p>
           </article>
         </div>
@@ -174,8 +180,8 @@
 
       <section id="specs" class="page-shell section-block">
         <div class="section-header">
-          <div class="eyebrow">Spec Redesigns</div>
-          <h2>Choose a spec redesign.</h2>
+          <div class="eyebrow">Spec Redesigns &amp; Assessment</div>
+          <h2>Choose a spec.</h2>
         </div>
 
         <div class="grid two">
@@ -269,6 +275,57 @@
             </div>
           </article>
         </div>
+
+        <!-- Holy: assessment card, full-width below the two redesigns -->
+        <div style="margin-top: 2rem">
+          <article class="card strong">
+            <div class="ability-heading">
+              <img
+                class="ability-icon"
+                src="assets/holy_word_serenity.jpg"
+                alt="Holy Priest icon"
+              />
+              <div>
+                <span class="tag">Healing Spec · Assessment</span>
+                <h3>Holy Priest</h3>
+              </div>
+            </div>
+
+            <p class="muted">
+              Holy's core identity is intact. The Holy Word system and
+              Lightweaver loop both work. This assessment explains why a
+              structural redesign is not warranted, names the real problems
+              accurately: a strong Apotheosis window, a thin baseline between
+              them, and a mana economy that swings with the cooldown cycle. And
+              distinguishes tuning problems from design problems.
+            </p>
+
+            <div class="flow">
+              <span class="pill">
+                <img
+                  class="mini-icon"
+                  src="assets/holy_word_serenity.jpg"
+                  alt=""
+                />
+                Holy Word
+              </span>
+              <span class="arrow">→</span>
+              <span class="pill">
+                <img class="mini-icon" src="assets/flash_heal.jpg" alt="" />
+                Lightweaver
+              </span>
+              <span class="arrow">→</span>
+              <span class="pill">
+                <img class="mini-icon" src="assets/apotheosis.jpg" alt="" />
+                Apotheosis
+              </span>
+            </div>
+
+            <div class="button-row">
+              <a class="button" href="holy/index.html">Read Assessment</a>
+            </div>
+          </article>
+        </div>
       </section>
 
       <section id="philosophy" class="page-shell section-block">
@@ -283,6 +340,7 @@
               <th>Design Focus</th>
               <th>Shadow</th>
               <th>Discipline</th>
+              <th>Holy</th>
             </tr>
           </thead>
 
@@ -296,20 +354,34 @@
                 Discipline remains an offensive healer, not a generic reactive
                 healer.
               </td>
+              <td>
+                Holy remains a pure healer with clear spell-to-moment mapping.
+                The Holy Word system is preserved as-is.
+              </td>
             </tr>
 
             <tr>
-              <td>Problem Removed</td>
+              <td>Problem Identified</td>
               <td>
                 Passive damage duplication and volatile multi-target scaling.
               </td>
               <td>Direct damage-to-healing conversion and shield dominance.</td>
+              <td>
+                A strong Apotheosis burst window and a thin baseline between
+                them. Mana economy swings with the cooldown cycle. Tuning and
+                pacing problems. Not structural ones.
+              </td>
             </tr>
 
             <tr>
-              <td>New Core System</td>
-              <td>Resonance stores pressure for controlled payoff.</td>
-              <td>Deferred Damage smooths pressure without erasing it.</td>
+              <td>Design Response</td>
+              <td>Full redesign. New core system required.</td>
+              <td>Full redesign. New healing model required.</td>
+              <td>
+                Assessment only. The foundation works. Raise the mana floor
+                between Apotheosis windows, reduce Prayer of Healing cost
+                outside Lightweaver, and give the baseline more consequence.
+              </td>
             </tr>
 
             <tr>
@@ -322,6 +394,11 @@
                 Atonement coverage, Contrition buildup, release timing, and mana
                 sustain.
               </td>
+              <td>
+                Holy Word timing, Apotheosis planning, Prayer of Mending stack
+                management, and Lightweaver setup. The skill expression exists.
+                It needs a stronger baseline to matter between windows.
+              </td>
             </tr>
 
             <tr>
@@ -332,6 +409,10 @@
               <td>
                 Deferred Damage cap, Contrition stack limits, and spell-specific
                 mana returns.
+              </td>
+              <td>
+                Apotheosis cooldown pacing, Prayer of Healing base cost, and
+                mana floor between burst windows.
               </td>
             </tr>
           </tbody>
@@ -354,6 +435,7 @@
               <li>Tradeoffs and failure cases</li>
               <li>Priority lists and sample timelines</li>
               <li>Tooltip-style player-facing language</li>
+              <li>Spec assessment when redesign is not warranted</li>
             </ul>
           </article>
 
@@ -373,7 +455,8 @@
           <strong>Design takeaway:</strong> This project is intended to organize
           modern Priest redesign ideas with clear systems reasoning, constraint
           awareness, and player-facing clarity. It is not a final
-          expansion-ready balance proposal.
+          expansion-ready balance proposal. Recognizing when a spec needs a
+          structural overhaul, and when it does not, is part of the design work.
         </div>
       </section>
     </main>
@@ -389,6 +472,7 @@
           <a class="button secondary" href="discipline/index.html"
             >Discipline</a
           >
+          <a class="button secondary" href="holy/index.html">Holy</a>
         </div>
       </div>
     </footer>
