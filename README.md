@@ -121,12 +121,15 @@ It is intended as:
 
 ## Access
 
+**Live site:** https://upt3mpo.github.io/wow-class-rework/
+
 - Root redirect: `/` → `/priest/index.html`
-- Priest Hub: `/priest/index.html`
-- Shadow Overview: `/priest/shadow/index.html`
-- Shadow Detailed: `/priest/shadow/detailed.html`
-- Discipline Overview: `/priest/discipline/index.html`
-- Discipline Detailed: `/priest/discipline/detailed.html`
+- Priest Hub: [priest/index.html](https://upt3mpo.github.io/wow-class-rework/priest/index.html)
+- Shadow Overview: [priest/shadow/index.html](https://upt3mpo.github.io/wow-class-rework/priest/shadow/index.html)
+- Shadow Detailed: [priest/shadow/detailed.html](https://upt3mpo.github.io/wow-class-rework/priest/shadow/detailed.html)
+- Discipline Overview: [priest/discipline/index.html](https://upt3mpo.github.io/wow-class-rework/priest/discipline/index.html)
+- Discipline Detailed: [priest/discipline/detailed.html](https://upt3mpo.github.io/wow-class-rework/priest/discipline/detailed.html)
+- Holy Assessment: [priest/holy/index.html](https://upt3mpo.github.io/wow-class-rework/priest/holy/index.html)
 
 ---
 
