@@ -121,7 +121,7 @@ It is intended as:
 
 ## Access
 
-**Live site:** https://upt3mpo.github.io/wow-class-rework/
+https://upt3mpo.github.io/wow-class-rework/
 
 - Root redirect: `/` → `/priest/index.html`
 - Priest Hub: [priest/index.html](https://upt3mpo.github.io/wow-class-rework/priest/index.html)
